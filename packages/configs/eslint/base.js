@@ -1,17 +1,17 @@
 import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
 import turboPlugin from "eslint-plugin-turbo";
-import tseslint from "typescript-eslint";
+import typescriptEslint from "typescript-eslint";
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 /**
  * A shared ESLint configuration for the repository.
  *
  * @type {import("eslint").Linter.Config}
  * */
-export const config = [
+export const baseESLintConfig = [
   js.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.recommended,
+  ...typescriptEslint.configs.recommended,
+  eslintPluginPrettierRecommended,
   {
     plugins: {
       turbo: turboPlugin,
