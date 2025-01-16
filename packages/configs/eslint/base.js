@@ -1,5 +1,4 @@
 import js from "@eslint/js";
-import turboPlugin from "eslint-plugin-turbo";
 import typescriptEslint from "typescript-eslint";
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
@@ -12,14 +11,6 @@ export const baseESLintConfig = [
   js.configs.recommended,
   ...typescriptEslint.configs.recommended,
   eslintPluginPrettierRecommended,
-  {
-    plugins: {
-      turbo: turboPlugin,
-    },
-    rules: {
-      "turbo/no-undeclared-env-vars": "warn",
-    },
-  },
   {
     ignores: ["dist/**"],
   },

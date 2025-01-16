@@ -6,6 +6,6 @@
     "lint": "eslint --fix src"
   },
   "devDependencies": {
-    "@package/configs": "workspace:*"
+    "@packages/configs": "workspace:*"
   }
 }
