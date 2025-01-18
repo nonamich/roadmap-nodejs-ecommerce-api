@@ -3,6 +3,11 @@
   "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
     "preserveWatchOutput": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "allowSyntheticDefaultImports": true,
   }
 }

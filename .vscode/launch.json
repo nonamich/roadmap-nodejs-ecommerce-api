@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Servers",
+      "configurations": ["gateway", "users"]
+    },
+  ],
+  "configurations": [
+    {
+      "name": "gateway",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}/apps/gateway",
+			"port": 9229,
+      "restart": true
+    },
+    {
+      "name": "users",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}/apps/users",
+			"port": 9228,
+      "restart": true
+    },
+  ]
+}
