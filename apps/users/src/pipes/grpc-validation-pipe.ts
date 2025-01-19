@@ -1,4 +1,4 @@
-import grpc from '@grpc/grpc-js';
+import * as grpc from '@grpc/grpc-js';
 import { Injectable, ValidationPipe } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 
@@ -12,8 +12,7 @@ export class GrpcValidationPipe extends ValidationPipe {
       exceptionFactory: (errors) => {
         const formattedErrors = errors.map((error) => ({
           property: error.property,
-          constraints: error.constraints,
-          value: error.value,
+          messages: Object.values(error.constraints!),
         }));
 
         return new RpcException({

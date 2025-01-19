@@ -7,4 +7,10 @@ export class GetUsersDto {
   @Min(1)
   @IsOptional()
   page: number = 1;
+
+  @Transform(({ value }) => parseInt(value, 10))
+  @IsInt()
+  @Min(2)
+  @IsOptional()
+  pageSize: number = 10;
 }

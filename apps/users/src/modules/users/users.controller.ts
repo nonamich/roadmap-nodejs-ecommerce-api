@@ -1,31 +1,52 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseFilters } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
 import {
-  DeleteUserRequest,
-  GetUserRequest,
-  GetUsersRequest,
-  UpdateUserRequest,
-  User,
   UsersServiceController,
   UsersServiceControllerMethods,
 } from '@packages/grpc';
 import { from, mergeAll } from 'rxjs';
+import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
 import { ORMService } from '~/modules/orm/orm.service';
 import { GrpcValidationPipe } from '~/pipes/grpc-validation-pipe';
-import { CreateUserRequestDto } from './dto/create-user-request.dto';
+import {
+  CreateUserRequestDto,
+  DeleteUserRequestDto,
+  GetUserRequestDto,
+  GetUsersRequestDto,
+  UpdateUserRequestDto,
+} from './dto';
+import { PasswordService } from './password.service';
 
 @Controller()
 @UsersServiceControllerMethods()
 export class UsersController implements UsersServiceController {
-  constructor(private readonly orm: ORMService) {}
+  constructor(
+    private readonly orm: ORMService,
+    private readonly passwordService: PasswordService,
+  ) {}
 
-  async createUser(@Payload(GrpcValidationPipe) data: CreateUserRequestDto) {
-    return await this.orm.user.create({
-      data,
+  @UseFilters(PrismaClientExceptionFilter)
+  async createUser(
+    @Payload(GrpcValidationPipe)
+    { email, name, password: unsanitizedPassword }: CreateUserRequestDto,
+  ) {
+    const hashedPassword =
+      await this.passwordService.hashPassword(unsanitizedPassword);
+
+    const user = await this.orm.user.create({
+      data: {
+        email,
+        name,
+        password: hashedPassword,
+      },
+      omit: { password: true },
     });
+
+    return user;
   }
 
-  async deleteUser({ id }: DeleteUserRequest) {
+  @UseFilters(PrismaClientExceptionFilter)
+  async deleteUser(@Payload(GrpcValidationPipe) { id }: DeleteUserRequestDto) {
     await this.orm.user.delete({
       where: {
         id,
@@ -33,24 +54,40 @@ export class UsersController implements UsersServiceController {
     });
   }
 
-  async getUser({ id }: GetUserRequest): Promise<User> {
+  @UseFilters(PrismaClientExceptionFilter)
+  async getUser(@Payload(GrpcValidationPipe) { id }: GetUserRequestDto) {
     return await this.orm.user.findUniqueOrThrow({
-      where: {
-        id,
-      },
+      where: { id },
+      omit: { password: true },
     });
   }
 
-  updateUser({ id, ...data }: UpdateUserRequest): Promise<User> {
+  @UseFilters(PrismaClientExceptionFilter)
+  async updateUser(
+    @Payload(GrpcValidationPipe)
+    { id, ...data }: UpdateUserRequestDto,
+  ) {
+    if (data.password) {
+      const hashedPassword = await this.passwordService.hashPassword(
+        data.password,
+      );
+
+      data.password = hashedPassword;
+    }
+
     return this.orm.user.update({
       data,
       where: {
         id,
       },
+      omit: { password: true },
     });
   }
 
-  getUsers({ page, pageSize }: GetUsersRequest) {
+  @UseFilters(PrismaClientExceptionFilter)
+  getUsers(
+    @Payload(GrpcValidationPipe) { page, pageSize }: GetUsersRequestDto,
+  ) {
     const promise = this.orm.user.findMany({
       skip: Math.floor(pageSize * page - pageSize),
       take: pageSize,

@@ -7,7 +7,6 @@ import { USERS_PROVIDER_TOKEN } from './users.constants';
 
 @Controller('users')
 export class UsersController {
-  readonly USERS_PER_PAGE = 20;
   private userRpc!: UsersServiceClient;
 
   constructor(@Inject(USERS_PROVIDER_TOKEN) private client: ClientGrpc) {
@@ -16,9 +15,7 @@ export class UsersController {
   }
 
   @Get('/')
-  getHello(@Query() { page }: GetUsersDto) {
-    return this.userRpc
-      .getUsers({ page, pageSize: this.USERS_PER_PAGE })
-      .pipe(toArray());
+  getHello(@Query() { page, pageSize }: GetUsersDto) {
+    return this.userRpc.getUsers({ page, pageSize }).pipe(toArray());
   }
 }

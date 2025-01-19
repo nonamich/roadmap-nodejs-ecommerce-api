@@ -1,5 +1,5 @@
-import grpc from '@grpc/grpc-js';
-import { Catch, ExceptionFilter, Logger } from '@nestjs/common';
+import * as grpc from '@grpc/grpc-js';
+import { Catch, ExceptionFilter } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Prisma } from '@prisma/client';
 import { throwError } from 'rxjs';
@@ -7,10 +7,9 @@ import { throwError } from 'rxjs';
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaClientExceptionFilter implements ExceptionFilter {
   catch(exception: Prisma.PrismaClientKnownRequestError) {
-    Logger.error(exception.message);
-
     switch (exception.code) {
-      case 'P2018': {
+      case 'P2018':
+      case 'P2025':
         return throwError(
           () =>
             new RpcException({
@@ -18,9 +17,21 @@ export class PrismaClientExceptionFilter implements ExceptionFilter {
               message: 'Resource not found',
             }),
         );
-      }
+      case 'P2002':
+        return throwError(
+          () =>
+            new RpcException({
+              code: grpc.status.ALREADY_EXISTS,
+              message: 'Resource Already Exists',
+            }),
+        );
     }
 
-    return throwError(() => exception);
+    return throwError(
+      () =>
+        new RpcException({
+          code: grpc.status.UNKNOWN,
+        }),
+    );
   }
 }
