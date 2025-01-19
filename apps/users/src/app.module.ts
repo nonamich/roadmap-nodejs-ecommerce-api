@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ORMModule } from './orm/orm.module';
-import { UsersModule } from './users/users.module';
+import { APP_PIPE } from '@nestjs/core';
+import { ORMModule } from './modules/orm/orm.module';
+import { UsersModule } from './modules/users/users.module';
+import { GrpcValidationPipe } from './pipes/grpc-validation-pipe';
 
 @Module({
   imports: [
@@ -12,6 +14,12 @@ import { UsersModule } from './users/users.module';
       isGlobal: true,
     }),
     UsersModule,
+  ],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useClass: GrpcValidationPipe,
+    },
   ],
 })
 export class AppModule {}

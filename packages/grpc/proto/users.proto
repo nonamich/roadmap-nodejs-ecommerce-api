@@ -37,14 +37,10 @@ message GetUsersRequest {
   int32 pageSize = 2;
 }
 
-message GetUsersResponse {
-  repeated User users = 1;
-}
-
 service UsersService {
   rpc CreateUser(CreateUserRequest) returns (User);
   rpc GetUser(GetUserRequest) returns (User);
   rpc UpdateUser(UpdateUserRequest) returns (User);
   rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
-  rpc getUsers(GetUsersRequest) returns (stream User);
+  rpc GetUsers(GetUsersRequest) returns (stream User);
 }

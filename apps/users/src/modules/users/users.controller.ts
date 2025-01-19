@@ -1,7 +1,6 @@
 import { Controller } from '@nestjs/common';
-import { GrpcStreamMethod } from '@nestjs/microservices';
+import { Payload } from '@nestjs/microservices';
 import {
-  CreateUserRequest,
   DeleteUserRequest,
   GetUserRequest,
   GetUsersRequest,
@@ -11,17 +10,18 @@ import {
   UsersServiceControllerMethods,
 } from '@packages/grpc';
 import { from, mergeAll } from 'rxjs';
-import { ORMService } from '~/orm/orm.service';
+import { ORMService } from '~/modules/orm/orm.service';
+import { GrpcValidationPipe } from '~/pipes/grpc-validation-pipe';
+import { CreateUserRequestDto } from './dto/create-user-request.dto';
 
 @Controller()
 @UsersServiceControllerMethods()
 export class UsersController implements UsersServiceController {
   constructor(private readonly orm: ORMService) {}
 
-  @GrpcStreamMethod('USERS_SERVICE')
-  async createUser(request: CreateUserRequest) {
+  async createUser(@Payload(GrpcValidationPipe) data: CreateUserRequestDto) {
     return await this.orm.user.create({
-      data: request,
+      data,
     });
   }
 
@@ -52,7 +52,7 @@ export class UsersController implements UsersServiceController {
 
   getUsers({ page, pageSize }: GetUsersRequest) {
     const promise = this.orm.user.findMany({
-      skip: pageSize * page - pageSize,
+      skip: Math.floor(pageSize * page - pageSize),
       take: pageSize,
     });
 

@@ -1,3 +1,4 @@
+import { Metadata } from '@grpc/grpc-js';
 import { Observable } from 'rxjs';
 
 /**
@@ -40,23 +41,20 @@ interface GetUsersRequest {
     page: number;
     pageSize: number;
 }
-interface GetUsersResponse {
-    users: User[];
-}
 declare const USERS_PACKAGE_NAME = "users";
 interface UsersServiceClient {
-    createUser(request: CreateUserRequest): Observable<User>;
-    getUser(request: GetUserRequest): Observable<User>;
-    updateUser(request: UpdateUserRequest): Observable<User>;
-    deleteUser(request: DeleteUserRequest): Observable<Empty>;
-    getUsers(request: GetUsersRequest): Observable<User>;
+    createUser(request: CreateUserRequest, metadata?: Metadata): Observable<User>;
+    getUser(request: GetUserRequest, metadata?: Metadata): Observable<User>;
+    updateUser(request: UpdateUserRequest, metadata?: Metadata): Observable<User>;
+    deleteUser(request: DeleteUserRequest, metadata?: Metadata): Observable<Empty>;
+    getUsers(request: GetUsersRequest, metadata?: Metadata): Observable<User>;
 }
 interface UsersServiceController {
-    createUser(request: CreateUserRequest): Promise<User> | Observable<User> | User;
-    getUser(request: GetUserRequest): Promise<User> | Observable<User> | User;
-    updateUser(request: UpdateUserRequest): Promise<User> | Observable<User> | User;
-    deleteUser(request: DeleteUserRequest): void;
-    getUsers(request: GetUsersRequest): Observable<User>;
+    createUser(request: CreateUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
+    getUser(request: GetUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
+    updateUser(request: UpdateUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
+    deleteUser(request: DeleteUserRequest, metadata?: Metadata): void;
+    getUsers(request: GetUsersRequest, metadata?: Metadata): Observable<User>;
 }
 declare function UsersServiceControllerMethods(): (constructor: Function) => void;
 declare const USERS_SERVICE_NAME = "UsersService";
@@ -65,4 +63,4 @@ declare abstract class UtilsGrpc {
     static getProtoFilePath(packageName: string): string;
 }
 
-export { type CreateUserRequest, type DeleteUserRequest, type GetUserRequest, type GetUsersRequest, type GetUsersResponse, USERS_PACKAGE_NAME, USERS_SERVICE_NAME, type UpdateUserRequest, type User, type UsersServiceClient, type UsersServiceController, UsersServiceControllerMethods, UtilsGrpc, protobufPackage };
+export { type CreateUserRequest, type DeleteUserRequest, type GetUserRequest, type GetUsersRequest, USERS_PACKAGE_NAME, USERS_SERVICE_NAME, type UpdateUserRequest, type User, type UsersServiceClient, type UsersServiceController, UsersServiceControllerMethods, UtilsGrpc, protobufPackage };

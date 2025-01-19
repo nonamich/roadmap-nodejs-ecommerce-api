@@ -5,6 +5,7 @@
 // source: users.proto
 
 /* eslint-disable */
+import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 import { Empty } from "./google/protobuf/empty.pb";
@@ -44,34 +45,30 @@ export interface GetUsersRequest {
   pageSize: number;
 }
 
-export interface GetUsersResponse {
-  users: User[];
-}
-
 export const USERS_PACKAGE_NAME = "users";
 
 export interface UsersServiceClient {
-  createUser(request: CreateUserRequest): Observable<User>;
+  createUser(request: CreateUserRequest, metadata?: Metadata): Observable<User>;
 
-  getUser(request: GetUserRequest): Observable<User>;
+  getUser(request: GetUserRequest, metadata?: Metadata): Observable<User>;
 
-  updateUser(request: UpdateUserRequest): Observable<User>;
+  updateUser(request: UpdateUserRequest, metadata?: Metadata): Observable<User>;
 
-  deleteUser(request: DeleteUserRequest): Observable<Empty>;
+  deleteUser(request: DeleteUserRequest, metadata?: Metadata): Observable<Empty>;
 
-  getUsers(request: GetUsersRequest): Observable<User>;
+  getUsers(request: GetUsersRequest, metadata?: Metadata): Observable<User>;
 }
 
 export interface UsersServiceController {
-  createUser(request: CreateUserRequest): Promise<User> | Observable<User> | User;
+  createUser(request: CreateUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  getUser(request: GetUserRequest): Promise<User> | Observable<User> | User;
+  getUser(request: GetUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  updateUser(request: UpdateUserRequest): Promise<User> | Observable<User> | User;
+  updateUser(request: UpdateUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  deleteUser(request: DeleteUserRequest): void;
+  deleteUser(request: DeleteUserRequest, metadata?: Metadata): void;
 
-  getUsers(request: GetUsersRequest): Observable<User>;
+  getUsers(request: GetUsersRequest, metadata?: Metadata): Observable<User>;
 }
 
 export function UsersServiceControllerMethods() {

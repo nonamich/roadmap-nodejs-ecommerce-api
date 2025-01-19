@@ -8,10 +8,11 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
-  const grpcService = app.connectMicroservice<GrpcOptions>({
+
+  app.connectMicroservice<GrpcOptions>({
     transport: Transport.GRPC,
     options: {
-      url: config.getOrThrow('GRPC_SERVER_URL'),
+      url: config.getOrThrow('USERS_GRPC_SERVER_URL'),
       package: USERS_PACKAGE_NAME,
       protoPath: UtilsGrpc.getProtoFilePath(USERS_PACKAGE_NAME),
       onLoadPackageDefinition: (pkg, server) => {
@@ -20,8 +21,7 @@ async function bootstrap() {
     },
   });
 
-  await grpcService.listen();
-
+  await app.startAllMicroservices();
   await app.init();
 }
 
