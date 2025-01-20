@@ -36,6 +36,9 @@ importers:
       '@apps/gateway':
         specifier: workspace:*
         version: link:../gateway
+      '@packages/configs':
+        specifier: workspace:^
+        version: link:../../packages/configs
       '@react-router/dev':
         specifier: ^7.1.1
         version: 7.1.1(@react-router/serve@7.1.1(react-router@7.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(@types/node@20.17.13)(react-router@7.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(terser@5.37.0)(typescript@5.7.3)(vite@5.4.11(@types/node@20.17.13)(terser@5.37.0))
@@ -51,6 +54,15 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.5.1)
+      eslint-plugin-react-hooks:
+        specifier: ^5.1.0
+        version: 5.1.0(eslint@9.18.0(jiti@1.21.7))
+      eslint-plugin-react-refresh:
+        specifier: ^0.4.18
+        version: 0.4.18(eslint@9.18.0(jiti@1.21.7))
+      globals:
+        specifier: ^15.14.0
+        version: 15.14.0
       postcss:
         specifier: ^8.4.49
         version: 8.5.1
@@ -2827,6 +2839,17 @@ packages:
       eslint-config-prettier:
         optional: true
 
+  eslint-plugin-react-hooks@5.1.0:
+    resolution: {integrity: sha512-mpJRtPgHN2tNAvZ35AMfqeB3Xqeo273QxrHJsbBEPWODRM4r0yB6jfoROqKEYrOn27UtRPpcpHc2UqyBSuUNTw==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
+
+  eslint-plugin-react-refresh@0.4.18:
+    resolution: {integrity: sha512-IRGEoFn3OKalm3hjfolEWGqoF/jPqeEYFp+C8B0WMzwGwBMvlRDQd06kghDhF0C61uJ6WfSDhEZE/sAQjduKgw==}
+    peerDependencies:
+      eslint: '>=8.40'
+
   eslint-scope@5.1.1:
     resolution: {integrity: sha512-2NxwbF/hZ0KpepYN0cNbo+FN6XoK7GaHlQhgx/hIZl6Va0bF45RQOOwhLIy8lQDbuCiadSLCBnH2CFYquit5bw==}
     engines: {node: '>=8.0.0'}
@@ -3134,6 +3157,10 @@ packages:
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
+    engines: {node: '>=18'}
+
+  globals@15.14.0:
+    resolution: {integrity: sha512-OkToC372DtlQeje9/zHIo5CT8lRP/FUgEOKBEhU4e0abL7J7CD24fD9ohiLN5hagG/kWCYj4K5oaxxtj2Z0Dig==}
     engines: {node: '>=18'}
 
   globrex@0.1.2:
@@ -7694,6 +7721,14 @@ snapshots:
       '@types/eslint': 9.6.1
       eslint-config-prettier: 10.0.1(eslint@9.18.0(jiti@1.21.7))
 
+  eslint-plugin-react-hooks@5.1.0(eslint@9.18.0(jiti@1.21.7)):
+    dependencies:
+      eslint: 9.18.0(jiti@1.21.7)
+
+  eslint-plugin-react-refresh@0.4.18(eslint@9.18.0(jiti@1.21.7)):
+    dependencies:
+      eslint: 9.18.0(jiti@1.21.7)
+
   eslint-scope@5.1.1:
     dependencies:
       esrecurse: 4.3.0
@@ -8120,6 +8155,8 @@ snapshots:
   globals@11.12.0: {}
 
   globals@14.0.0: {}
+
+  globals@15.14.0: {}
 
   globrex@0.1.2: {}
 

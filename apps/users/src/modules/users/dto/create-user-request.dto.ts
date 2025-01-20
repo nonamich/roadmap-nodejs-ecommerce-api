@@ -3,12 +3,12 @@ import { IsEmail, IsString, IsStrongPassword, Length } from 'class-validator';
 
 export class CreateUserRequestDto implements CreateUserRequest {
   @IsEmail()
-  email: string;
+  email!: string;
 
   @IsString()
   @Length(4)
-  name: string;
+  name!: string;
 
   @IsStrongPassword()
-  password: string;
+  password!: string;
 }

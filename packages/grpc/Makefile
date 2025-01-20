@@ -1,4 +1,4 @@
-protoc:
+proto:
 	protoc \
 		--plugin=node_modules/ts-proto/protoc-gen-ts_proto \
 		--ts_proto_out=./src/pb -I=./proto ./proto/*.proto \

@@ -9,7 +9,7 @@ import {
 
 export class UpdateUserRequestDto implements UpdateUserRequest {
   @IsNumber()
-  id: number;
+  id!: number;
 
   @IsOptional()
   @IsString()

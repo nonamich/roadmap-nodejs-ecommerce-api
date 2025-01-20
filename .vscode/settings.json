@@ -1,0 +1,7 @@
+{
+  "search.exclude": {
+    "pnpm-lock.yaml": true,
+    "**/dist": true,
+    "**/build": true,
+  }
+}
