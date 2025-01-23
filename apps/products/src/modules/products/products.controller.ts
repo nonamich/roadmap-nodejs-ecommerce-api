@@ -1,14 +1,14 @@
 import { Controller, UseFilters } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
 import {
-  Product,
   ProductsServiceController,
   ProductsServiceControllerMethods,
-} from '@packages/grpc';
+} from '@packages/grpc/proto/products';
+import { from, mergeAll } from 'rxjs';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
 import { ORMService } from '~/modules/orm/orm.service';
 import { GrpcValidationPipe } from '~/pipes/grpc-validation-pipe';
-import { GetProductByIdRequestDto } from './dto';
+import { GetProductByIdRequestDto, GetProductsByFilterRequestDto } from './dto';
 import { PRODUCTS_SELECT } from './products.constants';
 
 @Controller()
@@ -16,21 +16,32 @@ import { PRODUCTS_SELECT } from './products.constants';
 export class ProductsController implements ProductsServiceController {
   constructor(private readonly orm: ORMService) {}
 
-  // @UseFilters(PrismaClientExceptionFilter)
-  // async createUser(
-  //   @Payload(GrpcValidationPipe)
-  //   { email, name, password: unsanitizedPassword }: CreateUserRequestDto,
-  // ) {}
-
   @UseFilters(PrismaClientExceptionFilter)
   async getProductById(
     @Payload(GrpcValidationPipe) { id }: GetProductByIdRequestDto,
-  ): Promise<Product> {
+  ) {
     const product = await this.orm.product.findUniqueOrThrow({
       where: { id },
       select: PRODUCTS_SELECT,
     });
 
     return product;
+  }
+
+  @UseFilters(PrismaClientExceptionFilter)
+  getProductsByFilter(
+    @Payload(GrpcValidationPipe)
+    { brandId, categoryId }: GetProductsByFilterRequestDto,
+  ) {
+    const promise = this.orm.product.findMany({
+      select: PRODUCTS_SELECT,
+      where: {
+        brandId: brandId || undefined,
+        categoryId: categoryId || undefined,
+      },
+      take: 100,
+    });
+
+    return from(promise).pipe(mergeAll());
   }
 }

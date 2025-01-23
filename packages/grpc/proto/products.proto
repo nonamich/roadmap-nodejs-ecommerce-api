@@ -49,26 +49,22 @@ message GetProductByIdRequest {
   int32 id = 1;
 }
 
-enum ProductSortDirection {
-  ASC = 0;
-  DESC = 1;
-}
+// enum ProductSortDirection {
+//   ASC = 0;
+//   DESC = 1;
+// }
 
-enum ProductSortBy {
-  CREATED_AT = 0;
-  RATING = 1;
-  PRICE = 2;
-}
-
-message ProductSort {
-  ProductSortDirection direction = 1;
-  ProductSortBy by = 2;
-}
+// enum ProductSortBy {
+//   CREATED_AT = 0;
+//   RATING = 1;
+//   PRICE = 2;
+// }
 
 message GetProductsByFilterRequest {
   optional int32 categoryId = 1;
   optional int32 brandId = 2;
-  optional ProductSort sort = 3;
+  // optional ProductSortDirection sortDirection = 3;
+  // optional ProductSortBy sortBy = 4;
 }
 
 message UpdateProductRequest {
@@ -82,8 +78,6 @@ message UpdateProductRequest {
 }
 
 service ProductsService {
-  // rpc CreateProduct(CreateProductRequest) returns (Product);
   rpc GetProductById(GetProductByIdRequest) returns (Product);
-  // rpc UpdateProduct(UpdateProductRequest) returns (Product);
   rpc GetProductsByFilter(GetProductsByFilterRequest) returns (stream Product);
 }

@@ -10,7 +10,7 @@ import {
   UpdateUserRequest,
   USERS_SERVICE_NAME,
   UsersServiceClient,
-} from '@packages/grpc';
+} from '@packages/grpc/proto/users';
 import { USERS_PROVIDER_TOKEN } from './users.constants';
 
 export class UsersService implements UsersServiceClient {

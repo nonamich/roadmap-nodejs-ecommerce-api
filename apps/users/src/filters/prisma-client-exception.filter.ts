@@ -1,10 +1,10 @@
 import { Catch, ExceptionFilter } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import {
   GrpcAlreadyExistsException,
   GrpcNotFoundException,
   GrpcUnknownException,
 } from 'nestjs-grpc-exceptions';
+import { Prisma } from 'prisma-client';
 import { throwError } from 'rxjs';
 
 @Catch(Prisma.PrismaClientKnownRequestError)

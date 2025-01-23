@@ -5,22 +5,12 @@
 // source: products.proto
 
 /* eslint-disable */
+import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
+import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
-import { Timestamp } from "./google/protobuf/timestamp.pb";
 
-export enum ProductSortDirection {
-  ASC = 0,
-  DESC = 1,
-  UNRECOGNIZED = -1,
-}
-
-export enum ProductSortBy {
-  CREATED_AT = 0,
-  RATING = 1,
-  PRICE = 2,
-  UNRECOGNIZED = -1,
-}
+export const protobufPackage = "products";
 
 export interface Category {
   id: number;
@@ -39,10 +29,10 @@ export interface Product {
   image: string;
   price: number;
   title: string;
-  rating?: number | undefined;
-  createdAt: Timestamp | undefined;
-  brand: Brand | undefined;
-  category: Category | undefined;
+  rating?: number | null | undefined;
+  createdAt: Date | null;
+  brand: Brand | null;
+  category: Category | null;
 }
 
 export interface Image {
@@ -59,52 +49,56 @@ export interface CreateProductRequest {
   currency: number;
   price: number;
   title: string;
-  image: Image | undefined;
+  image: Image | null;
 }
 
 export interface GetProductByIdRequest {
   id: number;
 }
 
-export interface ProductSort {
-  direction: ProductSortDirection;
-  by: ProductSortBy;
-}
-
 export interface GetProductsByFilterRequest {
-  categoryId?: number | undefined;
-  brandId?: number | undefined;
-  sort?: ProductSort | undefined;
+  categoryId?:
+    | number
+    | null
+    | undefined;
+  /**
+   * optional ProductSortDirection sortDirection = 3;
+   * optional ProductSortBy sortBy = 4;
+   */
+  brandId?: number | null | undefined;
 }
 
 export interface UpdateProductRequest {
   id: number;
-  amount?: number | undefined;
-  currency?: string | undefined;
-  image?: string | undefined;
-  price?: number | undefined;
-  rating?: number | undefined;
-  title?: string | undefined;
+  amount?: number | null | undefined;
+  currency?: string | null | undefined;
+  image?: string | null | undefined;
+  price?: number | null | undefined;
+  rating?: number | null | undefined;
+  title?: string | null | undefined;
 }
 
+export const PRODUCTS_PACKAGE_NAME = "products";
+
+wrappers[".google.protobuf.Timestamp"] = {
+  fromObject(value: Date) {
+    return { seconds: value.getTime() / 1000, nanos: (value.getTime() % 1000) * 1e6 };
+  },
+  toObject(message: { seconds: number; nanos: number }) {
+    return new Date(message.seconds * 1000 + message.nanos / 1e6);
+  },
+} as any;
+
 export interface ProductsServiceClient {
-  /** rpc CreateProduct(CreateProductRequest) returns (Product); */
+  getProductById(request: GetProductByIdRequest, metadata?: Metadata): Observable<Product>;
 
-  getProductById(request: GetProductByIdRequest): Observable<Product>;
-
-  /** rpc UpdateProduct(UpdateProductRequest) returns (Product); */
-
-  getProductsByFilter(request: GetProductsByFilterRequest): Observable<Product>;
+  getProductsByFilter(request: GetProductsByFilterRequest, metadata?: Metadata): Observable<Product>;
 }
 
 export interface ProductsServiceController {
-  /** rpc CreateProduct(CreateProductRequest) returns (Product); */
+  getProductById(request: GetProductByIdRequest, metadata?: Metadata): Promise<Product> | Observable<Product> | Product;
 
-  getProductById(request: GetProductByIdRequest): Promise<Product> | Observable<Product> | Product;
-
-  /** rpc UpdateProduct(UpdateProductRequest) returns (Product); */
-
-  getProductsByFilter(request: GetProductsByFilterRequest): Observable<Product>;
+  getProductsByFilter(request: GetProductsByFilterRequest, metadata?: Metadata): Observable<Product>;
 }
 
 export function ProductsServiceControllerMethods() {

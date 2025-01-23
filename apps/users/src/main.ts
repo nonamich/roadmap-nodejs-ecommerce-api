@@ -2,7 +2,8 @@ import { ReflectionService } from '@grpc/reflection';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
-import { USERS_SERVICE_NAME, UtilsGrpc } from '@packages/grpc';
+import { UtilsGrpc } from '@packages/grpc';
+import { USERS_PACKAGE_NAME } from '@packages/grpc/proto/users';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -13,8 +14,8 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       url: config.getOrThrow('USERS_GRPC_SERVER_URL'),
-      package: USERS_SERVICE_NAME,
-      protoPath: UtilsGrpc.getProtoFilePath(USERS_SERVICE_NAME),
+      package: USERS_PACKAGE_NAME,
+      protoPath: UtilsGrpc.getProtoFilePath(USERS_PACKAGE_NAME),
       onLoadPackageDefinition: (pkg, server) => {
         new ReflectionService(pkg).addToServer(server);
       },

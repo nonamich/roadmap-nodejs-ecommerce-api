@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
+import { PrismaClient } from 'prisma-client';
 
 const prisma = new PrismaClient();
 
@@ -10,7 +10,7 @@ async function main() {
   await prisma.brand.deleteMany({});
   await prisma.product.deleteMany({});
 
-  const currencies = ["EUR", "USD", "GBP"];
+  const currencies = ['EUR', 'USD', 'GBP'];
   const categories = await prisma.category.createManyAndReturn({
     data: faker.helpers
       .uniqueArray(faker.commerce.department, 20)
@@ -41,7 +41,7 @@ async function main() {
         rating: faker.number.float({ min: 0, max: 1 }),
         image: faker.image.url({ width: 1000, height: 1000 }),
         createdAt: faker.date.between({
-          from: "2020-01-01T00:00:00.000Z",
+          from: '2020-01-01T00:00:00.000Z',
           to: new Date(),
         }),
       };
@@ -51,7 +51,7 @@ async function main() {
         max: 3000,
         min: 2000,
       },
-    }
+    },
   );
 
   await prisma.product.createMany({ data: productsData });

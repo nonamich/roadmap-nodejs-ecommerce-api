@@ -5,9 +5,12 @@
 // source: users.proto
 
 /* eslint-disable */
+import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-import { Empty } from "./google/protobuf/empty.pb";
+import { Empty } from "./google/protobuf/empty";
+
+export const protobufPackage = "users";
 
 export interface User {
   id: number;
@@ -23,9 +26,9 @@ export interface CreateUserRequest {
 
 export interface UpdateUserRequest {
   id: number;
-  name?: string | undefined;
-  email?: string | undefined;
-  password?: string | undefined;
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  password?: string | null | undefined;
 }
 
 export interface DeleteUserRequest {
@@ -50,36 +53,41 @@ export interface GetUsersRequest {
   pageSize: number;
 }
 
+export const USERS_PACKAGE_NAME = "users";
+
 export interface UsersServiceClient {
-  createUser(request: CreateUserRequest): Observable<User>;
+  createUser(request: CreateUserRequest, metadata?: Metadata): Observable<User>;
 
-  getUserById(request: GetUserByIdRequest): Observable<User>;
+  getUserById(request: GetUserByIdRequest, metadata?: Metadata): Observable<User>;
 
-  getUserByEmail(request: GetUserByEmailRequest): Observable<User>;
+  getUserByEmail(request: GetUserByEmailRequest, metadata?: Metadata): Observable<User>;
 
-  getUserByCredentials(request: GetUserByCredentialsRequest): Observable<User>;
+  getUserByCredentials(request: GetUserByCredentialsRequest, metadata?: Metadata): Observable<User>;
 
-  updateUser(request: UpdateUserRequest): Observable<User>;
+  updateUser(request: UpdateUserRequest, metadata?: Metadata): Observable<User>;
 
-  deleteUser(request: DeleteUserRequest): Observable<Empty>;
+  deleteUser(request: DeleteUserRequest, metadata?: Metadata): Observable<Empty>;
 
-  getUsers(request: GetUsersRequest): Observable<User>;
+  getUsers(request: GetUsersRequest, metadata?: Metadata): Observable<User>;
 }
 
 export interface UsersServiceController {
-  createUser(request: CreateUserRequest): Promise<User> | Observable<User> | User;
+  createUser(request: CreateUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  getUserById(request: GetUserByIdRequest): Promise<User> | Observable<User> | User;
+  getUserById(request: GetUserByIdRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  getUserByEmail(request: GetUserByEmailRequest): Promise<User> | Observable<User> | User;
+  getUserByEmail(request: GetUserByEmailRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  getUserByCredentials(request: GetUserByCredentialsRequest): Promise<User> | Observable<User> | User;
+  getUserByCredentials(
+    request: GetUserByCredentialsRequest,
+    metadata?: Metadata,
+  ): Promise<User> | Observable<User> | User;
 
-  updateUser(request: UpdateUserRequest): Promise<User> | Observable<User> | User;
+  updateUser(request: UpdateUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  deleteUser(request: DeleteUserRequest): void;
+  deleteUser(request: DeleteUserRequest, metadata?: Metadata): void;
 
-  getUsers(request: GetUsersRequest): Observable<User>;
+  getUsers(request: GetUsersRequest, metadata?: Metadata): Observable<User>;
 }
 
 export function UsersServiceControllerMethods() {

@@ -3,7 +3,7 @@ import { Payload } from '@nestjs/microservices';
 import {
   UsersServiceController,
   UsersServiceControllerMethods,
-} from '@packages/grpc';
+} from '@packages/grpc/proto/users';
 import { GrpcUnauthenticatedException } from 'nestjs-grpc-exceptions';
 import { from, mergeAll } from 'rxjs';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';

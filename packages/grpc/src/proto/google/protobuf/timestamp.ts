@@ -6,6 +6,8 @@
 
 /* eslint-disable */
 
+export const protobufPackage = "google.protobuf";
+
 /**
  * A Timestamp represents a point in time independent of any time zone or local
  * calendar, encoded as a count of seconds and fractions of seconds at
@@ -112,3 +114,5 @@ export interface Timestamp {
    */
   nanos: number;
 }
+
+export const GOOGLE_PROTOBUF_PACKAGE_NAME = "google.protobuf";

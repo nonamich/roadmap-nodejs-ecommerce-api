@@ -6,6 +6,8 @@
 
 /* eslint-disable */
 
+export const protobufPackage = "google.protobuf";
+
 /**
  * A generic empty message that you can re-use to avoid defining duplicated
  * empty messages in your APIs. A typical example is to use it as the request
@@ -17,3 +19,5 @@
  */
 export interface Empty {
 }
+
+export const GOOGLE_PROTOBUF_PACKAGE_NAME = "google.protobuf";
