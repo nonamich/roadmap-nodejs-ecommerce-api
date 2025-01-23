@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package products;
+
+import "google/protobuf/timestamp.proto";
+
+message Category {
+  int32 id = 1;
+  string name = 2;
+}
+
+message Brand {
+  int32 id = 1;
+  string name = 2;
+}
+
+message Product {
+  int32 id = 1;
+  int32 amount = 2;
+  string currency = 3;
+  string image = 4;
+  int32 price = 5;
+  float rating = 6;
+  string title = 7;
+
+  google.protobuf.Timestamp createdAt = 8;
+  Brand brand = 9;
+  Category category = 10;
+}
+
+message Image {
+  bytes buffer = 1;
+  int64 size = 2;
+  string mimetype = 3;
+  string encoding = 4;
+}
+
+message CreateProductRequest {
+  int32 amount = 1;
+  int32 brandId = 2;
+  int32 categoryId = 3;
+  int32 currency = 4;
+  Image image = 5;
+  int32 price = 6;
+  string title = 7;
+}
+
+message GetProductByIdRequest {
+  int32 id = 1;
+}
+
+enum ProductSortDirection {
+  ASC = 0;
+  DESC = 1;
+}
+
+enum ProductSortBy {
+  CREATED_AT = 0;
+  RATING = 1;
+  PRICE = 2;
+}
+
+message ProductSort {
+  ProductSortDirection direction = 1;
+  ProductSortBy by = 2;
+}
+
+message GetProductsByFilterRequest {
+  optional int32 categoryId = 1;
+  optional int32 brandId = 2;
+  optional ProductSort sort = 3;
+}
+
+service ProductsService {
+  rpc CreateProduct(CreateProductRequest) returns (Product);
+  rpc GetProductById(GetProductByIdRequest) returns (Product);
+  rpc GetProductsByFilter(GetProductsByFilterRequest) returns (stream Product);
+}

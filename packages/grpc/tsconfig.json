@@ -2,6 +2,7 @@
   "extends": "@packages/configs/typescript/tsconfig.node.json",
   "compilerOptions": {
     "resolveJsonModule": true,
+    "incremental": false,
     "paths": {
       "~/*": ["./src/*"],
     },

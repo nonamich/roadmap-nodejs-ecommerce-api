@@ -3,10 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { USERS_PACKAGE_NAME, UtilsGrpc } from '@packages/grpc';
 import { USERS_PROVIDER_TOKEN } from './users.constants';
-import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
 
 @Module({
-  controllers: [UsersController],
   imports: [
     ClientsModule.registerAsync([
       {
@@ -25,5 +24,7 @@ import { UsersController } from './users.controller';
       },
     ]),
   ],
+  providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}

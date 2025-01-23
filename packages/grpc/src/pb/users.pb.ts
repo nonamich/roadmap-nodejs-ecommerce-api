@@ -26,17 +26,26 @@ export interface CreateUserRequest {
 
 export interface UpdateUserRequest {
   id: number;
-  name?: string | undefined;
-  email?: string | undefined;
-  password?: string | undefined;
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  password?: string | null | undefined;
 }
 
 export interface DeleteUserRequest {
   id: number;
 }
 
-export interface GetUserRequest {
+export interface GetUserByIdRequest {
   id: number;
+}
+
+export interface GetUserByEmailRequest {
+  email: string;
+}
+
+export interface GetUserByCredentialsRequest {
+  email: string;
+  password: string;
 }
 
 export interface GetUsersRequest {
@@ -49,7 +58,11 @@ export const USERS_PACKAGE_NAME = "users";
 export interface UsersServiceClient {
   createUser(request: CreateUserRequest, metadata?: Metadata): Observable<User>;
 
-  getUser(request: GetUserRequest, metadata?: Metadata): Observable<User>;
+  getUserById(request: GetUserByIdRequest, metadata?: Metadata): Observable<User>;
+
+  getUserByEmail(request: GetUserByEmailRequest, metadata?: Metadata): Observable<User>;
+
+  getUserByCredentials(request: GetUserByCredentialsRequest, metadata?: Metadata): Observable<User>;
 
   updateUser(request: UpdateUserRequest, metadata?: Metadata): Observable<User>;
 
@@ -61,7 +74,14 @@ export interface UsersServiceClient {
 export interface UsersServiceController {
   createUser(request: CreateUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
-  getUser(request: GetUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
+  getUserById(request: GetUserByIdRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
+
+  getUserByEmail(request: GetUserByEmailRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
+
+  getUserByCredentials(
+    request: GetUserByCredentialsRequest,
+    metadata?: Metadata,
+  ): Promise<User> | Observable<User> | User;
 
   updateUser(request: UpdateUserRequest, metadata?: Metadata): Promise<User> | Observable<User> | User;
 
@@ -72,7 +92,15 @@ export interface UsersServiceController {
 
 export function UsersServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createUser", "getUser", "updateUser", "deleteUser", "getUsers"];
+    const grpcMethods: string[] = [
+      "createUser",
+      "getUserById",
+      "getUserByEmail",
+      "getUserByCredentials",
+      "updateUser",
+      "deleteUser",
+      "getUsers",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("UsersService", method)(constructor.prototype[method], method, descriptor);

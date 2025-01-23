@@ -10,5 +10,6 @@ export default defineConfig({
       plugins: [tailwindcss, autoprefixer],
     },
   },
+  clearScreen: false,
   plugins: [reactRouter(), tsconfigPaths()],
 });
