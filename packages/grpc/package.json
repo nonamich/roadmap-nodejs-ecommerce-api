@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "pkgroll --sourcemap",
+    "build": "tsc",
     "dev": "pnpm run build -w"
   },
   "main": "./dist/index.cjs",
@@ -19,19 +19,25 @@
       "default": "./dist/index.mjs"
     }
   },
-  "dependencies": {
-    "@grpc/grpc-js": "^1.12.5",
-    "@nestjs/microservices": "^11.0.1",
-    "argon2": "^0.41.1",
-    "rxjs": "^7.8.1"
-  },
   "devDependencies": {
+    "@grpc/grpc-js": "^1.12.5",
+    "@grpc/proto-loader": "^0.7.13",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/microservices": "^11.0.1",
     "@packages/configs": "workspace:*",
     "@types/node": "^22.10.7",
     "pkgroll": "^2.6.1",
-    "reflect-metadata": "^0.2.2",
+    "protobufjs": "^7.4.0",
+    "rxjs": "^7.8.1",
     "ts-proto": "^2.6.1",
-    "tsup": "^8.3.5",
     "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "@grpc/grpc-js": "^1.12.5",
+    "@grpc/proto-loader": "^0.7.13",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/microservices": "^11.0.1",
+    "protobufjs": "^7.4.0",
+    "rxjs": "^7.8.1"
   }
 }

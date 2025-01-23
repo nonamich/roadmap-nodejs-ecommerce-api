@@ -5,22 +5,21 @@
 // source: products.proto
 
 /* eslint-disable */
-import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 import { Timestamp } from "./google/protobuf/timestamp.pb";
 
-export const protobufPackage = "products";
-
 export enum ProductSortDirection {
   ASC = 0,
   DESC = 1,
+  UNRECOGNIZED = -1,
 }
 
 export enum ProductSortBy {
   CREATED_AT = 0,
   RATING = 1,
   PRICE = 2,
+  UNRECOGNIZED = -1,
 }
 
 export interface Category {
@@ -39,11 +38,11 @@ export interface Product {
   currency: string;
   image: string;
   price: number;
-  rating: number;
   title: string;
-  createdAt: Timestamp | null;
-  brand: Brand | null;
-  category: Category | null;
+  rating?: number | undefined;
+  createdAt: Timestamp | undefined;
+  brand: Brand | undefined;
+  category: Category | undefined;
 }
 
 export interface Image {
@@ -58,9 +57,9 @@ export interface CreateProductRequest {
   brandId: number;
   categoryId: number;
   currency: number;
-  image: Image | null;
   price: number;
   title: string;
+  image: Image | undefined;
 }
 
 export interface GetProductByIdRequest {
@@ -73,32 +72,44 @@ export interface ProductSort {
 }
 
 export interface GetProductsByFilterRequest {
-  categoryId?: number | null | undefined;
-  brandId?: number | null | undefined;
-  sort?: ProductSort | null | undefined;
+  categoryId?: number | undefined;
+  brandId?: number | undefined;
+  sort?: ProductSort | undefined;
 }
 
-export const PRODUCTS_PACKAGE_NAME = "products";
+export interface UpdateProductRequest {
+  id: number;
+  amount?: number | undefined;
+  currency?: string | undefined;
+  image?: string | undefined;
+  price?: number | undefined;
+  rating?: number | undefined;
+  title?: string | undefined;
+}
 
 export interface ProductsServiceClient {
-  createProduct(request: CreateProductRequest, metadata?: Metadata): Observable<Product>;
+  /** rpc CreateProduct(CreateProductRequest) returns (Product); */
 
-  getProductById(request: GetProductByIdRequest, metadata?: Metadata): Observable<Product>;
+  getProductById(request: GetProductByIdRequest): Observable<Product>;
 
-  getProductsByFilter(request: GetProductsByFilterRequest, metadata?: Metadata): Observable<Product>;
+  /** rpc UpdateProduct(UpdateProductRequest) returns (Product); */
+
+  getProductsByFilter(request: GetProductsByFilterRequest): Observable<Product>;
 }
 
 export interface ProductsServiceController {
-  createProduct(request: CreateProductRequest, metadata?: Metadata): Promise<Product> | Observable<Product> | Product;
+  /** rpc CreateProduct(CreateProductRequest) returns (Product); */
 
-  getProductById(request: GetProductByIdRequest, metadata?: Metadata): Promise<Product> | Observable<Product> | Product;
+  getProductById(request: GetProductByIdRequest): Promise<Product> | Observable<Product> | Product;
 
-  getProductsByFilter(request: GetProductsByFilterRequest, metadata?: Metadata): Observable<Product>;
+  /** rpc UpdateProduct(UpdateProductRequest) returns (Product); */
+
+  getProductsByFilter(request: GetProductsByFilterRequest): Observable<Product>;
 }
 
 export function ProductsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createProduct", "getProductById", "getProductsByFilter"];
+    const grpcMethods: string[] = ["getProductById", "getProductsByFilter"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("ProductsService", method)(constructor.prototype[method], method, descriptor);
