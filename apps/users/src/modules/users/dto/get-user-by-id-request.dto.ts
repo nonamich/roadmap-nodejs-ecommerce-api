@@ -1,4 +1,4 @@
-import { GetUserByIdRequest } from '@packages/grpc';
+import { GetUserByIdRequest } from '@packages/grpc/proto/users';
 import { IsNumber } from 'class-validator';
 
 export class GetUserByIdRequestDto implements GetUserByIdRequest {

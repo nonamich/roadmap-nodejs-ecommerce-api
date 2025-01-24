@@ -11,7 +11,7 @@ export class GrpcClientService {
   public grpc!: any;
 
   constructor(
-    @Inject() private client: ClientGrpc,
+    private client: ClientGrpc,
     @Inject(MODULE_OPTIONS_TOKEN) private options: typeof OPTIONS_TYPE,
   ) {}
 

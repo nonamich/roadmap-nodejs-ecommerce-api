@@ -1,4 +1,4 @@
-import { UpdateUserRequest } from '@packages/grpc';
+import { UpdateUserRequest } from '@packages/grpc/proto/users';
 import {
   IsEmail,
   IsNumber,

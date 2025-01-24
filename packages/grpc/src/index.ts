@@ -1,2 +1,2 @@
-export * from './module/grpc-client.module';
+export * from './nest';
 export * from './utils';

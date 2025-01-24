@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { UtilsGrpc } from '~/utils';
+import { UtilsGrpc } from '../utils';
 import { GRPC_CLIENT_TOKEN } from './grpc-client.constants';
 import {
   ASYNC_OPTIONS_TYPE,
@@ -12,6 +12,7 @@ import { GrpcClientService } from './grpc-client.service';
 
 @Module({
   exports: [GrpcClientService],
+  providers: [GrpcClientService],
 })
 export class GrpcClientModule extends ConfigurableModuleClass {
   static registerAsync(options: typeof ASYNC_OPTIONS_TYPE): DynamicModule {

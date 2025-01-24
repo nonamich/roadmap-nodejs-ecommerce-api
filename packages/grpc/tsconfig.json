@@ -4,8 +4,5 @@
     "resolveJsonModule": true,
     "incremental": false,
     "outDir": "dist",
-    "paths": {
-      "~/*": ["./src/*"],
-    },
   }
 }
