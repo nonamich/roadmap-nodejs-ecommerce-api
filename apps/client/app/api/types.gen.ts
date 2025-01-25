@@ -22,6 +22,35 @@ export type RequestSigninDto = {
   password: string;
 };
 
+export type BrandDto = {
+  id: number;
+  name: string;
+};
+
+export type CategoryDto = {
+  id: number;
+  name: string;
+};
+
+export type ProductResponseDto = {
+  id: number;
+  amount: number;
+  currency: string;
+  image: string;
+  price: number;
+  title: string;
+  description: string;
+  rating?: number | null;
+  createdAt: string;
+  brand: BrandDto;
+  category: CategoryDto;
+};
+
+export type GetProductsByFilterResponseDto = {
+  products: Array<ProductResponseDto>;
+  totalCount: number;
+};
+
 export type AuthControllerSignupData = {
   body: RequestSignupDto;
   path?: never;
@@ -63,3 +92,38 @@ export type AuthControllerMeResponses = {
 
 export type AuthControllerMeResponse =
   AuthControllerMeResponses[keyof AuthControllerMeResponses];
+
+export type ProductsControllerGetProductByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: '/products/{id}';
+};
+
+export type ProductsControllerGetProductByIdResponses = {
+  200: ProductResponseDto;
+};
+
+export type ProductsControllerGetProductByIdResponse =
+  ProductsControllerGetProductByIdResponses[keyof ProductsControllerGetProductByIdResponses];
+
+export type ProductsControllerGetProductsByFilterData = {
+  body?: never;
+  path?: never;
+  query: {
+    page: number;
+    take: number;
+    brandId?: number;
+    categoryId?: number;
+  };
+  url: '/products';
+};
+
+export type ProductsControllerGetProductsByFilterResponses = {
+  200: GetProductsByFilterResponseDto;
+};
+
+export type ProductsControllerGetProductsByFilterResponse =
+  ProductsControllerGetProductsByFilterResponses[keyof ProductsControllerGetProductsByFilterResponses];

@@ -14,6 +14,7 @@
     "test:e2e": "jest --config ./test/jest.config.mjs"
   },
   "dependencies": {
+    "@apps/products": "workspace:^",
     "@apps/users": "workspace:*",
     "@nestjs/common": "^11.0.0",
     "@nestjs/config": "^4.0.0",

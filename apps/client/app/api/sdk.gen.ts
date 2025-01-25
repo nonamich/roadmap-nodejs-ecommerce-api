@@ -12,6 +12,10 @@ import type {
   AuthControllerSigninResponse,
   AuthControllerSignupData,
   AuthControllerSignupResponse,
+  ProductsControllerGetProductByIdData,
+  ProductsControllerGetProductByIdResponse,
+  ProductsControllerGetProductsByFilterData,
+  ProductsControllerGetProductsByFilterResponse,
 } from './types.gen';
 
 export const client = createClient(createConfig());
@@ -65,6 +69,36 @@ export const authControllerMe = <ThrowOnError extends boolean = false>(
       },
     ],
     url: '/auth/me',
+    ...options,
+  });
+};
+
+export const productsControllerGetProductById = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ProductsControllerGetProductByIdData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    ProductsControllerGetProductByIdResponse,
+    unknown,
+    ThrowOnError
+  >({
+    url: '/products/{id}',
+    ...options,
+  });
+};
+
+export const productsControllerGetProductsByFilter = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ProductsControllerGetProductsByFilterData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    ProductsControllerGetProductsByFilterResponse,
+    unknown,
+    ThrowOnError
+  >({
+    url: '/products',
     ...options,
   });
 };

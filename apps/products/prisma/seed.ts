@@ -6,9 +6,10 @@ const prisma = new PrismaClient();
 main();
 
 async function main() {
+  await prisma.product.deleteMany({});
   await prisma.category.deleteMany({});
   await prisma.brand.deleteMany({});
-  await prisma.product.deleteMany({});
+  await prisma.featuredProduct.deleteMany({});
 
   const currencies = ['EUR', 'USD', 'GBP'];
   const categories = await prisma.category.createManyAndReturn({
@@ -33,13 +34,13 @@ async function main() {
         currency: faker.helpers.arrayElement(currencies),
         brandId: faker.helpers.arrayElement(brands).id,
         price: faker.number.int({
-          max: 100_000,
+          max: 3000,
           min: 10,
         }),
         title: faker.commerce.productName(),
-        description: faker.commerce.productDescription(),
+        description: `${faker.commerce.productDescription()}\n${faker.lorem.paragraph({ min: 2, max: 6 })}`,
         rating: faker.number.float({ min: 0, max: 1 }),
-        image: faker.image.url({ width: 1000, height: 1000 }),
+        image: faker.image.urlPicsumPhotos({ width: 1000, height: 1000 }),
         createdAt: faker.date.between({
           from: '2020-01-01T00:00:00.000Z',
           to: new Date(),
@@ -54,5 +55,20 @@ async function main() {
     },
   );
 
-  await prisma.product.createMany({ data: productsData });
+  const ids = await prisma.product.createManyAndReturn({
+    data: productsData,
+    select: {
+      id: true,
+    },
+  });
+
+  await prisma.featuredProduct.createMany({
+    data: faker.helpers.arrayElements(
+      ids.map(({ id: productId }) => ({ productId })),
+      {
+        max: 200,
+        min: 50,
+      },
+    ),
+  });
 }

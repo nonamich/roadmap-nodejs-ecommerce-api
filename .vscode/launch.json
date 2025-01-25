@@ -3,7 +3,7 @@
   "compounds": [
     {
       "name": "Servers",
-      "configurations": ["gateway", "users"]
+      "configurations": ["gateway", "users", "products"]
     },
   ],
   "configurations": [
@@ -23,6 +23,15 @@
       "address": "localhost",
       "localRoot": "${workspaceFolder}/apps/users",
 			"port": 9228,
+      "restart": true
+    },
+    {
+      "name": "products",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}/apps/products",
+			"port": 9227,
       "restart": true
     },
   ]

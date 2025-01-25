@@ -2,8 +2,10 @@
 
 import type { Options } from '@hey-api/client-fetch';
 import {
+  infiniteQueryOptions,
   queryOptions,
   type DefaultError,
+  type InfiniteData,
   type UseMutationOptions,
 } from '@tanstack/react-query';
 import {
@@ -11,6 +13,8 @@ import {
   authControllerSignin,
   authControllerSignup,
   client,
+  productsControllerGetProductById,
+  productsControllerGetProductsByFilter,
 } from '../sdk.gen';
 import type {
   AuthControllerMeData,
@@ -18,6 +22,9 @@ import type {
   AuthControllerSigninResponse,
   AuthControllerSignupData,
   AuthControllerSignupResponse,
+  ProductsControllerGetProductByIdData,
+  ProductsControllerGetProductsByFilterData,
+  ProductsControllerGetProductsByFilterResponse,
 } from '../types.gen';
 
 type QueryKey<TOptions extends Options> = [
@@ -155,4 +162,129 @@ export const authControllerMeOptions = (
     },
     queryKey: authControllerMeQueryKey(options),
   });
+};
+
+export const productsControllerGetProductByIdQueryKey = (
+  options: Options<ProductsControllerGetProductByIdData>,
+) => [createQueryKey('productsControllerGetProductById', options)];
+
+export const productsControllerGetProductByIdOptions = (
+  options: Options<ProductsControllerGetProductByIdData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await productsControllerGetProductById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: productsControllerGetProductByIdQueryKey(options),
+  });
+};
+
+export const productsControllerGetProductsByFilterQueryKey = (
+  options: Options<ProductsControllerGetProductsByFilterData>,
+) => [createQueryKey('productsControllerGetProductsByFilter', options)];
+
+export const productsControllerGetProductsByFilterOptions = (
+  options: Options<ProductsControllerGetProductsByFilterData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await productsControllerGetProductsByFilter({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: productsControllerGetProductsByFilterQueryKey(options),
+  });
+};
+
+const createInfiniteParams = <
+  K extends Pick<QueryKey<Options>[0], 'body' | 'headers' | 'path' | 'query'>,
+>(
+  queryKey: QueryKey<Options>,
+  page: K,
+) => {
+  const params = queryKey[0];
+  if (page.body) {
+    params.body = {
+      ...(queryKey[0].body as any),
+      ...(page.body as any),
+    };
+  }
+  if (page.headers) {
+    params.headers = {
+      ...queryKey[0].headers,
+      ...page.headers,
+    };
+  }
+  if (page.path) {
+    params.path = {
+      ...(queryKey[0].path as any),
+      ...(page.path as any),
+    };
+  }
+  if (page.query) {
+    params.query = {
+      ...(queryKey[0].query as any),
+      ...(page.query as any),
+    };
+  }
+  return params as unknown as typeof page;
+};
+
+export const productsControllerGetProductsByFilterInfiniteQueryKey = (
+  options: Options<ProductsControllerGetProductsByFilterData>,
+): QueryKey<Options<ProductsControllerGetProductsByFilterData>> => [
+  createQueryKey('productsControllerGetProductsByFilter', options, true),
+];
+
+export const productsControllerGetProductsByFilterInfiniteOptions = (
+  options: Options<ProductsControllerGetProductsByFilterData>,
+) => {
+  return infiniteQueryOptions<
+    ProductsControllerGetProductsByFilterResponse,
+    DefaultError,
+    InfiniteData<ProductsControllerGetProductsByFilterResponse>,
+    QueryKey<Options<ProductsControllerGetProductsByFilterData>>,
+    | number
+    | Pick<
+        QueryKey<Options<ProductsControllerGetProductsByFilterData>>[0],
+        'body' | 'headers' | 'path' | 'query'
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ProductsControllerGetProductsByFilterData>>[0],
+          'body' | 'headers' | 'path' | 'query'
+        > =
+          typeof pageParam === 'object'
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await productsControllerGetProductsByFilter({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: productsControllerGetProductsByFilterInfiniteQueryKey(options),
+    },
+  );
 };

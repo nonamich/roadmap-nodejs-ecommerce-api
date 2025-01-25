@@ -29,53 +29,39 @@ export interface Product {
   image: string;
   price: number;
   title: string;
+  description: string;
   rating?: number | null | undefined;
   createdAt: Date | null;
   brand: Brand | null;
   category: Category | null;
 }
 
-export interface Image {
-  buffer: Uint8Array;
-  size: number;
-  mimetype: string;
-  encoding: string;
-}
-
-export interface CreateProductRequest {
-  amount: number;
-  brandId: number;
-  categoryId: number;
-  currency: number;
-  price: number;
-  title: string;
-  image: Image | null;
-}
-
 export interface GetProductByIdRequest {
   id: number;
 }
 
-export interface GetProductsByFilterRequest {
-  categoryId?:
-    | number
-    | null
-    | undefined;
-  /**
-   * optional ProductSortDirection sortDirection = 3;
-   * optional ProductSortBy sortBy = 4;
-   */
-  brandId?: number | null | undefined;
+export interface PaginationRequest {
+  page: number;
+  limit: number;
 }
 
-export interface UpdateProductRequest {
-  id: number;
-  amount?: number | null | undefined;
-  currency?: string | null | undefined;
-  image?: string | null | undefined;
-  price?: number | null | undefined;
-  rating?: number | null | undefined;
-  title?: string | null | undefined;
+export interface GetFeaturedProductsRequest {
+  pagination: PaginationRequest | null;
+}
+
+export interface GetProductsByFilterRequest {
+  brandId?: number | null | undefined;
+  categoryId?: number | null | undefined;
+  pagination: PaginationRequest | null;
+}
+
+export interface PaginationResponse {
+  totalCount: number;
+}
+
+export interface ProductsResponse {
+  products: Product[];
+  pagination: PaginationResponse | null;
 }
 
 export const PRODUCTS_PACKAGE_NAME = "products";
@@ -92,18 +78,28 @@ wrappers[".google.protobuf.Timestamp"] = {
 export interface ProductsServiceClient {
   getProductById(request: GetProductByIdRequest, metadata?: Metadata): Observable<Product>;
 
-  getProductsByFilter(request: GetProductsByFilterRequest, metadata?: Metadata): Observable<Product>;
+  getProductsByFilter(request: GetProductsByFilterRequest, metadata?: Metadata): Observable<ProductsResponse>;
+
+  getFeaturedProducts(request: GetFeaturedProductsRequest, metadata?: Metadata): Observable<ProductsResponse>;
 }
 
 export interface ProductsServiceController {
   getProductById(request: GetProductByIdRequest, metadata?: Metadata): Promise<Product> | Observable<Product> | Product;
 
-  getProductsByFilter(request: GetProductsByFilterRequest, metadata?: Metadata): Observable<Product>;
+  getProductsByFilter(
+    request: GetProductsByFilterRequest,
+    metadata?: Metadata,
+  ): Promise<ProductsResponse> | Observable<ProductsResponse> | ProductsResponse;
+
+  getFeaturedProducts(
+    request: GetFeaturedProductsRequest,
+    metadata?: Metadata,
+  ): Promise<ProductsResponse> | Observable<ProductsResponse> | ProductsResponse;
 }
 
 export function ProductsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["getProductById", "getProductsByFilter"];
+    const grpcMethods: string[] = ["getProductById", "getProductsByFilter", "getFeaturedProducts"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("ProductsService", method)(constructor.prototype[method], method, descriptor);

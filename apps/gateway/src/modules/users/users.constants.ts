@@ -1,3 +1,6 @@
-import { USERS_SERVICE_NAME } from '@packages/grpc/proto/users';
-
-export const USERS_PROVIDER_TOKEN = Symbol(USERS_SERVICE_NAME);
+export const USERS_CLIENT_GRPC_PROVIDER_TOKEN = Symbol(
+  'USERS_CLIENT_GRPC_PROVIDER_TOKEN',
+);
+export const USERS_SERVICE_PROVIDER_TOKEN = Symbol(
+  'USERS_SERVICE_PROVIDER_TOKEN',
+);

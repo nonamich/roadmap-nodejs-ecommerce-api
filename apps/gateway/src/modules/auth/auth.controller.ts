@@ -13,7 +13,7 @@ import {
 import { JWTAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
-@ApiTags('Auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

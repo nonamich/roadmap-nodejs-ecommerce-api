@@ -5,10 +5,14 @@ import {
   ProductsServiceController,
   ProductsServiceControllerMethods,
 } from '@packages/grpc/proto/products';
-import { from, mergeAll } from 'rxjs';
+import { GrpcNotFoundException } from 'nestjs-grpc-exceptions';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
 import { ORMService } from '~/modules/orm/orm.service';
-import { GetProductByIdRequestDto, GetProductsByFilterRequestDto } from './dto';
+import {
+  GetFeaturedProductsRequestDto,
+  GetProductByIdRequestDto,
+  GetProductsByFilterRequestDto,
+} from './dto';
 import { PRODUCTS_SELECT } from './products.constants';
 
 @Controller()
@@ -29,19 +33,64 @@ export class ProductsController implements ProductsServiceController {
   }
 
   @UseFilters(PrismaClientExceptionFilter)
-  getProductsByFilter(
+  async getFeaturedProducts(
     @Payload(GrpcValidationPipe)
-    { brandId, categoryId }: GetProductsByFilterRequestDto,
+    { pagination }: GetFeaturedProductsRequestDto,
   ) {
-    const promise = this.orm.product.findMany({
-      select: PRODUCTS_SELECT,
-      where: {
-        brandId: brandId || undefined,
-        categoryId: categoryId || undefined,
-      },
-      take: 100,
-    });
+    const [products, totalCount] = await Promise.all([
+      this.orm.product.findMany({
+        select: PRODUCTS_SELECT,
+        where: {
+          featuredProduct: {
+            is: {},
+          },
+        },
+        take: pagination.limit,
+        skip: Math.floor(pagination.limit * pagination.page - pagination.limit),
+      }),
+      this.orm.featuredProduct.count(),
+    ]);
 
-    return from(promise).pipe(mergeAll());
+    if (!products.length || !totalCount) {
+      throw new GrpcNotFoundException('Not Found');
+    }
+
+    return {
+      products,
+      pagination: {
+        totalCount,
+      },
+    };
+  }
+
+  @UseFilters(PrismaClientExceptionFilter)
+  async getProductsByFilter(
+    @Payload(GrpcValidationPipe)
+    { pagination, brandId, categoryId }: GetProductsByFilterRequestDto,
+  ) {
+    const where = {
+      brandId,
+      categoryId,
+    };
+    const [products, totalCount] = await Promise.all([
+      this.orm.product.findMany({
+        select: PRODUCTS_SELECT,
+        where: where,
+        take: pagination.limit,
+        skip: Math.floor(pagination.limit * pagination.page - pagination.limit),
+      }),
+      this.orm.product.count({ where }),
+    ]);
+
+    if (!products.length || !totalCount) {
+      throw new GrpcNotFoundException('Not Found');
+    }
+
+    return {
+      products,
+      pagination: {
+        totalCount,
+      },
+    };
   }
 }

@@ -154,13 +154,13 @@ export const LoginForm: FC<Props> = ({ isRegister = false }) => {
             <If condition={isRegister}>
               <Then>
                 Already have account?{' '}
-                <a className="underline" href="/login">
+                <a className="underline" href="/signin">
                   Sign in
                 </a>
               </Then>
               <Else>
                 No account?{' '}
-                <a className="underline" href="/register">
+                <a className="underline" href="/signup">
                   Sign up
                 </a>
               </Else>

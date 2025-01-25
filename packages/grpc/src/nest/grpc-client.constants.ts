@@ -1,1 +1,0 @@
-export const GRPC_CLIENT_TOKEN = 'GRPC_CLIENT_TOKEN';
