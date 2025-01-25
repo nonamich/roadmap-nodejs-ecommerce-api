@@ -14,20 +14,20 @@
   "devDependencies": {
     "@grpc/grpc-js": "^1.12.5",
     "@grpc/proto-loader": "^0.7.13",
-    "@nestjs/common": "^11.0.0",
-    "@nestjs/microservices": "^11.0.1",
+    "@nestjs/common": "^10.4.15",
+    "@nestjs/microservices": "^10.4.15",
     "@packages/configs": "workspace:*",
     "@types/node": "^22.10.7",
     "protobufjs": "^7.4.0",
     "rxjs": "^7.8.1",
     "ts-proto": "^2.6.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   },
   "peerDependencies": {
     "@grpc/grpc-js": "^1.12.5",
     "@grpc/proto-loader": "^0.7.13",
-    "@nestjs/common": "^11.0.0",
-    "@nestjs/microservices": "^11.0.1",
+    "@nestjs/common": "^10.4.15",
+    "@nestjs/microservices": "^10.4.15",
     "protobufjs": "^7.4.0",
     "rxjs": "^7.8.1"
   }

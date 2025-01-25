@@ -1,5 +1,11 @@
 import { GetProductsByFilterRequest } from '@packages/grpc/proto/products';
-import { IsInt, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsInt,
+  IsNotEmptyObject,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
 import { PaginationRequestDto } from './pagination-request.dto';
 
 export class GetProductsByFilterRequestDto
@@ -13,5 +19,8 @@ export class GetProductsByFilterRequestDto
   @IsOptional()
   brandId?: number;
 
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => PaginationRequestDto)
   pagination!: PaginationRequestDto;
 }

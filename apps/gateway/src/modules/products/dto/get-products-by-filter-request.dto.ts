@@ -1,18 +1,13 @@
-import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { GetProductsByFilterRequest } from '@packages/grpc/proto/products';
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, ValidateNested } from 'class-validator';
+import { IsInt, IsObject, IsOptional, ValidateNested } from 'class-validator';
+import { ApiPropertyDeepObject } from '~/decorators';
 import { PaginationRequestDto } from './pagination-request.dto';
 
-@ApiExtraModels()
 export class GetProductsByFilterRequestDto
   implements GetProductsByFilterRequest
 {
-  @ApiProperty({ type: PaginationRequestDto })
-  @ValidateNested({ each: true })
-  @Type(() => PaginationRequestDto)
-  pagination!: PaginationRequestDto;
-
   @Type(() => Number)
   @IsInt()
   @IsOptional()
@@ -24,4 +19,11 @@ export class GetProductsByFilterRequestDto
   @IsOptional()
   @ApiProperty({ required: false })
   categoryId?: number;
+
+  @ApiProperty({ type: PaginationRequestDto })
+  @ApiPropertyDeepObject()
+  @ValidateNested()
+  @IsObject()
+  @Type(() => PaginationRequestDto)
+  pagination!: PaginationRequestDto;
 }
