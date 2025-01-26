@@ -2,21 +2,23 @@ import clsx from 'clsx';
 import RCPagination from 'rc-pagination';
 import type { FC } from 'react';
 import { Case, Default, Switch } from 'react-if';
+import { useNavigate } from 'react-router';
 
 export type Props = {
   page: number;
-  take: number;
+  limit: number;
   totalCount: number;
 };
 
-export const Pagination: FC<Props> = ({ page, take, totalCount }) => {
-  if (totalCount <= take) {
-    return <></>;
-  }
+export const Pagination: FC<Props> = ({ page, limit, totalCount }) => {
+  const navigate = useNavigate();
 
   return (
     <RCPagination
       className="mt-8 flex justify-center gap-1 text-xs font-medium"
+      onChange={(page) => {
+        navigate({ search: `page=${page}` });
+      }}
       // onChange={setPage}
       itemRender={(current, type) => {
         const isJump = type === 'jump-next' || type === 'jump-prev';
@@ -67,7 +69,7 @@ export const Pagination: FC<Props> = ({ page, take, totalCount }) => {
         );
       }}
       current={page}
-      pageSize={take}
+      pageSize={limit}
       total={totalCount}
     />
   );

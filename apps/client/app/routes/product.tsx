@@ -1,21 +1,15 @@
-import {
-  type ClientLoaderFunctionArgs,
-  data as createError,
-} from 'react-router';
+import { type ClientLoaderFunctionArgs } from 'react-router';
 import { productsControllerGetProductById } from '~/api';
 import { Breadcrumbs, Price } from '~/components';
 import type { Page } from '~/helpers/route.helper';
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   const { data } = await productsControllerGetProductById({
+    throwOnError: true,
     path: {
       id: Number(params.id),
     },
   });
-
-  if (!data) {
-    throw createError('Record Not Found', { status: 404 });
-  }
 
   return data;
 }

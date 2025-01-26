@@ -12,6 +12,8 @@ import type {
   AuthControllerSigninResponse,
   AuthControllerSignupData,
   AuthControllerSignupResponse,
+  ProductsControllerGetFeaturedProductsData,
+  ProductsControllerGetFeaturedProductsResponse,
   ProductsControllerGetProductByIdData,
   ProductsControllerGetProductByIdResponse,
   ProductsControllerGetProductsByFilterData,
@@ -69,6 +71,21 @@ export const authControllerMe = <ThrowOnError extends boolean = false>(
       },
     ],
     url: '/auth/me',
+    ...options,
+  });
+};
+
+export const productsControllerGetFeaturedProducts = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ProductsControllerGetFeaturedProductsData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    ProductsControllerGetFeaturedProductsResponse,
+    unknown,
+    ThrowOnError
+  >({
+    url: '/products/featured',
     ...options,
   });
 };

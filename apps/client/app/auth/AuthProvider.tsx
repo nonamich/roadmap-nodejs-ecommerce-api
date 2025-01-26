@@ -1,4 +1,3 @@
-import { useMutation } from '@tanstack/react-query';
 import {
   type FC,
   type PropsWithChildren,
@@ -9,14 +8,12 @@ import {
 import { useNavigate } from 'react-router';
 import {
   authControllerMe,
+  authControllerSignin,
+  authControllerSignup,
   client,
   type ResponseAuthorizedUserDto,
   type ResponseLoggedInDto,
 } from '~/api';
-import {
-  authControllerSigninMutation,
-  authControllerSignupMutation,
-} from '~/api/@tanstack/react-query.gen';
 import { AUTH_LOCAL_STORAGE_NAME } from './auth.constants';
 import { AuthContext } from './auth.context';
 import type { AuthContextInterface, AuthStatus } from './auth.types';
@@ -33,9 +30,6 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
     return localStorage.getItem(AUTH_LOCAL_STORAGE_NAME);
   });
-
-  const signinMutation = useMutation(authControllerSigninMutation());
-  const signupMutation = useMutation(authControllerSignupMutation());
 
   const setStates = ({ accessToken, user }: Partial<ResponseLoggedInDto>) => {
     if (accessToken) {
@@ -67,17 +61,19 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     signin(body) {
       setLoading(true);
 
-      return signinMutation
-        .mutateAsync({ body })
-        .then(setStates)
+      return authControllerSignin({ body, throwOnError: true })
+        .then(({ data }) => {
+          setStates(data);
+        })
         .finally(onFinally);
     },
     signup(body) {
       setLoading(true);
 
-      return signupMutation
-        .mutateAsync({ body })
-        .then(setStates)
+      return authControllerSignup({ body, throwOnError: true })
+        .then(({ data }) => {
+          setStates(data);
+        })
         .finally(onFinally);
     },
     logout() {

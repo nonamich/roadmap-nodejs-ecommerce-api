@@ -1,32 +1,30 @@
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { productsControllerGetProductsByFilterOptions } from '~/api/@tanstack/react-query.gen';
+import { useLoaderData, type ClientLoaderFunctionArgs } from 'react-router';
+import { productsControllerGetFeaturedProducts } from '~/api';
 import { ProductCollection } from '~/components';
 
-export default function Home() {
-  const [page] = useState(1);
-  const TAKE = 8;
-  const response = useQuery(
-    productsControllerGetProductsByFilterOptions({
-      query: {
-        page: page,
-        take: TAKE,
+export async function clientLoader({ request }: ClientLoaderFunctionArgs) {
+  const query = new URL(request.url).searchParams;
+  const page = Number(query.get('page') || 1);
+  const { data } = await productsControllerGetFeaturedProducts({
+    throwOnError: true,
+    query: {
+      pagination: {
+        page,
+        limit: 8,
       },
-    }),
-  );
+    },
+  });
 
-  if (!response.data) {
-    return <></>;
-  }
+  return data;
+}
+
+export default function Home() {
+  const data = useLoaderData<typeof clientLoader>();
 
   return (
     <>
-      <ProductCollection
-        totalCount={response.data.totalCount}
-        page={page}
-        take={TAKE}
-        products={response.data.products}
-      />
+      <h1 className="text-xl">Featured Products</h1>
+      <ProductCollection {...data} />
     </>
   );
 }

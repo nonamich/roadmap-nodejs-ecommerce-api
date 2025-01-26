@@ -4,7 +4,7 @@ import 'dotenv-expand/config';
 export default defineConfig({
   client: '@hey-api/client-fetch',
   input: process.env.API_SCHEMA!,
-  plugins: [...defaultPlugins, '@tanstack/react-query'],
+  plugins: [...defaultPlugins],
   output: {
     lint: 'eslint',
     path: 'app/api',

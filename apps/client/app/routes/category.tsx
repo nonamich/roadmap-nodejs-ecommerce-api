@@ -6,8 +6,6 @@ import {
 import { productsControllerGetProductsByFilter } from '~/api';
 import { Breadcrumbs, ProductCollection } from '~/components';
 
-const LIMIT = 8;
-
 export async function clientLoader({
   request,
   params,
@@ -15,7 +13,7 @@ export async function clientLoader({
   const url = new URL(request.url);
   const page = +(url.searchParams.get('page') || 1);
 
-  if (!params.brandId) {
+  if (!params.categoryId) {
     throw createError('Not Found', 404);
   }
 
@@ -24,13 +22,13 @@ export async function clientLoader({
     query: {
       pagination: {
         page,
-        limit: LIMIT,
+        limit: 8,
       },
-      brandId: +params.brandId,
+      categoryId: +params.categoryId,
     },
   });
 
-  if (!data.brand) {
+  if (!data.category) {
     throw createError('Not Found', 404);
   }
 
@@ -38,18 +36,18 @@ export async function clientLoader({
 }
 
 export default function Brand() {
-  const { brand, ...data } = useLoaderData<typeof clientLoader>();
+  const { category, ...data } = useLoaderData<typeof clientLoader>();
 
   return (
     <>
       <Breadcrumbs
         links={[
           {
-            text: brand.name,
+            text: category.name,
           },
         ]}
       />
-      <h1 className="text-xl">Brand: {brand.name}</h1>
+      <h1 className="text-xl">Category: {category.name}</h1>
       <ProductCollection {...data} />
     </>
   );

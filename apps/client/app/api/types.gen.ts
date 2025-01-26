@@ -22,6 +22,11 @@ export type RequestSigninDto = {
   password: string;
 };
 
+export type PaginationRequestDto = {
+  page: number;
+  limit: number;
+};
+
 export type BrandDto = {
   id: number;
   name: string;
@@ -46,9 +51,22 @@ export type ProductResponseDto = {
   category: CategoryDto;
 };
 
-export type GetProductsByFilterResponseDto = {
-  products: Array<ProductResponseDto>;
+export type PaginationResponseDto = {
+  page: number;
+  limit: number;
   totalCount: number;
+};
+
+export type ProductsResponseDto = {
+  products: Array<ProductResponseDto>;
+  pagination: PaginationResponseDto;
+};
+
+export type ProductsByFilterResponseDto = {
+  products: Array<ProductResponseDto>;
+  pagination: PaginationResponseDto;
+  brand: BrandDto;
+  category: CategoryDto;
 };
 
 export type AuthControllerSignupData = {
@@ -93,6 +111,22 @@ export type AuthControllerMeResponses = {
 export type AuthControllerMeResponse =
   AuthControllerMeResponses[keyof AuthControllerMeResponses];
 
+export type ProductsControllerGetFeaturedProductsData = {
+  body?: never;
+  path?: never;
+  query: {
+    pagination: PaginationRequestDto;
+  };
+  url: '/products/featured';
+};
+
+export type ProductsControllerGetFeaturedProductsResponses = {
+  200: ProductsResponseDto;
+};
+
+export type ProductsControllerGetFeaturedProductsResponse =
+  ProductsControllerGetFeaturedProductsResponses[keyof ProductsControllerGetFeaturedProductsResponses];
+
 export type ProductsControllerGetProductByIdData = {
   body?: never;
   path: {
@@ -113,16 +147,15 @@ export type ProductsControllerGetProductsByFilterData = {
   body?: never;
   path?: never;
   query: {
-    page: number;
-    take: number;
     brandId?: number;
     categoryId?: number;
+    pagination: PaginationRequestDto;
   };
   url: '/products';
 };
 
 export type ProductsControllerGetProductsByFilterResponses = {
-  200: GetProductsByFilterResponseDto;
+  200: ProductsByFilterResponseDto;
 };
 
 export type ProductsControllerGetProductsByFilterResponse =

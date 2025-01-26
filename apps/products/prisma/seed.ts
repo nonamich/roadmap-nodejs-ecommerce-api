@@ -33,14 +33,20 @@ async function main() {
         categoryId: faker.helpers.arrayElement(categories).id,
         currency: faker.helpers.arrayElement(currencies),
         brandId: faker.helpers.arrayElement(brands).id,
-        price: faker.number.int({
+        price: faker.number.float({
           max: 3000,
           min: 10,
+          fractionDigits: 3,
         }),
         title: faker.commerce.productName(),
         description: `${faker.commerce.productDescription()}\n${faker.lorem.paragraph({ min: 2, max: 6 })}`,
         rating: faker.number.float({ min: 0, max: 1 }),
-        image: faker.image.urlPicsumPhotos({ width: 1000, height: 1000 }),
+        image: faker.image.urlPicsumPhotos({
+          width: 1000,
+          height: 1000,
+          blur: 0,
+          grayscale: false,
+        }),
         createdAt: faker.date.between({
           from: '2020-01-01T00:00:00.000Z',
           to: new Date(),

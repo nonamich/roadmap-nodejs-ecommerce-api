@@ -21,10 +21,10 @@ message Product {
   int32 amount = 2;
   string currency = 3;
   string image = 4;
-  int32 price = 5;
+  double price = 5;
   string title = 6;
   string description = 7;
-  optional float rating = 8;
+  optional double rating = 8;
   google.protobuf.Timestamp createdAt = 9;
   Brand brand = 10;
   Category category = 11;
@@ -54,7 +54,9 @@ message GetProductsByFilterRequest {
 // Responses
 
 message PaginationResponse {
-  int32 totalCount = 1;
+  int32 page = 1;
+  int32 limit = 2;
+  int32 totalCount = 3;
 }
 
 message ProductsResponse {
@@ -62,8 +64,15 @@ message ProductsResponse {
   PaginationResponse pagination = 2;
 }
 
+message ProductsByFilterResponse {
+  repeated Product products = 1;
+  PaginationResponse pagination = 2;
+  optional Brand brand = 3;
+  optional Category category = 4;
+}
+
 service ProductsService {
   rpc GetProductById(GetProductByIdRequest) returns (Product);
-  rpc GetProductsByFilter(GetProductsByFilterRequest) returns (ProductsResponse);
+  rpc GetProductsByFilter(GetProductsByFilterRequest) returns (ProductsByFilterResponse);
   rpc GetFeaturedProducts(GetFeaturedProductsRequest) returns (ProductsResponse);
 }

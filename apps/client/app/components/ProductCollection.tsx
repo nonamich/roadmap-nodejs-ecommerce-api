@@ -1,11 +1,11 @@
 import type { FC } from 'react';
-import type { GetProductsByFilterResponseDto } from '~/api';
-import { Pagination, type Props as PaginationProps } from './Pagination';
+import type { ProductsResponseDto } from '~/api';
+import { Pagination } from './Pagination';
 import { ProductItem } from './ProductItem';
 
-type Props = GetProductsByFilterResponseDto & PaginationProps;
+type Props = ProductsResponseDto;
 
-export const ProductCollection: FC<Props> = ({ products, ...pagination }) => {
+export const ProductCollection: FC<Props> = ({ products, pagination }) => {
   return (
     <section>
       <div className="mt-8">
@@ -15,7 +15,7 @@ export const ProductCollection: FC<Props> = ({ products, ...pagination }) => {
             {' '}
             {Math.min(
               pagination.totalCount,
-              pagination.take * pagination.page,
+              pagination.limit * pagination.page,
             )}{' '}
           </span>{' '}
           of {pagination.totalCount}

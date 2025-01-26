@@ -56,12 +56,21 @@ export interface GetProductsByFilterRequest {
 }
 
 export interface PaginationResponse {
+  page: number;
+  limit: number;
   totalCount: number;
 }
 
 export interface ProductsResponse {
   products: Product[];
   pagination: PaginationResponse | null;
+}
+
+export interface ProductsByFilterResponse {
+  products: Product[];
+  pagination: PaginationResponse | null;
+  brand?: Brand | null | undefined;
+  category?: Category | null | undefined;
 }
 
 export const PRODUCTS_PACKAGE_NAME = "products";
@@ -78,7 +87,7 @@ wrappers[".google.protobuf.Timestamp"] = {
 export interface ProductsServiceClient {
   getProductById(request: GetProductByIdRequest, metadata?: Metadata): Observable<Product>;
 
-  getProductsByFilter(request: GetProductsByFilterRequest, metadata?: Metadata): Observable<ProductsResponse>;
+  getProductsByFilter(request: GetProductsByFilterRequest, metadata?: Metadata): Observable<ProductsByFilterResponse>;
 
   getFeaturedProducts(request: GetFeaturedProductsRequest, metadata?: Metadata): Observable<ProductsResponse>;
 }
@@ -89,7 +98,7 @@ export interface ProductsServiceController {
   getProductsByFilter(
     request: GetProductsByFilterRequest,
     metadata?: Metadata,
-  ): Promise<ProductsResponse> | Observable<ProductsResponse> | ProductsResponse;
+  ): Promise<ProductsByFilterResponse> | Observable<ProductsByFilterResponse> | ProductsByFilterResponse;
 
   getFeaturedProducts(
     request: GetFeaturedProductsRequest,

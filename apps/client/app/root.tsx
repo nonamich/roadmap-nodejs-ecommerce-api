@@ -7,11 +7,10 @@ import {
   ScrollRestoration,
 } from 'react-router';
 
-import { QueryClientProvider } from '@tanstack/react-query';
 import type { Route } from './+types/root';
+import './api-initialization';
 import { AuthProvider } from './auth/AuthProvider';
 import { Footer, Header } from './components';
-import { queryClient } from './query';
 import stylesheet from './styles/app.css?url';
 
 export const links: Route.LinksFunction = () => [
@@ -38,19 +37,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-1">
-                <div className="mx-auto max-w-screen-xl items-center gap-8 p-4 sm:px-6 lg:px-8">
-                  {children}
-                </div>
-              </main>
-              <Footer />
-            </div>
-          </AuthProvider>
-        </QueryClientProvider>
+        <AuthProvider>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1">
+              <div className="mx-auto max-w-screen-xl items-center gap-8 p-4 sm:px-6 lg:px-8">
+                {children}
+              </div>
+            </main>
+            <Footer />
+          </div>
+        </AuthProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

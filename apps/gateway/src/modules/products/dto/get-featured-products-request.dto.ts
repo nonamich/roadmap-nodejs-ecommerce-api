@@ -1,11 +1,15 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { GetFeaturedProductsRequest } from '@packages/grpc/proto/products';
 import { Type } from 'class-transformer';
 import { IsObject, ValidateNested } from 'class-validator';
-import { PaginationRequestDto } from '.';
+import { ApiPropertyDeepObject } from '~/decorators';
+import { PaginationRequestDto } from './pagination-request.dto';
 
 export class GetFeaturedProductsRequestDto
   implements GetFeaturedProductsRequest
 {
+  @ApiProperty({ type: PaginationRequestDto })
+  @ApiPropertyDeepObject()
   @ValidateNested()
   @IsObject()
   @Type(() => PaginationRequestDto)

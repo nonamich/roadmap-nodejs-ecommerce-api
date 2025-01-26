@@ -58,6 +58,7 @@ export class ProductsController implements ProductsServiceController {
     return {
       products,
       pagination: {
+        ...pagination,
         totalCount,
       },
     };
@@ -72,7 +73,7 @@ export class ProductsController implements ProductsServiceController {
       brandId,
       categoryId,
     };
-    const [products, totalCount] = await Promise.all([
+    const [products, totalCount, brand, category] = await Promise.all([
       this.orm.product.findMany({
         select: PRODUCTS_SELECT,
         where: where,
@@ -80,6 +81,20 @@ export class ProductsController implements ProductsServiceController {
         skip: Math.floor(pagination.limit * pagination.page - pagination.limit),
       }),
       this.orm.product.count({ where }),
+      brandId
+        ? this.orm.brand.findUniqueOrThrow({
+            where: {
+              id: brandId,
+            },
+          })
+        : undefined,
+      categoryId
+        ? this.orm.category.findUniqueOrThrow({
+            where: {
+              id: categoryId,
+            },
+          })
+        : undefined,
     ]);
 
     if (!products.length || !totalCount) {
@@ -88,7 +103,10 @@ export class ProductsController implements ProductsServiceController {
 
     return {
       products,
+      brand,
+      category,
       pagination: {
+        ...pagination,
         totalCount,
       },
     };

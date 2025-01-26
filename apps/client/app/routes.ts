@@ -6,4 +6,5 @@ export default [
   route('signup', 'routes/signup.tsx'),
   route('product/:id', 'routes/product.tsx'),
   route('brand/:brandId', 'routes/brand.tsx'),
+  route('category/:categoryId', 'routes/category.tsx'),
 ] satisfies RouteConfig;

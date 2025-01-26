@@ -7,13 +7,13 @@ import {
 } from '@packages/grpc/proto/products';
 import { PaginationResponseDto } from './pagination-response.dto';
 
-class BrandDto implements Brand {
+export class BrandDto implements Brand {
   @ApiProperty()
   id!: number;
   @ApiProperty()
   name!: string;
 }
-class CategoryDto implements Category {
+export class CategoryDto implements Category {
   @ApiProperty()
   id!: number;
   @ApiProperty()

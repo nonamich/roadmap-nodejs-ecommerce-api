@@ -5,9 +5,6 @@
     "build": {
       "cache": false
     },
-    "start:prod": {
-      "cache": false
-    },
     "dev": {
       "cache": false,
       "persistent": true
