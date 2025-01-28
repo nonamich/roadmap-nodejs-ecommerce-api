@@ -1,11 +1,10 @@
 import { Controller, UseFilters } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
-import { GrpcValidationPipe } from '@packages/grpc';
+import { GrpcNotFoundException, GrpcValidationPipe } from '@packages/grpc/nest';
 import {
   ProductsServiceController,
   ProductsServiceControllerMethods,
 } from '@packages/grpc/proto/products';
-import { GrpcNotFoundException } from 'nestjs-grpc-exceptions';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
 import { ORMService } from '~/modules/orm/orm.service';
 import {
@@ -71,7 +70,7 @@ export class ProductsGrpcController implements ProductsServiceController {
     ]);
 
     if (!products.length || !totalCount) {
-      throw new GrpcNotFoundException('Not Found');
+      throw new GrpcNotFoundException('Products Not Found');
     }
 
     return {
@@ -117,7 +116,7 @@ export class ProductsGrpcController implements ProductsServiceController {
     ]);
 
     if (!products.length || !totalCount) {
-      throw new GrpcNotFoundException('Not Found');
+      throw new GrpcNotFoundException('Product Not Found');
     }
 
     return {

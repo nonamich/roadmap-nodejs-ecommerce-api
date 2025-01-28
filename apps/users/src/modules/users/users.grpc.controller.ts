@@ -1,11 +1,13 @@
 import { Controller, UseFilters } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
-import { GrpcValidationPipe } from '@packages/grpc';
+import {
+  GrpcUnauthenticatedException,
+  GrpcValidationPipe,
+} from '@packages/grpc/nest';
 import {
   UsersServiceController,
   UsersServiceControllerMethods,
 } from '@packages/grpc/proto/users';
-import { GrpcUnauthenticatedException } from 'nestjs-grpc-exceptions';
 import { from, mergeAll } from 'rxjs';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
 import { ORMService } from '~/modules/orm/orm.service';

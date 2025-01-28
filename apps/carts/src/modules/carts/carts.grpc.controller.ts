@@ -1,6 +1,9 @@
 import { Controller, Inject, UseFilters } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
-import { GrpcValidationPipe } from '@packages/grpc';
+import {
+  GrpcToGrpcExceptionFilter,
+  GrpcValidationPipe,
+} from '@packages/grpc/nest';
 import {
   Cart,
   CartsServiceController,
@@ -8,7 +11,6 @@ import {
 } from '@packages/grpc/proto/carts';
 import { ProductsServiceClient } from '@packages/grpc/proto/products';
 import { firstValueFrom } from 'rxjs';
-import { CustomGrpcServerExceptionFilter } from '~/filters/grpc-server-exception.filter';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
 import { ORMService } from '../orm/orm.service';
 import { PRODUCTS_SERVICE_PROVIDER_TOKEN } from './carts.constants';
@@ -66,6 +68,7 @@ export class CartsGrpcController implements CartsServiceController {
     return cart;
   }
 
+  @UseFilters(PrismaClientExceptionFilter)
   async getCartQuantityByUserId(
     @Payload(GrpcValidationPipe) { userId }: GetCartQuantityByUserIdRequestDto,
   ) {
@@ -89,7 +92,7 @@ export class CartsGrpcController implements CartsServiceController {
     };
   }
 
-  @UseFilters(CustomGrpcServerExceptionFilter)
+  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
   async addProductToCart(
     @Payload(GrpcValidationPipe)
     { productId, quantity, userId }: AddProductToCartRequestDto,

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { GrpcToHttpInterceptor } from 'nestjs-grpc-exceptions';
+import { GrpcToHttpInterceptor } from '@packages/grpc/nest';
 import { AuthModule } from './modules/auth/auth.module';
 import { CartsModule } from './modules/carts/carts.module';
 import { ProductsModule } from './modules/products/products.module';

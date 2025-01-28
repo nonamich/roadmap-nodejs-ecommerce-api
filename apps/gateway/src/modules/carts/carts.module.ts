@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
-import { UtilsGrpc } from '@packages/grpc';
 import {
   CARTS_PACKAGE_NAME,
   CARTS_SERVICE_NAME,
   CartsServiceClient,
 } from '@packages/grpc/proto/carts';
+import { UtilsGrpc } from '@packages/grpc/utils';
 import {
   CARTS_CLIENT_GRPC_PROVIDER_TOKEN,
   CARTS_SERVICE_PROVIDER_TOKEN,

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
-import { UtilsGrpc } from '@packages/grpc';
+import { UtilsGrpc } from '@packages/grpc/utils';
 import {
   PRODUCTS_PACKAGE_NAME,
   PRODUCTS_SERVICE_NAME,

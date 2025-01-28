@@ -2,8 +2,8 @@ import { ReflectionService } from '@grpc/reflection';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
-import { UtilsGrpc } from '@packages/grpc';
 import { CARTS_PACKAGE_NAME } from '@packages/grpc/proto/carts';
+import { UtilsGrpc } from '@packages/grpc/utils';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
