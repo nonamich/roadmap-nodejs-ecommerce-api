@@ -25,7 +25,6 @@ export interface Brand {
 export interface Product {
   id: number;
   amount: number;
-  currency: string;
   image: string;
   price: number;
   title: string;
@@ -38,6 +37,10 @@ export interface Product {
 
 export interface GetProductByIdRequest {
   id: number;
+}
+
+export interface GetProductsByIdsRequest {
+  ids: number[];
 }
 
 export interface PaginationRequest {
@@ -73,6 +76,10 @@ export interface ProductsByFilterResponse {
   category?: Category | null | undefined;
 }
 
+export interface GetProductsByIdsResponse {
+  products: Product[];
+}
+
 export const PRODUCTS_PACKAGE_NAME = "products";
 
 wrappers[".google.protobuf.Timestamp"] = {
@@ -87,6 +94,8 @@ wrappers[".google.protobuf.Timestamp"] = {
 export interface ProductsServiceClient {
   getProductById(request: GetProductByIdRequest, metadata?: Metadata): Observable<Product>;
 
+  getProductsByIds(request: GetProductsByIdsRequest, metadata?: Metadata): Observable<GetProductsByIdsResponse>;
+
   getProductsByFilter(request: GetProductsByFilterRequest, metadata?: Metadata): Observable<ProductsByFilterResponse>;
 
   getFeaturedProducts(request: GetFeaturedProductsRequest, metadata?: Metadata): Observable<ProductsResponse>;
@@ -94,6 +103,11 @@ export interface ProductsServiceClient {
 
 export interface ProductsServiceController {
   getProductById(request: GetProductByIdRequest, metadata?: Metadata): Promise<Product> | Observable<Product> | Product;
+
+  getProductsByIds(
+    request: GetProductsByIdsRequest,
+    metadata?: Metadata,
+  ): Promise<GetProductsByIdsResponse> | Observable<GetProductsByIdsResponse> | GetProductsByIdsResponse;
 
   getProductsByFilter(
     request: GetProductsByFilterRequest,
@@ -108,7 +122,7 @@ export interface ProductsServiceController {
 
 export function ProductsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["getProductById", "getProductsByFilter", "getFeaturedProducts"];
+    const grpcMethods: string[] = ["getProductById", "getProductsByIds", "getProductsByFilter", "getFeaturedProducts"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("ProductsService", method)(constructor.prototype[method], method, descriptor);

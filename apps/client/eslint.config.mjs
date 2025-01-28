@@ -8,6 +8,7 @@ export default [
   ...baseESLintConfig,
   {
     files: ['**/*.{ts,tsx}'],
+    ignores: ['build', '.react-router', 'node_modules'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,

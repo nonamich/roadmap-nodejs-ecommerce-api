@@ -22,7 +22,7 @@ import { PasswordService } from './password.service';
 
 @Controller()
 @UsersServiceControllerMethods()
-export class UsersController implements UsersServiceController {
+export class UsersGrpcController implements UsersServiceController {
   constructor(
     private readonly orm: ORMService,
     private readonly passwordService: PasswordService,

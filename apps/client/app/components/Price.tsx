@@ -1,14 +1,14 @@
 import type { FC } from 'react';
 import type { ProductResponseDto } from '~/api';
 
-type Props = Pick<ProductResponseDto, 'price' | 'currency'>;
+type Props = Pick<ProductResponseDto, 'price'>;
 
-export const Price: FC<Props> = ({ price, currency }) => {
+export const Price: FC<Props> = ({ price }) => {
   return (
     <>
       {new Intl.NumberFormat('en', {
         style: 'currency',
-        currency: currency,
+        currency: 'USD',
       }).format(price)}
     </>
   );

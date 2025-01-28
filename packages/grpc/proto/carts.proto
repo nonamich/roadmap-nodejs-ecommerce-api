@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package carts;
+
+import "products.proto";
+
+message Cart {
+  repeated CartItem items = 2;
+  int32 totalPrice = 3;
+}
+
+message CartItem {
+  int32 quantity = 1;
+  products.Product product = 2;
+}
+
+message GetCartByUserIdRequest {
+  int32 userId = 1;
+}
+
+message GetCartQuantityByUserIdRequest {
+  int32 userId = 1;
+}
+
+message GetCartQuantityResponse {
+  int32 quantity = 1;
+}
+
+message AddProductToCartRequest {
+  int32 productId = 1;
+  int32 quantity = 2;
+  int32 userId = 3;
+}
+
+service CartsService {
+  rpc AddProductToCart(AddProductToCartRequest) returns (GetCartQuantityResponse);
+  rpc GetCartByUserId(GetCartByUserIdRequest) returns (Cart);
+  rpc GetCartQuantityByUserId(GetCartQuantityByUserIdRequest) returns (GetCartQuantityResponse);
+}

@@ -1,9 +1,9 @@
 import { PickType } from '@nestjs/swagger';
 
 import { IsStrongPassword } from 'class-validator';
-import { BaseAuthDTO } from './base-auth.dto';
+import { BaseAuthDto } from './base-auth.dto';
 
-export class RequestSignupDTO extends PickType(BaseAuthDTO, [
+export class RequestSignupDto extends PickType(BaseAuthDto, [
   'name',
   'email',
   'password',

@@ -15,7 +15,7 @@ export async function clientLoader({
   const url = new URL(request.url);
   const page = +(url.searchParams.get('page') || 1);
 
-  if (!params.brandId) {
+  if (!params.id) {
     throw createError('Not Found', 404);
   }
 
@@ -26,7 +26,7 @@ export async function clientLoader({
         page,
         limit: LIMIT,
       },
-      brandId: +params.brandId,
+      brandId: +params.id,
     },
   });
 

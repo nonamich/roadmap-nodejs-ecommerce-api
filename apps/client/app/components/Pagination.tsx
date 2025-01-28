@@ -19,7 +19,6 @@ export const Pagination: FC<Props> = ({ page, limit, totalCount }) => {
       onChange={(page) => {
         navigate({ search: `page=${page}` });
       }}
-      // onChange={setPage}
       itemRender={(current, type) => {
         const isJump = type === 'jump-next' || type === 'jump-prev';
 

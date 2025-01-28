@@ -13,7 +13,7 @@ export async function clientLoader({
   const url = new URL(request.url);
   const page = +(url.searchParams.get('page') || 1);
 
-  if (!params.categoryId) {
+  if (!params.id) {
     throw createError('Not Found', 404);
   }
 
@@ -24,7 +24,7 @@ export async function clientLoader({
         page,
         limit: 8,
       },
-      categoryId: +params.categoryId,
+      categoryId: +params.id,
     },
   });
 

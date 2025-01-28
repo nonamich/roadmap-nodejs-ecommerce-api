@@ -3,7 +3,7 @@
   "compounds": [
     {
       "name": "Servers",
-      "configurations": ["gateway", "users", "products"]
+      "configurations": ["gateway", "users", "products", "carts"]
     },
   ],
   "configurations": [
@@ -12,27 +12,36 @@
       "type": "node",
       "request": "attach",
       "address": "localhost",
+      "restart": true,
       "localRoot": "${workspaceFolder}/apps/gateway",
-			"port": 9229,
-      "restart": true
+			"port": 9229
     },
     {
       "name": "users",
       "type": "node",
       "request": "attach",
       "address": "localhost",
+      "restart": true,
       "localRoot": "${workspaceFolder}/apps/users",
-			"port": 9228,
-      "restart": true
+			"port": 9228
     },
     {
       "name": "products",
       "type": "node",
       "request": "attach",
       "address": "localhost",
+      "restart": true,
       "localRoot": "${workspaceFolder}/apps/products",
-			"port": 9227,
-      "restart": true
+			"port": 9227
+    },
+    {
+      "name": "carts",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "restart": true,
+      "localRoot": "${workspaceFolder}/apps/carts",
+			"port": 9226
     },
   ]
 }

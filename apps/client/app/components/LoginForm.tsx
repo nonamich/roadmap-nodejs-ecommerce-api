@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { useState, type FC, type SyntheticEvent } from 'react';
 import { Else, If, Then } from 'react-if';
-import { useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import type { RequestSignupDto } from '~/api';
 import { useAuth } from '~/auth/hooks';
 
@@ -154,15 +154,15 @@ export const LoginForm: FC<Props> = ({ isRegister = false }) => {
             <If condition={isRegister}>
               <Then>
                 Already have account?{' '}
-                <a className="underline" href="/signin">
+                <Link className="underline" to="/signin">
                   Sign in
-                </a>
+                </Link>
               </Then>
               <Else>
                 No account?{' '}
-                <a className="underline" href="/signup">
+                <Link className="underline" to="/signup">
                   Sign up
-                </a>
+                </Link>
               </Else>
             </If>
           </p>

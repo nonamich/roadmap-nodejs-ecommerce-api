@@ -1,7 +1,7 @@
-import { type ClientLoaderFunctionArgs } from 'react-router';
+import { useState } from 'react';
+import { useLoaderData, type ClientLoaderFunctionArgs } from 'react-router';
 import { productsControllerGetProductById } from '~/api';
 import { Breadcrumbs, Price } from '~/components';
-import type { Page } from '~/helpers/route.helper';
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   const { data } = await productsControllerGetProductById({
@@ -14,7 +14,13 @@ export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   return data;
 }
 
-const Product: Page<typeof clientLoader> = ({ loaderData: product }) => {
+const Product = () => {
+  const product = useLoaderData<typeof clientLoader>();
+  const [quantity, setQuantity] = useState(1);
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <>
       <Breadcrumbs
@@ -38,7 +44,6 @@ const Product: Page<typeof clientLoader> = ({ loaderData: product }) => {
             <div className="mx-auto max-w-md shrink-0 lg:max-w-lg">
               <img src={product.image} />
             </div>
-
             <div className="mt-6 sm:mt-8 lg:mt-0">
               <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
                 {product.title}
@@ -57,12 +62,19 @@ const Product: Page<typeof clientLoader> = ({ loaderData: product }) => {
                   )}
                 </div>
               </div>
-
-              <div className="mt-6 sm:mt-8 sm:flex sm:items-center sm:gap-4">
-                <a
-                  href="#"
-                  title=""
-                  className="focus:ring-primary-300 dark:focus:ring-primary-800 mt-4 flex items-center justify-center rounded-lg bg-teal-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-800 focus:outline-none focus:ring-4 sm:mt-0 dark:bg-teal-600 dark:hover:bg-teal-700"
+              <form
+                className="mt-6 flex items-center gap-2"
+                onSubmit={onSubmit}
+              >
+                <input
+                  type="number"
+                  min="1"
+                  value={quantity}
+                  onChange={({ target }) => setQuantity(+target.value)}
+                  className="h-10 w-12 rounded border-gray-700 bg-gray-800 px-1 text-center text-xs text-gray-100"
+                />
+                <button
+                  className="focus:ring-primary-300 dark:focus:ring-primary-800 mt-4 flex items-center justify-center rounded bg-teal-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-800 focus:outline-none focus:ring-4 sm:mt-0 dark:bg-teal-600 dark:hover:bg-teal-700"
                   role="button"
                 >
                   <svg
@@ -76,18 +88,16 @@ const Product: Page<typeof clientLoader> = ({ loaderData: product }) => {
                   >
                     <path
                       stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
                     />
                   </svg>
                   Add to cart
-                </a>
-              </div>
-
+                </button>
+              </form>
               <hr className="my-6 border-gray-200 md:my-8 dark:border-gray-800" />
-
               <p className="mb-6 text-gray-500 dark:text-gray-400">
                 {product.description}
               </p>

@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
-import { type AuthContextInterface } from './auth.types';
+import { type AuthContextValue } from './auth.types';
 
-export const AuthContext = createContext<AuthContextInterface>(
-  {} as AuthContextInterface,
+export const AuthContext = createContext<AuthContextValue>(
+  {} as AuthContextValue,
 );

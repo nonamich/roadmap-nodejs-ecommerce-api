@@ -5,10 +5,10 @@ import { AuthorizedUser } from './auth.interface';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/authorized-user.decorator';
 import {
-  RequestSigninDTO,
-  RequestSignupDTO,
-  ResponseAuthorizedUserDTO,
-  ResponseLoggedInDTO,
+  RequestSigninDto,
+  RequestSignupDto,
+  ResponseAuthorizedUserDto,
+  ResponseLoggedInDto,
 } from './dto';
 import { JWTAuthGuard } from './guards/jwt-auth.guard';
 
@@ -17,21 +17,21 @@ import { JWTAuthGuard } from './guards/jwt-auth.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOkResponse({ type: ResponseLoggedInDTO })
+  @ApiOkResponse({ type: ResponseLoggedInDto })
   @Post('signup')
-  async signup(@Body() dto: RequestSignupDTO): Promise<ResponseLoggedInDTO> {
+  async signup(@Body() dto: RequestSignupDto): Promise<ResponseLoggedInDto> {
     return await this.authService.signup(dto);
   }
 
-  @ApiOkResponse({ type: ResponseLoggedInDTO })
+  @ApiOkResponse({ type: ResponseLoggedInDto })
   @Post('signin')
-  async signin(@Body() dto: RequestSigninDTO): Promise<ResponseLoggedInDTO> {
+  async signin(@Body() dto: RequestSigninDto): Promise<ResponseLoggedInDto> {
     return await this.authService.signin(dto);
   }
 
   @ApiBearerAuth()
   @UseGuards(JWTAuthGuard)
-  @ApiOkResponse({ type: ResponseAuthorizedUserDTO })
+  @ApiOkResponse({ type: ResponseAuthorizedUserDto })
   @Get('me')
   me(@CurrentUser() user: AuthorizedUser): AuthorizedUser {
     return user;

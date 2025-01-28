@@ -1,8 +1,8 @@
 import { PickType } from '@nestjs/swagger';
 
-import { BaseAuthDTO } from './base-auth.dto';
+import { BaseAuthDto } from './base-auth.dto';
 
-export class RequestSigninDTO extends PickType(BaseAuthDTO, [
+export class RequestSigninDto extends PickType(BaseAuthDto, [
   'email',
   'password',
 ]) {}

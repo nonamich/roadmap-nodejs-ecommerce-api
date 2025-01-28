@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { PasswordService } from './password.service';
-import { UsersController } from './users.controller';
+import { UsersGrpcController } from './users.grpc.controller';
 
 @Module({
-  controllers: [UsersController],
+  controllers: [UsersGrpcController],
   providers: [PasswordService],
 })
 export class UsersModule {}

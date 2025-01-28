@@ -21,7 +21,7 @@ export class ProductsController {
 
   @ApiOkResponse({ type: ProductsResponseDto })
   @Get('/featured')
-  async getFeaturedProducts(@Query() request: GetFeaturedProductsRequestDto) {
+  getFeaturedProducts(@Query() request: GetFeaturedProductsRequestDto) {
     return this.productsService.getFeaturedProducts(request);
   }
 

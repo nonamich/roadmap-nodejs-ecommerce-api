@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { ResponseAuthorizedUserDTO } from '.';
+import { ResponseAuthorizedUserDto } from '.';
 
-export class ResponseLoggedInDTO {
+export class ResponseLoggedInDto {
   @ApiProperty()
-  user!: ResponseAuthorizedUserDTO;
+  user!: ResponseAuthorizedUserDto;
 
   @ApiProperty()
   accessToken!: string;

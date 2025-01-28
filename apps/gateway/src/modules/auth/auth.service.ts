@@ -5,7 +5,7 @@ import { UsersServiceClient } from '@packages/grpc/proto/users';
 import { firstValueFrom } from 'rxjs';
 import { USERS_SERVICE_PROVIDER_TOKEN } from '../users/users.constants';
 import { AuthorizedUser } from './auth.interface';
-import { RequestSigninDTO, RequestSignupDTO } from './dto';
+import { RequestSigninDto, RequestSignupDto } from './dto';
 
 @Injectable()
 export class AuthService {
@@ -15,13 +15,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(data: RequestSignupDTO) {
+  async signup(data: RequestSignupDto) {
     const { email } = await firstValueFrom(this.usersService.createUser(data));
 
     return await this.signin({ email, password: data.password });
   }
 
-  async signin(data: RequestSigninDTO) {
+  async signin(data: RequestSigninDto) {
     const user = await firstValueFrom(
       this.usersService.getUserByCredentials(data),
     );

@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { Link } from 'react-router';
 import type { ProductResponseDto } from '~/api';
 import { Price } from './Price';
 
@@ -8,7 +9,7 @@ type Props = {
 
 export const ProductItem: FC<Props> = ({ product }) => {
   return (
-    <a href={`/product/${product.id}`} className="group block">
+    <Link to={`/product/${product.id}`} className="group block">
       <div className="overflow-hidden">
         <img
           src={product.image}
@@ -26,6 +27,6 @@ export const ProductItem: FC<Props> = ({ product }) => {
           </span>
         </p>
       </div>
-    </a>
+    </Link>
   );
 };

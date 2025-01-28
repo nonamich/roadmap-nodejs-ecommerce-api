@@ -28,9 +28,6 @@ export class ProductResponseDto implements Product {
   amount!: number;
 
   @ApiProperty()
-  currency!: string;
-
-  @ApiProperty()
   image!: string;
 
   @ApiProperty()
@@ -43,7 +40,7 @@ export class ProductResponseDto implements Product {
   description!: string;
 
   @ApiProperty({ required: false, nullable: true, type: Number })
-  rating?: number | null | undefined;
+  rating?: number;
 
   @ApiProperty({ type: Date })
   createdAt!: Date;

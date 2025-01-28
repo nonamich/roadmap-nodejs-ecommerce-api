@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import {
-  GrpcServerExceptionFilter,
-  GrpcToHttpInterceptor,
-} from 'nestjs-grpc-exceptions';
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { GrpcToHttpInterceptor } from 'nestjs-grpc-exceptions';
 import { AuthModule } from './modules/auth/auth.module';
+import { CartsModule } from './modules/carts/carts.module';
 import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
 import { DefaultValidationPipe } from './pipes/default-validation.pipe';
@@ -17,10 +15,6 @@ import { DefaultValidationPipe } from './pipes/default-validation.pipe';
       useClass: DefaultValidationPipe,
     },
     {
-      provide: APP_FILTER,
-      useClass: GrpcServerExceptionFilter,
-    },
-    {
       provide: APP_INTERCEPTOR,
       useClass: GrpcToHttpInterceptor,
     },
@@ -30,6 +24,7 @@ import { DefaultValidationPipe } from './pipes/default-validation.pipe';
     AuthModule,
     UsersModule,
     ProductsModule,
+    CartsModule,
   ],
 })
 export class AppModule {}

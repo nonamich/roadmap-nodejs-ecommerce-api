@@ -11,7 +11,6 @@ async function main() {
   await prisma.brand.deleteMany({});
   await prisma.featuredProduct.deleteMany({});
 
-  const currencies = ['EUR', 'USD', 'GBP'];
   const categories = await prisma.category.createManyAndReturn({
     data: faker.helpers
       .uniqueArray(faker.commerce.department, 20)
@@ -31,7 +30,6 @@ async function main() {
           min: 0,
         }),
         categoryId: faker.helpers.arrayElement(categories).id,
-        currency: faker.helpers.arrayElement(currencies),
         brandId: faker.helpers.arrayElement(brands).id,
         price: faker.number.float({
           max: 3000,

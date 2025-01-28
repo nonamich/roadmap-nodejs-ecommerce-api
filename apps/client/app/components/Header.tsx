@@ -1,8 +1,11 @@
 import { useState, type FC } from 'react';
+import { Link } from 'react-router';
 import { useAuth } from '~/auth/hooks';
+import { useCart } from '~/cart/hooks';
 
 export const Header: FC = () => {
   const { user, logout } = useAuth();
+  const cart = useCart();
   const [isDropdown, setDropdown] = useState(false);
 
   const onDropdown = () => {
@@ -12,7 +15,7 @@ export const Header: FC = () => {
   return (
     <header className="bg-white dark:bg-gray-900">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
-        <a className="block text-teal-600 dark:text-teal-300" href="/">
+        <Link className="block text-teal-600 dark:text-teal-300" to="/">
           <span className="sr-only">Home</span>
           <svg
             className="h-8"
@@ -25,82 +28,98 @@ export const Header: FC = () => {
               fill="currentColor"
             />
           </svg>
-        </a>
+        </Link>
         <div className="flex flex-1 items-center justify-end md:justify-between">
           <nav aria-label="Global" className="hidden md:block">
             <ul className="flex items-center gap-6 text-sm">
-              <li>
-                <a
-                  className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                  href="#"
-                >
-                  Blog
-                </a>
-              </li>
+              <li></li>
             </ul>
           </nav>
           {user ? (
-            <div className="relative hidden md:block">
-              <button
-                onClick={onDropdown}
-                className="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700 dark:hover:bg-teal-500"
+            <div className="flex gap-2">
+              <Link
+                to="/cart"
+                className="flex gap-2 rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700 dark:hover:bg-teal-500"
               >
-                {user.email}
-              </button>
-              {isDropdown && (
-                <div
-                  className="absolute end-0 z-10 mt-3 w-56 rounded-md border border-gray-100 bg-white shadow-lg dark:border-gray-800 dark:bg-gray-900"
-                  role="menu"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  <div className="p-2">
-                    <a
-                      href="#"
-                      className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-                      role="menuitem"
-                    >
-                      My profile
-                    </a>
-
-                    <button
-                      onClick={logout}
-                      className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50 dark:text-red-500 dark:hover:bg-red-600/10"
-                      role="menuitem"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="size-4"
+                  <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                  <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                  <path d="M17 17h-11v-14h-2" />
+                  <path d="M6 5l14 1l-1 7h-13" />
+                </svg>{' '}
+                {cart.quantity}
+              </Link>
+              <div className="relative hidden md:block">
+                <button
+                  onClick={onDropdown}
+                  className="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700 dark:hover:bg-teal-500"
+                >
+                  {user.email}
+                </button>
+                {isDropdown && (
+                  <div
+                    className="absolute end-0 z-10 mt-3 w-56 rounded-md border border-gray-100 bg-white shadow-lg dark:border-gray-800 dark:bg-gray-900"
+                    role="menu"
+                  >
+                    <div className="p-2">
+                      <Link
+                        to="/settings"
+                        className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                        role="menuitem"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
-                        />
-                      </svg>
-                      Logout
-                    </button>
+                        My profile
+                      </Link>
+                      <button
+                        onClick={logout}
+                        className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50 dark:text-red-500 dark:hover:bg-red-600/10"
+                        role="menuitem"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="size-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+                          />
+                        </svg>
+                        Logout
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           ) : (
             <div className="flex items-center gap-4">
               <div className="sm:flex sm:gap-4">
-                <a
+                <Link
                   className="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700 dark:hover:bg-teal-500"
-                  href="/signin"
+                  to="/signin"
                 >
                   Login
-                </a>
-                <a
+                </Link>
+                <Link
                   className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
-                  href="/signup"
+                  to="/signup"
                 >
                   Register
-                </a>
+                </Link>
               </div>
               <button className="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden dark:bg-gray-800 dark:text-white dark:hover:text-white/75">
                 <span className="sr-only">Toggle menu</span>

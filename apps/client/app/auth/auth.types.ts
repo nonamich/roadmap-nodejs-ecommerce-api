@@ -6,7 +6,7 @@ import type {
 
 export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
 
-export interface AuthContextInterface {
+export interface AuthContextValue {
   status: AuthStatus;
   accessToken: string | null;
   user?: ResponseAuthorizedUserDto;

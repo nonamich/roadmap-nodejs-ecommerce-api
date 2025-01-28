@@ -19,7 +19,6 @@ message Brand {
 message Product {
   int32 id = 1;
   int32 amount = 2;
-  string currency = 3;
   string image = 4;
   double price = 5;
   string title = 6;
@@ -34,6 +33,10 @@ message Product {
 
 message GetProductByIdRequest {
   int32 id = 1;
+}
+
+message GetProductsByIdsRequest {
+  repeated int32 ids = 1;
 }
 
 message PaginationRequest {
@@ -71,8 +74,13 @@ message ProductsByFilterResponse {
   optional Category category = 4;
 }
 
+message GetProductsByIdsResponse {
+  repeated Product products = 1;
+}
+
 service ProductsService {
   rpc GetProductById(GetProductByIdRequest) returns (Product);
+  rpc GetProductsByIds(GetProductsByIdsRequest) returns (GetProductsByIdsResponse);
   rpc GetProductsByFilter(GetProductsByFilterRequest) returns (ProductsByFilterResponse);
   rpc GetFeaturedProducts(GetFeaturedProductsRequest) returns (ProductsResponse);
 }

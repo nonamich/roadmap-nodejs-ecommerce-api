@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ProductsController } from './products.controller';
+import { ProductsGrpcController } from './products.grpc.controller';
 
 @Module({
-  controllers: [ProductsController],
+  controllers: [ProductsGrpcController],
 })
 export class ProductsModule {}

@@ -1,3 +1,4 @@
+import { useMutation } from '@tanstack/react-query';
 import {
   type FC,
   type PropsWithChildren,
@@ -8,15 +9,17 @@ import {
 import { useNavigate } from 'react-router';
 import {
   authControllerMe,
-  authControllerSignin,
-  authControllerSignup,
   client,
   type ResponseAuthorizedUserDto,
   type ResponseLoggedInDto,
 } from '~/api';
+import {
+  authControllerSigninMutation,
+  authControllerSignupMutation,
+} from '~/api/@tanstack/react-query.gen';
 import { AUTH_LOCAL_STORAGE_NAME } from './auth.constants';
 import { AuthContext } from './auth.context';
-import type { AuthContextInterface, AuthStatus } from './auth.types';
+import type { AuthContextValue, AuthStatus } from './auth.types';
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const navigation = useNavigate();
@@ -30,6 +33,9 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
     return localStorage.getItem(AUTH_LOCAL_STORAGE_NAME);
   });
+
+  const signinMutation = useMutation(authControllerSigninMutation());
+  const signupMutation = useMutation(authControllerSignupMutation());
 
   const setStates = ({ accessToken, user }: Partial<ResponseLoggedInDto>) => {
     if (accessToken) {
@@ -53,7 +59,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   }, [user]);
 
-  const value: AuthContextInterface = {
+  const value: AuthContextValue = {
     status,
     user,
     loading,
@@ -61,19 +67,17 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     signin(body) {
       setLoading(true);
 
-      return authControllerSignin({ body, throwOnError: true })
-        .then(({ data }) => {
-          setStates(data);
-        })
+      return signinMutation
+        .mutateAsync({ body })
+        .then(setStates)
         .finally(onFinally);
     },
     signup(body) {
       setLoading(true);
 
-      return authControllerSignup({ body, throwOnError: true })
-        .then(({ data }) => {
-          setStates(data);
-        })
+      return signupMutation
+        .mutateAsync({ body })
+        .then(setStates)
         .finally(onFinally);
     },
     logout() {
@@ -91,11 +95,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [accessToken]);
 
   useEffect(() => {
-    if (!user) {
-      setStatus('unauthenticated');
-    } else {
-      setStatus('authenticated');
-    }
+    setStatus(user ? 'authenticated' : 'unauthenticated');
   }, [user, loading]);
 
   useEffect(() => {
@@ -103,8 +103,10 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
-    client.setConfig({
-      auth: accessToken,
+    client.interceptors.request.use((config) => {
+      config.headers.set('Authorization', `Bearer ${accessToken}`);
+
+      return config;
     });
   }, [accessToken]);
 
@@ -117,13 +119,12 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setLoading(true);
 
-    authControllerMe()
+    authControllerMe({ throwOnError: true })
       .then(({ data: user }) => {
-        if (!user) {
-          return;
-        }
-
         setUser(user);
+      })
+      .catch(() => {
+        setAccessToken('');
       })
       .finally(onFinally);
   }, [accessToken, onFinally, user]);

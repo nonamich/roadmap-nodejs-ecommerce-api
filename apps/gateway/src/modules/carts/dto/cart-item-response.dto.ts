@@ -1,0 +1,11 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { CartItem } from '@packages/grpc/proto/carts';
+import { ProductResponseDto } from '~/modules/products/dto/product-response.dto';
+
+export class CartItemResponseDto implements CartItem {
+  @ApiProperty()
+  quantity!: number;
+
+  @ApiProperty({ type: ProductResponseDto })
+  product!: ProductResponseDto;
+}

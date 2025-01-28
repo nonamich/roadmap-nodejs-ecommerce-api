@@ -4,7 +4,6 @@ export const PRODUCTS_SELECT = {
   brandId: true,
   categoryId: true,
   createdAt: true,
-  currency: true,
   image: true,
   description: true,
   price: true,

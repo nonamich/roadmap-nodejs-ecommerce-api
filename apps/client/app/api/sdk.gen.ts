@@ -3,119 +3,151 @@
 import {
   createClient,
   createConfig,
-  type Options,
+  type OptionsLegacyParser,
 } from '@hey-api/client-fetch';
 import type {
-  AuthControllerMeData,
+  AuthControllerMeError,
   AuthControllerMeResponse,
   AuthControllerSigninData,
+  AuthControllerSigninError,
   AuthControllerSigninResponse,
   AuthControllerSignupData,
+  AuthControllerSignupError,
   AuthControllerSignupResponse,
+  CartsControllerGetCartError,
+  CartsControllerGetCartQuantityError,
+  CartsControllerGetCartQuantityResponse,
+  CartsControllerGetCartResponse,
   ProductsControllerGetFeaturedProductsData,
+  ProductsControllerGetFeaturedProductsError,
   ProductsControllerGetFeaturedProductsResponse,
   ProductsControllerGetProductByIdData,
+  ProductsControllerGetProductByIdError,
   ProductsControllerGetProductByIdResponse,
   ProductsControllerGetProductsByFilterData,
+  ProductsControllerGetProductsByFilterError,
   ProductsControllerGetProductsByFilterResponse,
 } from './types.gen';
 
 export const client = createClient(createConfig());
 
 export const authControllerSignup = <ThrowOnError extends boolean = false>(
-  options: Options<AuthControllerSignupData, ThrowOnError>,
+  options: OptionsLegacyParser<AuthControllerSignupData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<
     AuthControllerSignupResponse,
-    unknown,
+    AuthControllerSignupError,
     ThrowOnError
   >({
-    url: '/auth/signup',
     ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
+    url: '/auth/signup',
   });
 };
 
 export const authControllerSignin = <ThrowOnError extends boolean = false>(
-  options: Options<AuthControllerSigninData, ThrowOnError>,
+  options: OptionsLegacyParser<AuthControllerSigninData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<
     AuthControllerSigninResponse,
-    unknown,
+    AuthControllerSigninError,
     ThrowOnError
   >({
-    url: '/auth/signin',
     ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
+    url: '/auth/signin',
   });
 };
 
 export const authControllerMe = <ThrowOnError extends boolean = false>(
-  options?: Options<AuthControllerMeData, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
     AuthControllerMeResponse,
-    unknown,
+    AuthControllerMeError,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: 'bearer',
-        type: 'http',
-      },
-    ],
-    url: '/auth/me',
     ...options,
+    url: '/auth/me',
   });
 };
 
 export const productsControllerGetFeaturedProducts = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ProductsControllerGetFeaturedProductsData, ThrowOnError>,
+  options: OptionsLegacyParser<
+    ProductsControllerGetFeaturedProductsData,
+    ThrowOnError
+  >,
 ) => {
   return (options?.client ?? client).get<
     ProductsControllerGetFeaturedProductsResponse,
-    unknown,
+    ProductsControllerGetFeaturedProductsError,
     ThrowOnError
   >({
-    url: '/products/featured',
     ...options,
+    url: '/products/featured',
   });
 };
 
 export const productsControllerGetProductById = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ProductsControllerGetProductByIdData, ThrowOnError>,
+  options: OptionsLegacyParser<
+    ProductsControllerGetProductByIdData,
+    ThrowOnError
+  >,
 ) => {
   return (options?.client ?? client).get<
     ProductsControllerGetProductByIdResponse,
-    unknown,
+    ProductsControllerGetProductByIdError,
     ThrowOnError
   >({
-    url: '/products/{id}',
     ...options,
+    url: '/products/{id}',
   });
 };
 
 export const productsControllerGetProductsByFilter = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ProductsControllerGetProductsByFilterData, ThrowOnError>,
+  options: OptionsLegacyParser<
+    ProductsControllerGetProductsByFilterData,
+    ThrowOnError
+  >,
 ) => {
   return (options?.client ?? client).get<
     ProductsControllerGetProductsByFilterResponse,
-    unknown,
+    ProductsControllerGetProductsByFilterError,
     ThrowOnError
   >({
-    url: '/products',
     ...options,
+    url: '/products',
+  });
+};
+
+export const cartsControllerGetCartQuantity = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    CartsControllerGetCartQuantityResponse,
+    CartsControllerGetCartQuantityError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/carts/quantity',
+  });
+};
+
+export const cartsControllerGetCart = <ThrowOnError extends boolean = false>(
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    CartsControllerGetCartResponse,
+    CartsControllerGetCartError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/carts',
   });
 };

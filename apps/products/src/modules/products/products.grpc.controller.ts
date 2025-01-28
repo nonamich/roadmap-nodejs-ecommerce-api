@@ -12,12 +12,13 @@ import {
   GetFeaturedProductsRequestDto,
   GetProductByIdRequestDto,
   GetProductsByFilterRequestDto,
+  GetProductsByIdsRequestDto,
 } from './dto';
 import { PRODUCTS_SELECT } from './products.constants';
 
 @Controller()
 @ProductsServiceControllerMethods()
-export class ProductsController implements ProductsServiceController {
+export class ProductsGrpcController implements ProductsServiceController {
   constructor(private readonly orm: ORMService) {}
 
   @UseFilters(PrismaClientExceptionFilter)
@@ -30,6 +31,24 @@ export class ProductsController implements ProductsServiceController {
     });
 
     return product;
+  }
+
+  @UseFilters(PrismaClientExceptionFilter)
+  async getProductsByIds(
+    @Payload(GrpcValidationPipe) { ids }: GetProductsByIdsRequestDto,
+  ) {
+    const products = await this.orm.product.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+      select: PRODUCTS_SELECT,
+    });
+
+    return {
+      products,
+    };
   }
 
   @UseFilters(PrismaClientExceptionFilter)
