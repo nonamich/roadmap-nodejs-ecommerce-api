@@ -14,10 +14,19 @@ import type {
   AuthControllerSignupData,
   AuthControllerSignupError,
   AuthControllerSignupResponse,
+  CartsControllerAddToCartData,
+  CartsControllerAddToCartError,
+  CartsControllerAddToCartResponse,
   CartsControllerGetCartError,
   CartsControllerGetCartQuantityError,
   CartsControllerGetCartQuantityResponse,
   CartsControllerGetCartResponse,
+  CartsControllerRemoveProductData,
+  CartsControllerRemoveProductError,
+  CartsControllerRemoveProductResponse,
+  CartsControllerUpdateProductQuantityData,
+  CartsControllerUpdateProductQuantityError,
+  CartsControllerUpdateProductQuantityResponse,
   ProductsControllerGetFeaturedProductsData,
   ProductsControllerGetFeaturedProductsError,
   ProductsControllerGetFeaturedProductsResponse,
@@ -135,7 +144,7 @@ export const cartsControllerGetCartQuantity = <
     ThrowOnError
   >({
     ...options,
-    url: '/carts/quantity',
+    url: '/cart/quantity',
   });
 };
 
@@ -148,6 +157,52 @@ export const cartsControllerGetCart = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/carts',
+    url: '/cart',
+  });
+};
+
+export const cartsControllerAddToCart = <ThrowOnError extends boolean = false>(
+  options: OptionsLegacyParser<CartsControllerAddToCartData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<
+    CartsControllerAddToCartResponse,
+    CartsControllerAddToCartError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/cart',
+  });
+};
+
+export const cartsControllerUpdateProductQuantity = <
+  ThrowOnError extends boolean = false,
+>(
+  options: OptionsLegacyParser<
+    CartsControllerUpdateProductQuantityData,
+    ThrowOnError
+  >,
+) => {
+  return (options?.client ?? client).put<
+    CartsControllerUpdateProductQuantityResponse,
+    CartsControllerUpdateProductQuantityError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/cart',
+  });
+};
+
+export const cartsControllerRemoveProduct = <
+  ThrowOnError extends boolean = false,
+>(
+  options: OptionsLegacyParser<CartsControllerRemoveProductData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).delete<
+    CartsControllerRemoveProductResponse,
+    CartsControllerRemoveProductError,
+    ThrowOnError
+  >({
+    ...options,
+    url: '/cart',
   });
 };

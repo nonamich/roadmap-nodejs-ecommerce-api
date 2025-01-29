@@ -22,16 +22,21 @@ export const Cart: FC = () => {
       {!!items.length && (
         <div className="mt-8">
           <ul className="space-y-4">
-            {items.map((item) => (
-              <CartItem {...item} />
+            {items.map((item, index) => (
+              <CartItem key={index} {...item} />
             ))}
           </ul>
           <div className="mt-8 flex justify-end border-t border-gray-900 pt-8">
-            <div className="w-screen max-w-lg space-y-4">
+            <div className="space-y-4">
               <dl className="space-y-0.5 text-sm text-gray-100">
                 <div className="flex justify-between !text-base font-medium">
-                  <dt>Total</dt>
-                  <dd>{totalPrice}</dd>
+                  <dt>Total: </dt>
+                  <dd>
+                    {new Intl.NumberFormat('en', {
+                      style: 'currency',
+                      currency: 'USD',
+                    }).format(totalPrice)}
+                  </dd>
                 </div>
               </dl>
 

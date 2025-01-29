@@ -1,6 +1,10 @@
 import { Controller, UseFilters } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
-import { GrpcNotFoundException, GrpcValidationPipe } from '@packages/grpc/nest';
+import {
+  GrpcNotFoundException,
+  GrpcToGrpcExceptionFilter,
+  GrpcValidationPipe,
+} from '@packages/grpc/nest';
 import {
   ProductsServiceController,
   ProductsServiceControllerMethods,
@@ -20,7 +24,7 @@ import { PRODUCTS_SELECT } from './products.constants';
 export class ProductsGrpcController implements ProductsServiceController {
   constructor(private readonly orm: ORMService) {}
 
-  @UseFilters(PrismaClientExceptionFilter)
+  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
   async getProductById(
     @Payload(GrpcValidationPipe) { id }: GetProductByIdRequestDto,
   ) {
@@ -32,7 +36,7 @@ export class ProductsGrpcController implements ProductsServiceController {
     return product;
   }
 
-  @UseFilters(PrismaClientExceptionFilter)
+  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
   async getProductsByIds(
     @Payload(GrpcValidationPipe) { ids }: GetProductsByIdsRequestDto,
   ) {
@@ -50,7 +54,7 @@ export class ProductsGrpcController implements ProductsServiceController {
     };
   }
 
-  @UseFilters(PrismaClientExceptionFilter)
+  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
   async getFeaturedProducts(
     @Payload(GrpcValidationPipe)
     { pagination }: GetFeaturedProductsRequestDto,
@@ -82,7 +86,7 @@ export class ProductsGrpcController implements ProductsServiceController {
     };
   }
 
-  @UseFilters(PrismaClientExceptionFilter)
+  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
   async getProductsByFilter(
     @Payload(GrpcValidationPipe)
     { pagination, brandId, categoryId }: GetProductsByFilterRequestDto,

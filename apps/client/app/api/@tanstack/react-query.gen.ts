@@ -6,8 +6,11 @@ import {
   authControllerMe,
   authControllerSignin,
   authControllerSignup,
+  cartsControllerAddToCart,
   cartsControllerGetCart,
   cartsControllerGetCartQuantity,
+  cartsControllerRemoveProduct,
+  cartsControllerUpdateProductQuantity,
   client,
   productsControllerGetFeaturedProducts,
   productsControllerGetProductById,
@@ -20,6 +23,15 @@ import type {
   AuthControllerSignupData,
   AuthControllerSignupError,
   AuthControllerSignupResponse,
+  CartsControllerAddToCartData,
+  CartsControllerAddToCartError,
+  CartsControllerAddToCartResponse,
+  CartsControllerRemoveProductData,
+  CartsControllerRemoveProductError,
+  CartsControllerRemoveProductResponse,
+  CartsControllerUpdateProductQuantityData,
+  CartsControllerUpdateProductQuantityError,
+  CartsControllerUpdateProductQuantityResponse,
   ProductsControllerGetFeaturedProductsData,
   ProductsControllerGetProductByIdData,
   ProductsControllerGetProductsByFilterData,
@@ -263,4 +275,87 @@ export const cartsControllerGetCartOptions = (
     },
     queryKey: cartsControllerGetCartQueryKey(options),
   });
+};
+
+export const cartsControllerAddToCartQueryKey = (
+  options: OptionsLegacyParser<CartsControllerAddToCartData>,
+) => [createQueryKey('cartsControllerAddToCart', options)];
+
+export const cartsControllerAddToCartOptions = (
+  options: OptionsLegacyParser<CartsControllerAddToCartData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await cartsControllerAddToCart({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: cartsControllerAddToCartQueryKey(options),
+  });
+};
+
+export const cartsControllerAddToCartMutation = (
+  options?: Partial<OptionsLegacyParser<CartsControllerAddToCartData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    CartsControllerAddToCartResponse,
+    CartsControllerAddToCartError,
+    OptionsLegacyParser<CartsControllerAddToCartData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await cartsControllerAddToCart({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const cartsControllerUpdateProductQuantityMutation = (
+  options?: Partial<
+    OptionsLegacyParser<CartsControllerUpdateProductQuantityData>
+  >,
+) => {
+  const mutationOptions: UseMutationOptions<
+    CartsControllerUpdateProductQuantityResponse,
+    CartsControllerUpdateProductQuantityError,
+    OptionsLegacyParser<CartsControllerUpdateProductQuantityData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await cartsControllerUpdateProductQuantity({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const cartsControllerRemoveProductMutation = (
+  options?: Partial<OptionsLegacyParser<CartsControllerRemoveProductData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    CartsControllerRemoveProductResponse,
+    CartsControllerRemoveProductError,
+    OptionsLegacyParser<CartsControllerRemoveProductData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await cartsControllerRemoveProduct({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };

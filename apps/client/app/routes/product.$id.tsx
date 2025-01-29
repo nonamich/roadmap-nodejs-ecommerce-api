@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLoaderData, type ClientLoaderFunctionArgs } from 'react-router';
 import { productsControllerGetProductById } from '~/api';
+import { useCart } from '~/cart/hooks';
 import { Breadcrumbs, Price } from '~/components';
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
@@ -15,10 +16,13 @@ export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
 }
 
 const Product = () => {
+  const cart = useCart();
   const product = useLoaderData<typeof clientLoader>();
   const [quantity, setQuantity] = useState(1);
-  const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+  const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    cart.add(product.id, quantity);
   };
 
   return (
@@ -76,6 +80,7 @@ const Product = () => {
                 <button
                   className="focus:ring-primary-300 dark:focus:ring-primary-800 mt-4 flex items-center justify-center rounded bg-teal-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-800 focus:outline-none focus:ring-4 sm:mt-0 dark:bg-teal-600 dark:hover:bg-teal-700"
                   role="button"
+                  disabled={cart.loading}
                 >
                   <svg
                     className="-ms-2 me-2 h-5 w-5"

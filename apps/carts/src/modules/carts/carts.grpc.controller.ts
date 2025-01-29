@@ -1,6 +1,7 @@
 import { Controller, Inject, UseFilters } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
 import {
+  GrpcInvalidArgumentException,
   GrpcToGrpcExceptionFilter,
   GrpcValidationPipe,
 } from '@packages/grpc/nest';
@@ -18,6 +19,8 @@ import {
   AddProductToCartRequestDto,
   GetCartByUserIdRequestDto,
   GetCartQuantityByUserIdRequestDto,
+  RemoveProductRequestDto,
+  UpdateProductQuantityRequestDto,
 } from './dto';
 
 @Controller()
@@ -29,7 +32,7 @@ export class CartsGrpcController implements CartsServiceController {
     private readonly orm: ORMService,
   ) {}
 
-  @UseFilters(PrismaClientExceptionFilter)
+  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
   async getCartByUserId(
     @Payload(GrpcValidationPipe) { userId }: GetCartByUserIdRequestDto,
   ) {
@@ -68,7 +71,7 @@ export class CartsGrpcController implements CartsServiceController {
     return cart;
   }
 
-  @UseFilters(PrismaClientExceptionFilter)
+  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
   async getCartQuantityByUserId(
     @Payload(GrpcValidationPipe) { userId }: GetCartQuantityByUserIdRequestDto,
   ) {
@@ -121,5 +124,50 @@ export class CartsGrpcController implements CartsServiceController {
     });
 
     return await this.getCartQuantityByUserId({ userId });
+  }
+
+  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  async updateProductQuantity({
+    productId,
+    quantity,
+    userId,
+  }: UpdateProductQuantityRequestDto) {
+    const product = await firstValueFrom(
+      this.productsService.getProductById({
+        id: productId,
+      }),
+    );
+
+    if (product.amount > quantity) {
+      throw new GrpcInvalidArgumentException('Quantity more than allowed');
+    }
+
+    await this.orm.cartItem.update({
+      data: {
+        quantity,
+      },
+      where: {
+        productId_userId: {
+          productId: product.id,
+          userId,
+        },
+      },
+    });
+
+    return await this.getCartByUserId({ userId });
+  }
+
+  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  async removeProduct({ productId, userId }: RemoveProductRequestDto) {
+    await this.orm.cartItem.delete({
+      where: {
+        productId_userId: {
+          productId,
+          userId,
+        },
+      },
+    });
+
+    return await this.getCartByUserId({ userId });
   }
 }

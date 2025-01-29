@@ -32,8 +32,21 @@ message AddProductToCartRequest {
   int32 userId = 3;
 }
 
+message UpdateProductQuantityRequest {
+  int32 productId = 1;
+  int32 quantity = 2;
+  int32 userId = 3;
+}
+
+message RemoveProductRequest {
+  int32 userId = 1;
+  int32 productId = 2;
+}
+
 service CartsService {
   rpc AddProductToCart(AddProductToCartRequest) returns (GetCartQuantityResponse);
   rpc GetCartByUserId(GetCartByUserIdRequest) returns (Cart);
   rpc GetCartQuantityByUserId(GetCartQuantityByUserIdRequest) returns (GetCartQuantityResponse);
+  rpc UpdateProductQuantity(UpdateProductQuantityRequest) returns (Cart);
+  rpc RemoveProduct(RemoveProductRequest) returns (Cart);
 }

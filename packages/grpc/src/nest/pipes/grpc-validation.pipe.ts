@@ -1,6 +1,5 @@
-import * as grpc from '@grpc/grpc-js';
 import { Injectable, ValidationPipe } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import { GrpcInvalidArgumentException } from '../exceptions';
 
 @Injectable()
 export class GrpcValidationPipe extends ValidationPipe {
@@ -9,17 +8,11 @@ export class GrpcValidationPipe extends ValidationPipe {
       transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
-      exceptionFactory: (errors) => {
-        const formattedErrors = errors.map((error) => ({
-          property: error.property,
-          message: Object.values(error.constraints!),
-        }));
-
-        return new RpcException({
-          code: grpc.status.INVALID_ARGUMENT,
-          message: 'Validation Error',
-          details: JSON.stringify(formattedErrors),
-        });
+      stopAtFirstError: true,
+      exceptionFactory: ([error]) => {
+        return new GrpcInvalidArgumentException(
+          Object.values(error.constraints!)[0],
+        );
       },
     });
   }

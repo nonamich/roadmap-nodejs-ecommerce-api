@@ -40,6 +40,17 @@ export interface AddProductToCartRequest {
   userId: number;
 }
 
+export interface UpdateProductQuantityRequest {
+  productId: number;
+  quantity: number;
+  userId: number;
+}
+
+export interface RemoveProductRequest {
+  userId: number;
+  productId: number;
+}
+
 export const CARTS_PACKAGE_NAME = "carts";
 
 export interface CartsServiceClient {
@@ -51,6 +62,10 @@ export interface CartsServiceClient {
     request: GetCartQuantityByUserIdRequest,
     metadata?: Metadata,
   ): Observable<GetCartQuantityResponse>;
+
+  updateProductQuantity(request: UpdateProductQuantityRequest, metadata?: Metadata): Observable<Cart>;
+
+  removeProduct(request: RemoveProductRequest, metadata?: Metadata): Observable<Cart>;
 }
 
 export interface CartsServiceController {
@@ -65,11 +80,24 @@ export interface CartsServiceController {
     request: GetCartQuantityByUserIdRequest,
     metadata?: Metadata,
   ): Promise<GetCartQuantityResponse> | Observable<GetCartQuantityResponse> | GetCartQuantityResponse;
+
+  updateProductQuantity(
+    request: UpdateProductQuantityRequest,
+    metadata?: Metadata,
+  ): Promise<Cart> | Observable<Cart> | Cart;
+
+  removeProduct(request: RemoveProductRequest, metadata?: Metadata): Promise<Cart> | Observable<Cart> | Cart;
 }
 
 export function CartsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["addProductToCart", "getCartByUserId", "getCartQuantityByUserId"];
+    const grpcMethods: string[] = [
+      "addProductToCart",
+      "getCartByUserId",
+      "getCartQuantityByUserId",
+      "updateProductQuantity",
+      "removeProduct",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("CartsService", method)(constructor.prototype[method], method, descriptor);

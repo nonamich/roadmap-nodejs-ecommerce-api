@@ -1,12 +1,31 @@
-import type { FC } from 'react';
+import clsx from 'clsx';
+import { useEffect, useState, type FC } from 'react';
+import { Link } from 'react-router';
 import type { CartItemResponseDto } from '~/api';
+import { useCart } from '~/cart/hooks';
 
-export const CartItem: FC<CartItemResponseDto> = ({ product, quantity }) => {
+export const CartItem: FC<CartItemResponseDto> = ({
+  product,
+  quantity: initialQuantity,
+}) => {
+  const [quantity, setQuantity] = useState(initialQuantity);
+  const cart = useCart();
+
+  useEffect(() => {
+    cart;
+  }, [cart]);
+
   return (
-    <li className="flex items-center gap-4">
+    <li
+      className={clsx('flex items-center gap-4', {
+        'pointer-events-none opacity-20': cart.loading,
+      })}
+    >
       <img src={product.image} className="size-16 rounded object-cover" />
       <div>
-        <h3 className="text-sm text-gray-100">{product.title}</h3>
+        <h3 className="text-sm text-gray-100">
+          <Link to={`/product/${product.id}`}>{product.title}</Link>
+        </h3>
       </div>
       <div className="flex flex-1 items-center justify-end gap-2">
         <form>
@@ -18,8 +37,8 @@ export const CartItem: FC<CartItemResponseDto> = ({ product, quantity }) => {
             type="number"
             min="1"
             value={quantity}
-            id="Line1Qty"
-            className="h-8 w-12 rounded border-gray-700 bg-gray-800 p-0 text-center text-xs text-gray-200 [-moz-appearance:_textfield] focus:outline-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+            onChange={({ target }) => setQuantity(+target.value)}
+            className="h-10 w-12 rounded border-gray-700 bg-gray-800 px-1 text-center text-xs text-gray-100"
           />
         </form>
         <button className="text-gray-600 transition hover:text-red-600">

@@ -11,8 +11,8 @@ async function bootstrap() {
   const config = app.get(ConfigService);
   const port = config.get('PORT') || 3000;
 
-  app.enableCors();
   initSwagger(app);
+  app.enableCors();
 
   await app.listen(port);
 }
