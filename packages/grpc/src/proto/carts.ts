@@ -12,41 +12,34 @@ import { Product } from "./products";
 
 export const protobufPackage = "carts";
 
-export interface Cart {
-  items: CartItem[];
-  totalPrice: number;
-}
-
-export interface CartItem {
+export interface CartItemResponse {
   quantity: number;
   product: Product | null;
 }
 
-export interface GetCartByUserIdRequest {
+export interface CartResponse {
+  items: CartItemResponse[];
+  totalQuantity: number;
+  totalPrice: number;
+}
+
+export interface GetCartRequest {
   userId: number;
 }
 
-export interface GetCartQuantityByUserIdRequest {
-  userId: number;
-}
-
-export interface GetCartQuantityResponse {
-  quantity: number;
-}
-
-export interface AddProductToCartRequest {
+export interface AddToCartRequest {
   productId: number;
   quantity: number;
   userId: number;
 }
 
-export interface UpdateProductQuantityRequest {
+export interface UpdateQuantityRequest {
   productId: number;
   quantity: number;
   userId: number;
 }
 
-export interface RemoveProductRequest {
+export interface RemoveFromCartRequest {
   userId: number;
   productId: number;
 }
@@ -54,50 +47,40 @@ export interface RemoveProductRequest {
 export const CARTS_PACKAGE_NAME = "carts";
 
 export interface CartsServiceClient {
-  addProductToCart(request: AddProductToCartRequest, metadata?: Metadata): Observable<GetCartQuantityResponse>;
+  addToCart(request: AddToCartRequest, metadata?: Metadata): Observable<CartResponse>;
 
-  getCartByUserId(request: GetCartByUserIdRequest, metadata?: Metadata): Observable<Cart>;
+  getCart(request: GetCartRequest, metadata?: Metadata): Observable<CartResponse>;
 
-  getCartQuantityByUserId(
-    request: GetCartQuantityByUserIdRequest,
-    metadata?: Metadata,
-  ): Observable<GetCartQuantityResponse>;
+  updateQuantity(request: UpdateQuantityRequest, metadata?: Metadata): Observable<CartResponse>;
 
-  updateProductQuantity(request: UpdateProductQuantityRequest, metadata?: Metadata): Observable<Cart>;
-
-  removeProduct(request: RemoveProductRequest, metadata?: Metadata): Observable<Cart>;
+  removeFromCart(request: RemoveFromCartRequest, metadata?: Metadata): Observable<CartResponse>;
 }
 
 export interface CartsServiceController {
-  addProductToCart(
-    request: AddProductToCartRequest,
+  addToCart(
+    request: AddToCartRequest,
     metadata?: Metadata,
-  ): Promise<GetCartQuantityResponse> | Observable<GetCartQuantityResponse> | GetCartQuantityResponse;
+  ): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
 
-  getCartByUserId(request: GetCartByUserIdRequest, metadata?: Metadata): Promise<Cart> | Observable<Cart> | Cart;
-
-  getCartQuantityByUserId(
-    request: GetCartQuantityByUserIdRequest,
+  getCart(
+    request: GetCartRequest,
     metadata?: Metadata,
-  ): Promise<GetCartQuantityResponse> | Observable<GetCartQuantityResponse> | GetCartQuantityResponse;
+  ): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
 
-  updateProductQuantity(
-    request: UpdateProductQuantityRequest,
+  updateQuantity(
+    request: UpdateQuantityRequest,
     metadata?: Metadata,
-  ): Promise<Cart> | Observable<Cart> | Cart;
+  ): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
 
-  removeProduct(request: RemoveProductRequest, metadata?: Metadata): Promise<Cart> | Observable<Cart> | Cart;
+  removeFromCart(
+    request: RemoveFromCartRequest,
+    metadata?: Metadata,
+  ): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
 }
 
 export function CartsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = [
-      "addProductToCart",
-      "getCartByUserId",
-      "getCartQuantityByUserId",
-      "updateProductQuantity",
-      "removeProduct",
-    ];
+    const grpcMethods: string[] = ["addToCart", "getCart", "updateQuantity", "removeFromCart"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("CartsService", method)(constructor.prototype[method], method, descriptor);

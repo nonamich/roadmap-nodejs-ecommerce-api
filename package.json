@@ -2,6 +2,6 @@
   "name": "roadmap-nodejs-ecommerce-api",
   "packageManager": "pnpm@9.15.4",
   "dependencies": {
-    "turbo": "^2.3.3"
+    "turbo": "^2.3.4"
   }
 }

@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { RemoveProductRequest } from '@packages/grpc/proto/carts';
+import { RemoveFromCartRequest } from '@packages/grpc/proto/carts';
 import { IsInt } from 'class-validator';
 
-export class RemoveProductRequestDto
-  implements Omit<RemoveProductRequest, 'userId'>
+export class RemoveFromCartRequestDto
+  implements Omit<RemoveFromCartRequest, 'userId'>
 {
   @ApiProperty()
   @IsInt()

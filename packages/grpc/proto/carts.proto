@@ -4,49 +4,41 @@ package carts;
 
 import "products.proto";
 
-message Cart {
-  repeated CartItem items = 2;
-  int32 totalPrice = 3;
-}
-
-message CartItem {
+message CartItemResponse {
   int32 quantity = 1;
   products.Product product = 2;
 }
 
-message GetCartByUserIdRequest {
+message CartResponse {
+  repeated CartItemResponse items = 1;
+  int32 totalQuantity = 2;
+  int32 totalPrice = 3;
+}
+
+message GetCartRequest {
   int32 userId = 1;
 }
 
-message GetCartQuantityByUserIdRequest {
-  int32 userId = 1;
-}
-
-message GetCartQuantityResponse {
-  int32 quantity = 1;
-}
-
-message AddProductToCartRequest {
+message AddToCartRequest {
   int32 productId = 1;
   int32 quantity = 2;
   int32 userId = 3;
 }
 
-message UpdateProductQuantityRequest {
+message UpdateQuantityRequest {
   int32 productId = 1;
   int32 quantity = 2;
   int32 userId = 3;
 }
 
-message RemoveProductRequest {
+message RemoveFromCartRequest {
   int32 userId = 1;
   int32 productId = 2;
 }
 
 service CartsService {
-  rpc AddProductToCart(AddProductToCartRequest) returns (GetCartQuantityResponse);
-  rpc GetCartByUserId(GetCartByUserIdRequest) returns (Cart);
-  rpc GetCartQuantityByUserId(GetCartQuantityByUserIdRequest) returns (GetCartQuantityResponse);
-  rpc UpdateProductQuantity(UpdateProductQuantityRequest) returns (Cart);
-  rpc RemoveProduct(RemoveProductRequest) returns (Cart);
+  rpc AddToCart(AddToCartRequest) returns (CartResponse);
+  rpc GetCart(GetCartRequest) returns (CartResponse);
+  rpc UpdateQuantity(UpdateQuantityRequest) returns (CartResponse);
+  rpc RemoveFromCart(RemoveFromCartRequest) returns (CartResponse);
 }

@@ -4,6 +4,8 @@ import {
   Delete,
   Get,
   Inject,
+  Param,
+  ParseIntPipe,
   Post,
   Put,
   UseGuards,
@@ -14,10 +16,12 @@ import { AuthorizedUser } from '../auth/auth.interface';
 import { CurrentUser } from '../auth/decorators/authorized-user.decorator';
 import { JWTAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CARTS_SERVICE_PROVIDER_TOKEN } from './carts.constants';
-import { CartResponseDto, GetCartQuantityResponseDto } from './dto';
-import { AddProductToCartRequestDto } from './dto/add-product-to-cart-request.dto';
-import { RemoveProductRequestDto } from './dto/remove-product-request.dto';
-import { UpdateProductQuantityRequestDto } from './dto/update-product-quantity-request.dto';
+import {
+  AddToCartRequestDto,
+  CartResponseDto,
+  RemoveFromCartRequestDto,
+  UpdateQuantityRequestDto,
+} from './dto';
 
 @ApiTags('cart')
 @Controller('cart')
@@ -27,52 +31,45 @@ export class CartsController {
     private readonly cartsService: CartsServiceClient,
   ) {}
 
-  @ApiBearerAuth()
-  @UseGuards(JWTAuthGuard)
-  @ApiOkResponse({ type: GetCartQuantityResponseDto })
-  @Get('/quantity')
-  getCartQuantity(@CurrentUser() { id: userId }: AuthorizedUser) {
-    return this.cartsService.getCartQuantityByUserId({ userId });
-  }
-
   @ApiOkResponse({ type: CartResponseDto })
   @ApiBearerAuth()
   @UseGuards(JWTAuthGuard)
   @Get()
   getCart(@CurrentUser() { id: userId }: AuthorizedUser) {
-    return this.cartsService.getCartByUserId({ userId });
-  }
-
-  @ApiOkResponse({ type: GetCartQuantityResponseDto })
-  @ApiBearerAuth()
-  @UseGuards(JWTAuthGuard)
-  @Post()
-  addToCart(
-    @Body() { productId, quantity }: AddProductToCartRequestDto,
-    @CurrentUser() { id: userId }: AuthorizedUser,
-  ) {
-    return this.cartsService.addProductToCart({ userId, productId, quantity });
+    return this.cartsService.getCart({ userId });
   }
 
   @ApiOkResponse({ type: CartResponseDto })
   @ApiBearerAuth()
   @UseGuards(JWTAuthGuard)
-  @Put()
-  updateProductQuantity(
-    @Body() body: UpdateProductQuantityRequestDto,
+  @Post()
+  addToCart(
+    @Body() { productId, quantity }: AddToCartRequestDto,
     @CurrentUser() { id: userId }: AuthorizedUser,
   ) {
-    return this.cartsService.updateProductQuantity({ userId, ...body });
+    return this.cartsService.addToCart({ userId, productId, quantity });
+  }
+
+  @ApiOkResponse({ type: CartResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JWTAuthGuard)
+  @Put('/:productId')
+  updateQuantity(
+    @Param('productId', ParseIntPipe) productId: number,
+    @Body() { quantity }: UpdateQuantityRequestDto,
+    @CurrentUser() { id: userId }: AuthorizedUser,
+  ) {
+    return this.cartsService.updateQuantity({ userId, productId, quantity });
   }
 
   @ApiOkResponse({ type: CartResponseDto })
   @ApiBearerAuth()
   @UseGuards(JWTAuthGuard)
   @Delete()
-  removeProduct(
-    @Body() body: RemoveProductRequestDto,
+  removeFromCart(
+    @Body() body: RemoveFromCartRequestDto,
     @CurrentUser() { id: userId }: AuthorizedUser,
   ) {
-    return this.cartsService.removeProduct({ userId, ...body });
+    return this.cartsService.removeFromCart({ userId, ...body });
   }
 }

@@ -6,7 +6,7 @@ import {
   GrpcValidationPipe,
 } from '@packages/grpc/nest';
 import {
-  Cart,
+  CartResponse,
   CartsServiceController,
   CartsServiceControllerMethods,
 } from '@packages/grpc/proto/carts';
@@ -16,11 +16,10 @@ import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.f
 import { ORMService } from '../orm/orm.service';
 import { PRODUCTS_SERVICE_PROVIDER_TOKEN } from './carts.constants';
 import {
-  AddProductToCartRequestDto,
-  GetCartByUserIdRequestDto,
-  GetCartQuantityByUserIdRequestDto,
-  RemoveProductRequestDto,
-  UpdateProductQuantityRequestDto,
+  AddToCartRequestDto,
+  GetCartRequestDto,
+  RemoveFromCartRequestDto,
+  UpdateQuantityRequestDto,
 } from './dto';
 
 @Controller()
@@ -33,9 +32,7 @@ export class CartsGrpcController implements CartsServiceController {
   ) {}
 
   @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
-  async getCartByUserId(
-    @Payload(GrpcValidationPipe) { userId }: GetCartByUserIdRequestDto,
-  ) {
+  async getCart(@Payload(GrpcValidationPipe) { userId }: GetCartRequestDto) {
     const cartItems = await this.orm.cartItem.findMany({
       select: {
         quantity: true,
@@ -45,10 +42,16 @@ export class CartsGrpcController implements CartsServiceController {
         userId,
       },
     });
-    const cart: Cart = {
+    const cart: CartResponse = {
       items: [],
       totalPrice: 0,
+      totalQuantity: 0,
     };
+
+    if (!cartItems.length) {
+      return cart;
+    }
+
     const { products } = await firstValueFrom(
       this.productsService.getProductsByIds({
         ids: cartItems.map(({ productId }) => productId),
@@ -66,39 +69,16 @@ export class CartsGrpcController implements CartsServiceController {
       });
 
       cart.totalPrice += product.price * quantity;
+      cart.totalQuantity += quantity;
     });
 
     return cart;
   }
 
   @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
-  async getCartQuantityByUserId(
-    @Payload(GrpcValidationPipe) { userId }: GetCartQuantityByUserIdRequestDto,
-  ) {
-    let {
-      _sum: { quantity },
-    } = await this.orm.cartItem.aggregate({
-      _sum: {
-        quantity: true,
-      },
-      where: {
-        userId,
-      },
-    });
-
-    if (!quantity) {
-      quantity = 0;
-    }
-
-    return {
-      quantity,
-    };
-  }
-
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
-  async addProductToCart(
+  async addToCart(
     @Payload(GrpcValidationPipe)
-    { productId, quantity, userId }: AddProductToCartRequestDto,
+    { productId, quantity, userId }: AddToCartRequestDto,
   ) {
     const product = await firstValueFrom(
       this.productsService.getProductById({ id: productId }),
@@ -123,22 +103,22 @@ export class CartsGrpcController implements CartsServiceController {
       },
     });
 
-    return await this.getCartQuantityByUserId({ userId });
+    return await this.getCart({ userId });
   }
 
   @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
-  async updateProductQuantity({
+  async updateQuantity({
     productId,
     quantity,
     userId,
-  }: UpdateProductQuantityRequestDto) {
+  }: UpdateQuantityRequestDto) {
     const product = await firstValueFrom(
       this.productsService.getProductById({
         id: productId,
       }),
     );
 
-    if (product.amount > quantity) {
+    if (product.amount < quantity) {
       throw new GrpcInvalidArgumentException('Quantity more than allowed');
     }
 
@@ -154,11 +134,11 @@ export class CartsGrpcController implements CartsServiceController {
       },
     });
 
-    return await this.getCartByUserId({ userId });
+    return await this.getCart({ userId });
   }
 
   @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
-  async removeProduct({ productId, userId }: RemoveProductRequestDto) {
+  async removeFromCart({ productId, userId }: RemoveFromCartRequestDto) {
     await this.orm.cartItem.delete({
       where: {
         productId_userId: {
@@ -168,6 +148,6 @@ export class CartsGrpcController implements CartsServiceController {
       },
     });
 
-    return await this.getCartByUserId({ userId });
+    return await this.getCart({ userId });
   }
 }

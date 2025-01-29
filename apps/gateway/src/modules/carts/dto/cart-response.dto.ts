@@ -1,10 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Cart } from '@packages/grpc/proto/carts';
+import { CartResponse } from '@packages/grpc/proto/carts';
 import { CartItemResponseDto } from './cart-item-response.dto';
 
-export class CartResponseDto implements Cart {
+export class CartResponseDto implements CartResponse {
   @ApiProperty()
   totalPrice!: number;
+
+  @ApiProperty()
+  totalQuantity!: number;
 
   @ApiProperty({ type: CartItemResponseDto, isArray: true })
   items!: CartItemResponseDto[];

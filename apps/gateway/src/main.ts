@@ -4,15 +4,17 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { initSwagger } from './swagger';
 
-bootstrap();
+main();
 
-async function bootstrap() {
+async function main() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = app.get(ConfigService);
   const port = config.get('PORT') || 3000;
 
-  initSwagger(app);
   app.enableCors();
+  app.set('query parser', 'extended');
+
+  initSwagger(app);
 
   await app.listen(port);
 }
