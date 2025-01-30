@@ -1,16 +1,22 @@
-import { useState, type FC } from 'react';
-import { Link } from 'react-router';
+import { useEffect, useState, type FC } from 'react';
+import { Link, useNavigation } from 'react-router';
 import { useAuth } from '~/auth/hooks';
 import { useCart } from '~/cart/hooks';
+import { Button } from '.';
 
 export const Header: FC = () => {
   const { user, logout } = useAuth();
+  const { location } = useNavigation();
   const cart = useCart();
   const [isDropdown, setDropdown] = useState(false);
 
   const onDropdown = () => {
     setDropdown((v) => !v);
   };
+
+  useEffect(() => {
+    setDropdown(false);
+  }, [location?.pathname]);
 
   return (
     <header className="bg-white dark:bg-gray-900">
@@ -57,15 +63,10 @@ export const Header: FC = () => {
                   <path d="M17 17h-11v-14h-2" />
                   <path d="M6 5l14 1l-1 7h-13" />
                 </svg>{' '}
-                {cart.quantity}
+                {cart.totalQuantity}
               </Link>
               <div className="relative hidden md:block">
-                <button
-                  onClick={onDropdown}
-                  className="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700 dark:hover:bg-teal-500"
-                >
-                  {user.email}
-                </button>
+                <Button onClick={onDropdown}>{user.email}</Button>
                 {isDropdown && (
                   <div
                     className="absolute end-0 z-10 mt-3 w-56 rounded-md border border-gray-100 bg-white shadow-lg dark:border-gray-800 dark:bg-gray-900"
@@ -73,11 +74,10 @@ export const Header: FC = () => {
                   >
                     <div className="p-2">
                       <Link
-                        to="/settings"
+                        to="/orders"
                         className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-                        role="menuitem"
                       >
-                        My profile
+                        My Orders
                       </Link>
                       <button
                         onClick={logout}

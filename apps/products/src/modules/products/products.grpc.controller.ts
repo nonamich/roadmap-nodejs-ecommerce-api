@@ -9,6 +9,8 @@ import {
   ProductsServiceController,
   ProductsServiceControllerMethods,
 } from '@packages/grpc/proto/products';
+import { mergeAll } from 'rxjs';
+import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
 import { ORMService } from '~/modules/orm/orm.service';
 import {
@@ -24,7 +26,7 @@ import { PRODUCTS_SELECT } from './products.constants';
 export class ProductsGrpcController implements ProductsServiceController {
   constructor(private readonly orm: ORMService) {}
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async getProductById(
     @Payload(GrpcValidationPipe) { id }: GetProductByIdRequestDto,
   ) {
@@ -36,11 +38,11 @@ export class ProductsGrpcController implements ProductsServiceController {
     return product;
   }
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
-  async getProductsByIds(
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
+  getProductsByIds(
     @Payload(GrpcValidationPipe) { ids }: GetProductsByIdsRequestDto,
   ) {
-    const products = await this.orm.product.findMany({
+    const promise = this.orm.product.findMany({
       where: {
         id: {
           in: ids,
@@ -49,12 +51,10 @@ export class ProductsGrpcController implements ProductsServiceController {
       select: PRODUCTS_SELECT,
     });
 
-    return {
-      products,
-    };
+    return fromPromise(promise).pipe(mergeAll());
   }
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async getFeaturedProducts(
     @Payload(GrpcValidationPipe)
     { pagination }: GetFeaturedProductsRequestDto,
@@ -86,7 +86,7 @@ export class ProductsGrpcController implements ProductsServiceController {
     };
   }
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async getProductsByFilter(
     @Payload(GrpcValidationPipe)
     { pagination, brandId, categoryId }: GetProductsByFilterRequestDto,

@@ -1,5 +1,5 @@
 import { AddToCartRequest } from '@packages/grpc/proto/carts';
-import { IsInt } from 'class-validator';
+import { IsInt, Min } from 'class-validator';
 
 export class AddToCartRequestDto implements AddToCartRequest {
   @IsInt()
@@ -9,5 +9,6 @@ export class AddToCartRequestDto implements AddToCartRequest {
   userId!: number;
 
   @IsInt()
+  @Min(1)
   quantity!: number;
 }

@@ -12,6 +12,7 @@ model CartItem {
   productId Int
   userId    Int
   quantity  Int
+  price     Float
 
   @@unique([productId, userId])
 }

@@ -74,13 +74,9 @@ message ProductsByFilterResponse {
   optional Category category = 4;
 }
 
-message GetProductsByIdsResponse {
-  repeated Product products = 1;
-}
-
 service ProductsService {
   rpc GetProductById(GetProductByIdRequest) returns (Product);
-  rpc GetProductsByIds(GetProductsByIdsRequest) returns (GetProductsByIdsResponse);
+  rpc GetProductsByIds(GetProductsByIdsRequest) returns (stream Product);
   rpc GetProductsByFilter(GetProductsByFilterRequest) returns (ProductsByFilterResponse);
   rpc GetFeaturedProducts(GetFeaturedProductsRequest) returns (ProductsResponse);
 }

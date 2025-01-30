@@ -22,6 +22,11 @@ model Product {
   category        Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   brand           Brand            @relation(fields: [brandId], references: [id], onDelete: Cascade)
   featuredProduct FeaturedProduct?
+
+  @@index([price])
+  @@index([rating])
+  @@index([brandId])
+  @@index([categoryId])
 }
 
 model FeaturedProduct {

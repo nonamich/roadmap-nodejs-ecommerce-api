@@ -1,19 +1,16 @@
 import clsx from 'clsx';
-import { useEffect, useState, type FC } from 'react';
+import { type FC } from 'react';
 import { Link } from 'react-router';
 import type { CartItemResponseDto } from '~/api';
 import { useCart } from '~/cart/hooks';
+import { Price } from './Price';
+import { QuantityInput } from './QuantityInput';
 
-export const CartItem: FC<CartItemResponseDto> = ({
-  product,
-  quantity: initialQuantity,
-}) => {
-  const [quantity, setQuantity] = useState(initialQuantity);
+export const CartItem: FC<CartItemResponseDto> = ({ product, quantity }) => {
   const cart = useCart();
-
-  useEffect(() => {
-    cart;
-  }, [cart]);
+  const onRemove = () => {
+    cart.remove(product.id);
+  };
 
   return (
     <li
@@ -24,24 +21,24 @@ export const CartItem: FC<CartItemResponseDto> = ({
       <img src={product.image} className="size-16 rounded object-cover" />
       <div>
         <h3 className="text-sm text-gray-100">
-          <Link to={`/product/${product.id}`}>{product.title}</Link>
+          <Link to={`/product/${product.id}`}>
+            {product.title} <Price price={product.price} /> x {quantity} ={' '}
+            <Price price={product.price * quantity} />
+          </Link>
         </h3>
       </div>
       <div className="flex flex-1 items-center justify-end gap-2">
-        <form>
-          <label htmlFor="Line1Qty" className="sr-only">
-            {' '}
-            Quantity{' '}
-          </label>
-          <input
-            type="number"
-            min="1"
-            value={quantity}
-            onChange={({ target }) => setQuantity(+target.value)}
-            className="h-10 w-12 rounded border-gray-700 bg-gray-800 px-1 text-center text-xs text-gray-100"
-          />
-        </form>
-        <button className="text-gray-600 transition hover:text-red-600">
+        <QuantityInput
+          quantity={quantity}
+          onChange={(quantity) => {
+            cart.add(product.id, quantity);
+          }}
+          max={product.amount}
+        />
+        <button
+          className="text-gray-600 transition hover:text-red-600"
+          onClick={onRemove}
+        >
           <span className="sr-only">Remove item</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"

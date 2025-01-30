@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLoaderData, type ClientLoaderFunctionArgs } from 'react-router';
 import { productsControllerGetProductById } from '~/api';
 import { useCart } from '~/cart/hooks';
-import { Breadcrumbs, Price } from '~/components';
+import { Breadcrumbs, Price, QuantityInput } from '~/components';
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   const { data } = await productsControllerGetProductById({
@@ -42,8 +42,8 @@ const Product = () => {
           },
         ]}
       />
-      <section className="py-8 antialiased md:py-16 dark:bg-gray-900">
-        <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+      <section className="py-8">
+        <div>
           <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
             <div className="mx-auto max-w-md shrink-0 lg:max-w-lg">
               <img src={product.image} />
@@ -61,21 +61,26 @@ const Product = () => {
                   Rating:
                   {product.rating && (
                     <p className="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">
-                      ({product.rating.toFixed(2)})
+                      {(product.rating * 10).toFixed(2)} / 10
                     </p>
                   )}
+                </div>
+
+                <div className="mt-2 flex items-center gap-2 sm:mt-0">
+                  Amount:
+                  <p className="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">
+                    {product.amount}
+                  </p>
                 </div>
               </div>
               <form
                 className="mt-6 flex items-center gap-2"
                 onSubmit={onSubmit}
               >
-                <input
-                  type="number"
-                  min="1"
-                  value={quantity}
-                  onChange={({ target }) => setQuantity(+target.value)}
-                  className="h-10 w-12 rounded border-gray-700 bg-gray-800 px-1 text-center text-xs text-gray-100"
+                <QuantityInput
+                  max={product.amount}
+                  onChange={setQuantity}
+                  quantity={quantity}
                 />
                 <button
                   className="focus:ring-primary-300 dark:focus:ring-primary-800 mt-4 flex items-center justify-center rounded bg-teal-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-800 focus:outline-none focus:ring-4 sm:mt-0 dark:bg-teal-600 dark:hover:bg-teal-700"

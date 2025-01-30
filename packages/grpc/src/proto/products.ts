@@ -5,7 +5,6 @@
 // source: products.proto
 
 /* eslint-disable */
-import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
@@ -76,10 +75,6 @@ export interface ProductsByFilterResponse {
   category?: Category | null | undefined;
 }
 
-export interface GetProductsByIdsResponse {
-  products: Product[];
-}
-
 export const PRODUCTS_PACKAGE_NAME = "products";
 
 wrappers[".google.protobuf.Timestamp"] = {
@@ -92,31 +87,26 @@ wrappers[".google.protobuf.Timestamp"] = {
 } as any;
 
 export interface ProductsServiceClient {
-  getProductById(request: GetProductByIdRequest, metadata?: Metadata): Observable<Product>;
+  getProductById(request: GetProductByIdRequest): Observable<Product>;
 
-  getProductsByIds(request: GetProductsByIdsRequest, metadata?: Metadata): Observable<GetProductsByIdsResponse>;
+  getProductsByIds(request: GetProductsByIdsRequest): Observable<Product>;
 
-  getProductsByFilter(request: GetProductsByFilterRequest, metadata?: Metadata): Observable<ProductsByFilterResponse>;
+  getProductsByFilter(request: GetProductsByFilterRequest): Observable<ProductsByFilterResponse>;
 
-  getFeaturedProducts(request: GetFeaturedProductsRequest, metadata?: Metadata): Observable<ProductsResponse>;
+  getFeaturedProducts(request: GetFeaturedProductsRequest): Observable<ProductsResponse>;
 }
 
 export interface ProductsServiceController {
-  getProductById(request: GetProductByIdRequest, metadata?: Metadata): Promise<Product> | Observable<Product> | Product;
+  getProductById(request: GetProductByIdRequest): Promise<Product> | Observable<Product> | Product;
 
-  getProductsByIds(
-    request: GetProductsByIdsRequest,
-    metadata?: Metadata,
-  ): Promise<GetProductsByIdsResponse> | Observable<GetProductsByIdsResponse> | GetProductsByIdsResponse;
+  getProductsByIds(request: GetProductsByIdsRequest): Observable<Product>;
 
   getProductsByFilter(
     request: GetProductsByFilterRequest,
-    metadata?: Metadata,
   ): Promise<ProductsByFilterResponse> | Observable<ProductsByFilterResponse> | ProductsByFilterResponse;
 
   getFeaturedProducts(
     request: GetFeaturedProductsRequest,
-    metadata?: Metadata,
   ): Promise<ProductsResponse> | Observable<ProductsResponse> | ProductsResponse;
 }
 

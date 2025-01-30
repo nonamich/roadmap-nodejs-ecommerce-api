@@ -5,15 +5,17 @@
 // source: carts.proto
 
 /* eslint-disable */
-import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
+import { Empty } from "./google/protobuf/empty";
 import { Product } from "./products";
 
 export const protobufPackage = "carts";
 
 export interface CartItemResponse {
   quantity: number;
+  productId: number;
+  price: number;
   product: Product | null;
 }
 
@@ -33,54 +35,40 @@ export interface AddToCartRequest {
   userId: number;
 }
 
-export interface UpdateQuantityRequest {
-  productId: number;
-  quantity: number;
-  userId: number;
-}
-
 export interface RemoveFromCartRequest {
   userId: number;
   productId: number;
 }
 
+export interface RemoveCartRequest {
+  userId: number;
+}
+
 export const CARTS_PACKAGE_NAME = "carts";
 
 export interface CartsServiceClient {
-  addToCart(request: AddToCartRequest, metadata?: Metadata): Observable<CartResponse>;
+  addToCart(request: AddToCartRequest): Observable<CartResponse>;
 
-  getCart(request: GetCartRequest, metadata?: Metadata): Observable<CartResponse>;
+  getCart(request: GetCartRequest): Observable<CartResponse>;
 
-  updateQuantity(request: UpdateQuantityRequest, metadata?: Metadata): Observable<CartResponse>;
+  removeFromCart(request: RemoveFromCartRequest): Observable<CartResponse>;
 
-  removeFromCart(request: RemoveFromCartRequest, metadata?: Metadata): Observable<CartResponse>;
+  removeCart(request: RemoveCartRequest): Observable<Empty>;
 }
 
 export interface CartsServiceController {
-  addToCart(
-    request: AddToCartRequest,
-    metadata?: Metadata,
-  ): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
+  addToCart(request: AddToCartRequest): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
 
-  getCart(
-    request: GetCartRequest,
-    metadata?: Metadata,
-  ): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
+  getCart(request: GetCartRequest): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
 
-  updateQuantity(
-    request: UpdateQuantityRequest,
-    metadata?: Metadata,
-  ): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
+  removeFromCart(request: RemoveFromCartRequest): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
 
-  removeFromCart(
-    request: RemoveFromCartRequest,
-    metadata?: Metadata,
-  ): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
+  removeCart(request: RemoveCartRequest): void;
 }
 
 export function CartsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["addToCart", "getCart", "updateQuantity", "removeFromCart"];
+    const grpcMethods: string[] = ["addToCart", "getCart", "removeFromCart", "removeCart"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("CartsService", method)(constructor.prototype[method], method, descriptor);

@@ -1,0 +1,10 @@
+{
+  "extends": "@packages/configs/typescript/tsconfig.node.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./src/*"],
+    }
+  }
+}

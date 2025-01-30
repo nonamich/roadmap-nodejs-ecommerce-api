@@ -11,15 +11,15 @@ import {
   CartsServiceControllerMethods,
 } from '@packages/grpc/proto/carts';
 import { ProductsServiceClient } from '@packages/grpc/proto/products';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, toArray } from 'rxjs';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
-import { ORMService } from '../orm/orm.service';
+import { ORMService } from '~/modules/orm/orm.service';
 import { PRODUCTS_SERVICE_PROVIDER_TOKEN } from './carts.constants';
 import {
   AddToCartRequestDto,
   GetCartRequestDto,
+  RemoveCartRequestDto,
   RemoveFromCartRequestDto,
-  UpdateQuantityRequestDto,
 } from './dto';
 
 @Controller()
@@ -31,12 +31,24 @@ export class CartsGrpcController implements CartsServiceController {
     private readonly orm: ORMService,
   ) {}
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
+  async removeCart(
+    @Payload(GrpcValidationPipe) { userId }: RemoveCartRequestDto,
+  ) {
+    await this.orm.cartItem.deleteMany({
+      where: {
+        userId,
+      },
+    });
+  }
+
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async getCart(@Payload(GrpcValidationPipe) { userId }: GetCartRequestDto) {
     const cartItems = await this.orm.cartItem.findMany({
       select: {
         quantity: true,
         productId: true,
+        price: true,
       },
       where: {
         userId,
@@ -52,30 +64,32 @@ export class CartsGrpcController implements CartsServiceController {
       return cart;
     }
 
-    const { products } = await firstValueFrom(
-      this.productsService.getProductsByIds({
-        ids: cartItems.map(({ productId }) => productId),
-      }),
+    const products = await firstValueFrom(
+      this.productsService
+        .getProductsByIds({
+          ids: cartItems.map(({ productId }) => productId),
+        })
+        .pipe(toArray()),
     );
 
     products.forEach((product) => {
-      const { quantity } = cartItems.find(
+      const cartItem = cartItems.find(
         ({ productId }) => productId === product.id,
       )!;
 
       cart.items.push({
-        quantity,
+        ...cartItem,
         product,
       });
 
-      cart.totalPrice += product.price * quantity;
-      cart.totalQuantity += quantity;
+      cart.totalPrice += cartItem.price * cartItem.quantity;
+      cart.totalQuantity += cartItem.quantity;
     });
 
     return cart;
   }
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async addToCart(
     @Payload(GrpcValidationPipe)
     { productId, quantity, userId }: AddToCartRequestDto,
@@ -84,46 +98,18 @@ export class CartsGrpcController implements CartsServiceController {
       this.productsService.getProductById({ id: productId }),
     );
 
+    if (product.amount < quantity) {
+      throw new GrpcInvalidArgumentException('Quantity more than allowed');
+    }
+
     await this.orm.cartItem.upsert({
       create: {
+        price: product.price,
         userId,
         productId: product.id,
         quantity,
       },
       update: {
-        quantity: {
-          increment: quantity,
-        },
-      },
-      where: {
-        productId_userId: {
-          productId: product.id,
-          userId,
-        },
-      },
-    });
-
-    return await this.getCart({ userId });
-  }
-
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
-  async updateQuantity({
-    productId,
-    quantity,
-    userId,
-  }: UpdateQuantityRequestDto) {
-    const product = await firstValueFrom(
-      this.productsService.getProductById({
-        id: productId,
-      }),
-    );
-
-    if (product.amount < quantity) {
-      throw new GrpcInvalidArgumentException('Quantity more than allowed');
-    }
-
-    await this.orm.cartItem.update({
-      data: {
         quantity,
       },
       where: {
@@ -137,7 +123,7 @@ export class CartsGrpcController implements CartsServiceController {
     return await this.getCart({ userId });
   }
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async removeFromCart({ productId, userId }: RemoveFromCartRequestDto) {
     await this.orm.cartItem.delete({
       where: {

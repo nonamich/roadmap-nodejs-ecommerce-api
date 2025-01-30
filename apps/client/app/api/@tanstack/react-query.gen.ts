@@ -8,10 +8,11 @@ import {
   authControllerSignup,
   cartsControllerAddToCart,
   cartsControllerGetCart,
-  cartsControllerGetCartQuantity,
-  cartsControllerRemoveProduct,
-  cartsControllerUpdateProductQuantity,
+  cartsControllerRemoveFromCart,
   client,
+  ordersControllerAddOrder,
+  ordersControllerGetOrder,
+  ordersControllerGetOrders,
   productsControllerGetFeaturedProducts,
   productsControllerGetProductById,
   productsControllerGetProductsByFilter,
@@ -26,12 +27,13 @@ import type {
   CartsControllerAddToCartData,
   CartsControllerAddToCartError,
   CartsControllerAddToCartResponse,
-  CartsControllerRemoveProductData,
-  CartsControllerRemoveProductError,
-  CartsControllerRemoveProductResponse,
-  CartsControllerUpdateProductQuantityData,
-  CartsControllerUpdateProductQuantityError,
-  CartsControllerUpdateProductQuantityResponse,
+  CartsControllerRemoveFromCartData,
+  CartsControllerRemoveFromCartError,
+  CartsControllerRemoveFromCartResponse,
+  OrdersControllerAddOrderData,
+  OrdersControllerAddOrderError,
+  OrdersControllerAddOrderResponse,
+  OrdersControllerGetOrderData,
   ProductsControllerGetFeaturedProductsData,
   ProductsControllerGetProductByIdData,
   ProductsControllerGetProductsByFilterData,
@@ -235,27 +237,6 @@ export const productsControllerGetProductsByFilterOptions = (
   });
 };
 
-export const cartsControllerGetCartQuantityQueryKey = (
-  options?: OptionsLegacyParser,
-) => [createQueryKey('cartsControllerGetCartQuantity', options)];
-
-export const cartsControllerGetCartQuantityOptions = (
-  options?: OptionsLegacyParser,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await cartsControllerGetCartQuantity({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: cartsControllerGetCartQuantityQueryKey(options),
-  });
-};
-
 export const cartsControllerGetCartQueryKey = (
   options?: OptionsLegacyParser,
 ) => [createQueryKey('cartsControllerGetCart', options)];
@@ -318,18 +299,16 @@ export const cartsControllerAddToCartMutation = (
   return mutationOptions;
 };
 
-export const cartsControllerUpdateProductQuantityMutation = (
-  options?: Partial<
-    OptionsLegacyParser<CartsControllerUpdateProductQuantityData>
-  >,
+export const cartsControllerRemoveFromCartMutation = (
+  options?: Partial<OptionsLegacyParser<CartsControllerRemoveFromCartData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    CartsControllerUpdateProductQuantityResponse,
-    CartsControllerUpdateProductQuantityError,
-    OptionsLegacyParser<CartsControllerUpdateProductQuantityData>
+    CartsControllerRemoveFromCartResponse,
+    CartsControllerRemoveFromCartError,
+    OptionsLegacyParser<CartsControllerRemoveFromCartData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await cartsControllerUpdateProductQuantity({
+      const { data } = await cartsControllerRemoveFromCart({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -340,16 +319,58 @@ export const cartsControllerUpdateProductQuantityMutation = (
   return mutationOptions;
 };
 
-export const cartsControllerRemoveProductMutation = (
-  options?: Partial<OptionsLegacyParser<CartsControllerRemoveProductData>>,
+export const ordersControllerGetOrdersQueryKey = (
+  options?: OptionsLegacyParser,
+) => [createQueryKey('ordersControllerGetOrders', options)];
+
+export const ordersControllerGetOrdersOptions = (
+  options?: OptionsLegacyParser,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await ordersControllerGetOrders({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: ordersControllerGetOrdersQueryKey(options),
+  });
+};
+
+export const ordersControllerAddOrderQueryKey = (
+  options: OptionsLegacyParser<OrdersControllerAddOrderData>,
+) => [createQueryKey('ordersControllerAddOrder', options)];
+
+export const ordersControllerAddOrderOptions = (
+  options: OptionsLegacyParser<OrdersControllerAddOrderData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await ordersControllerAddOrder({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: ordersControllerAddOrderQueryKey(options),
+  });
+};
+
+export const ordersControllerAddOrderMutation = (
+  options?: Partial<OptionsLegacyParser<OrdersControllerAddOrderData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    CartsControllerRemoveProductResponse,
-    CartsControllerRemoveProductError,
-    OptionsLegacyParser<CartsControllerRemoveProductData>
+    OrdersControllerAddOrderResponse,
+    OrdersControllerAddOrderError,
+    OptionsLegacyParser<OrdersControllerAddOrderData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await cartsControllerRemoveProduct({
+      const { data } = await ordersControllerAddOrder({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -358,4 +379,25 @@ export const cartsControllerRemoveProductMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const ordersControllerGetOrderQueryKey = (
+  options: OptionsLegacyParser<OrdersControllerGetOrderData>,
+) => [createQueryKey('ordersControllerGetOrder', options)];
+
+export const ordersControllerGetOrderOptions = (
+  options: OptionsLegacyParser<OrdersControllerGetOrderData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await ordersControllerGetOrder({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: ordersControllerGetOrderQueryKey(options),
+  });
 };

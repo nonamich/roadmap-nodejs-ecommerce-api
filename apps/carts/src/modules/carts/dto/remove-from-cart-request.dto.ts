@@ -1,10 +1,7 @@
-import { RemoveFromCartRequest } from '@packages/grpc/proto/carts';
+import { RemoveCartRequest } from '@packages/grpc/proto/carts';
 import { IsInt } from 'class-validator';
 
-export class RemoveFromCartRequestDto implements RemoveFromCartRequest {
+export class RemoveCartRequestDto implements RemoveCartRequest {
   @IsInt()
   userId!: number;
-
-  @IsInt()
-  productId!: number;
 }

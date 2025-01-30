@@ -7,6 +7,7 @@ import {
   CartsServiceClient,
 } from '@packages/grpc/proto/carts';
 import { UtilsGrpc } from '@packages/grpc/utils';
+import { ProductsModule } from '../products/products.module';
 import {
   CARTS_CLIENT_GRPC_PROVIDER_TOKEN,
   CARTS_SERVICE_PROVIDER_TOKEN,
@@ -15,6 +16,7 @@ import { CartsController } from './carts.controller';
 
 @Module({
   imports: [
+    ProductsModule,
     ClientsModule.registerAsync([
       {
         name: CARTS_CLIENT_GRPC_PROVIDER_TOKEN,

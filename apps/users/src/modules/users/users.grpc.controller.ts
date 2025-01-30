@@ -31,7 +31,7 @@ export class UsersGrpcController implements UsersServiceController {
     private readonly passwordService: PasswordService,
   ) {}
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async createUser(
     @Payload(GrpcValidationPipe)
     { email, name, password: unsanitizedPassword }: CreateUserRequestDto,
@@ -51,7 +51,7 @@ export class UsersGrpcController implements UsersServiceController {
     return user;
   }
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async deleteUser(@Payload(GrpcValidationPipe) { id }: DeleteUserRequestDto) {
     await this.orm.user.delete({
       where: {
@@ -60,7 +60,7 @@ export class UsersGrpcController implements UsersServiceController {
     });
   }
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async getUserById(
     @Payload(GrpcValidationPipe) { id }: GetUserByIdRequestDto,
   ) {
@@ -70,7 +70,7 @@ export class UsersGrpcController implements UsersServiceController {
     });
   }
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async getUserByEmail(
     @Payload(GrpcValidationPipe) { email }: GetUserByEmailRequestDto,
   ) {
@@ -80,7 +80,7 @@ export class UsersGrpcController implements UsersServiceController {
     });
   }
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async getUserByCredentials(
     @Payload(GrpcValidationPipe)
     { email, password }: GetUserByCredentialsRequestDto,
@@ -108,7 +108,7 @@ export class UsersGrpcController implements UsersServiceController {
     return user;
   }
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async updateUser(
     @Payload(GrpcValidationPipe)
     { id, ...data }: UpdateUserRequestDto,
@@ -130,7 +130,7 @@ export class UsersGrpcController implements UsersServiceController {
     });
   }
 
-  @UseFilters(PrismaClientExceptionFilter, GrpcToGrpcExceptionFilter)
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   getUsers(
     @Payload(GrpcValidationPipe) { page, pageSize }: GetUsersRequestDto,
   ) {
