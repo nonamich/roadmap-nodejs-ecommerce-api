@@ -1,11 +1,11 @@
 -- CreateEnum
-CREATE TYPE "OrderStatus" AS ENUM ('WAITING_FOR_PAYMENT', 'PROCESSING_PAYMENT', 'COMPLETED');
+CREATE TYPE "OrderStatus" AS ENUM ('WAITING_FOR_PAYMENT', 'COMPLETED');
 
 -- CreateTable
 CREATE TABLE "Order" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
-    "indentId" TEXT NOT NULL,
+    "intentId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "status" "OrderStatus" NOT NULL DEFAULT 'WAITING_FOR_PAYMENT',
 
@@ -21,7 +21,7 @@ CREATE TABLE "OrderItem" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Order_indentId_key" ON "Order"("indentId");
+CREATE UNIQUE INDEX "Order_intentId_key" ON "Order"("intentId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "OrderItem_orderId_productId_key" ON "OrderItem"("orderId", "productId");

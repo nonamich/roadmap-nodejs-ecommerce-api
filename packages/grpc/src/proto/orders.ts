@@ -16,7 +16,7 @@ export interface OrderResponse {
   id: number;
   status: string;
   userId: number;
-  indentId: string;
+  intentId: string;
   createdAt: Date | null;
   items: OrderItemResponse[];
 }
@@ -44,7 +44,11 @@ export interface GetOrdersResponse {
 }
 
 export interface CompleteOrdersRequest {
-  indentId: string;
+  intentId: string;
+}
+
+export interface GetOrderByIntentIdRequest {
+  intentId: string;
 }
 
 export const ORDERS_PACKAGE_NAME = "orders";
@@ -63,6 +67,8 @@ export interface OrdersServiceClient {
 
   getOrder(request: GetOrderRequest): Observable<OrderResponse>;
 
+  getOrderByIntentId(request: GetOrderByIntentIdRequest): Observable<OrderResponse>;
+
   getOrders(request: GetOrdersRequest): Observable<GetOrdersResponse>;
 
   completeOrder(request: CompleteOrdersRequest): Observable<Empty>;
@@ -73,6 +79,10 @@ export interface OrdersServiceController {
 
   getOrder(request: GetOrderRequest): Promise<OrderResponse> | Observable<OrderResponse> | OrderResponse;
 
+  getOrderByIntentId(
+    request: GetOrderByIntentIdRequest,
+  ): Promise<OrderResponse> | Observable<OrderResponse> | OrderResponse;
+
   getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> | Observable<GetOrdersResponse> | GetOrdersResponse;
 
   completeOrder(request: CompleteOrdersRequest): void;
@@ -80,7 +90,7 @@ export interface OrdersServiceController {
 
 export function OrdersServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createOrder", "getOrder", "getOrders", "completeOrder"];
+    const grpcMethods: string[] = ["createOrder", "getOrder", "getOrderByIntentId", "getOrders", "completeOrder"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("OrdersService", method)(constructor.prototype[method], method, descriptor);

@@ -2,6 +2,7 @@ import { Controller, UseFilters } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
 import { GrpcToGrpcExceptionFilter, GrpcValidationPipe } from '@repo/grpc/nest';
 import {
+  GetOrderByIntentIdRequest,
   OrdersServiceController,
   OrdersServiceControllerMethods,
 } from '@repo/grpc/proto/orders';
@@ -21,7 +22,9 @@ export class OrdersGrpcController implements OrdersServiceController {
 
   @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async getOrders(@Payload(GrpcValidationPipe) dto: GetOrdersRequestDto) {
-    return await this.service.getOrders(dto);
+    const orders = await this.service.getOrders(dto);
+
+    return { orders };
   }
 
   @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
@@ -39,5 +42,10 @@ export class OrdersGrpcController implements OrdersServiceController {
     @Payload(GrpcValidationPipe) dto: CompleteOrdersRequestDto,
   ) {
     return await this.service.completeOrder(dto);
+  }
+
+  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
+  async getOrderByIntentId(dto: GetOrderByIntentIdRequest) {
+    return await this.service.getOrderByIntentId(dto);
   }
 }

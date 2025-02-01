@@ -11,7 +11,7 @@ export const Orders: FC = () => {
   return (
     <>
       <header>
-        <h1 className="text-xl font-bold text-gray-200 sm:text-3xl">
+        <h1 className="mb-5 text-xl font-bold text-gray-200 sm:text-3xl">
           <If condition={orders.length}>
             <Then>Your Orders</Then>
             <Else>Your Orders Is Empty</Else>

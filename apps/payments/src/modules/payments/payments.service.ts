@@ -1,10 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GrpcInternalException } from '@repo/grpc/nest';
+import { OrdersServiceClient } from '@repo/grpc/proto/orders';
+import { firstValueFrom } from 'rxjs';
 import Stripe from 'stripe';
 import { CreateIntentRequestDto, GetIntentRequestDto } from './dto';
 import { StripeMethod } from './methods/stripe.method';
-import { PAYMENTS_STRIPE_CURRENCY } from './payments.constants';
+import {
+  ORDERS_SERVICE_PROVIDER_TOKEN,
+  PAYMENTS_STRIPE_CURRENCY,
+} from './payments.constants';
 
 @Injectable()
 export class PaymentsService {
@@ -13,6 +18,9 @@ export class PaymentsService {
   constructor(
     private readonly stripe: StripeMethod,
     config: ConfigService,
+
+    @Inject(ORDERS_SERVICE_PROVIDER_TOKEN)
+    private readonly ordersService: OrdersServiceClient,
   ) {
     this.webhookWhsec = config.getOrThrow('STRIPE_WEBHOOK_WHSEC');
   }
@@ -21,9 +29,7 @@ export class PaymentsService {
     const intent = await this.stripe.paymentIntents.create({
       amount: amountInCent,
       currency: PAYMENTS_STRIPE_CURRENCY,
-      automatic_payment_methods: {
-        enabled: true,
-      },
+      payment_method_types: ['card'],
     });
 
     return {
@@ -53,7 +59,11 @@ export class PaymentsService {
       return;
     }
 
-    // this.ordersService.createOrder(paymentIntent.status);
+    await firstValueFrom(
+      this.ordersService.completeOrder({
+        intentId: paymentIntent.id,
+      }),
+    );
   }
 
   async getIntent({ intentId }: GetIntentRequestDto) {

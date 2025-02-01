@@ -15,7 +15,7 @@ export const PAYMENTS_SERVICE_PROVIDER_TOKEN = Symbol(
 export const ORDER_SELECT = {
   id: true,
   status: true,
-  indentId: true,
+  intentId: true,
   createdAt: true,
   userId: true,
   items: {

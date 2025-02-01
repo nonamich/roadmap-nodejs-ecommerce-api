@@ -4,8 +4,7 @@ import {
   type ClientLoaderFunctionArgs,
 } from 'react-router';
 import { ordersControllerGetOrder } from '~/api';
-import { Breadcrumbs } from '~/components';
-import { OrderDetails } from '~/components';
+import { Breadcrumbs, OrderDetails } from '~/components';
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   if (!params.id) {
@@ -38,7 +37,9 @@ export default function Brand() {
           },
         ]}
       />
-      <h1 className="mb-5 text-xl">Order: #{order.id}</h1>
+      <h1 className="mb-5 text-xl font-bold text-gray-200 sm:text-3xl">
+        Order: #{order.id}
+      </h1>
       <OrderDetails order={order} />
     </>
   );

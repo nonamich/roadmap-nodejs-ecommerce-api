@@ -10,14 +10,13 @@ datasource db {
 
 enum OrderStatus {
   WAITING_FOR_PAYMENT
-  PROCESSING_PAYMENT
   COMPLETED
 }
 
 model Order {
   id        Int         @id @default(autoincrement())
   userId    Int
-  indentId  String      @unique()
+  intentId  String      @unique()
   createdAt DateTime    @default(now())
   status    OrderStatus @default(WAITING_FOR_PAYMENT)
   items     OrderItem[]

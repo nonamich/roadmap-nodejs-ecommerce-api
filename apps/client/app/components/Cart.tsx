@@ -11,11 +11,11 @@ export const Cart: FC = () => {
   const navigate = useNavigate();
   const addToOrderMutation = useMutation(ordersControllerAddOrderMutation());
   const onSubmit = async () => {
-    const { indentId } = await addToOrderMutation.mutateAsync({});
+    const { id } = await addToOrderMutation.mutateAsync({});
 
     await cart.refresh();
 
-    await navigate(`/confirmation/${indentId}`);
+    await navigate(`/order/${id}/payment`);
   };
 
   return (
@@ -36,7 +36,9 @@ export const Cart: FC = () => {
             ))}
           </ul>
           <div className="mt-8 flex justify-between border-t border-gray-900 pt-8">
-            <Button onClick={onSubmit}>Order</Button>
+            <Button onClick={onSubmit} disabled={addToOrderMutation.isPending}>
+              Order
+            </Button>
             <div className="space-y-4">
               <dl className="space-y-0.5 text-sm text-gray-100">
                 <div className="flex justify-between !text-base font-medium">

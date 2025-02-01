@@ -9,6 +9,7 @@ export * from './LoginForm';
 export * from './OrderDetails';
 export * from './Orders';
 export * from './Pagination';
+export * from './Payment';
 export * from './Price';
 export * from './ProductCollection';
 export * from './ProductItem';

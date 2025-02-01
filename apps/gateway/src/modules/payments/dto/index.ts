@@ -1,1 +1,1 @@
-export * from './confirmation-response.dto';
+export * from './get-order-intent-response.dto';

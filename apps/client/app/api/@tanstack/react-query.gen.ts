@@ -2,330 +2,424 @@
 
 import type { OptionsLegacyParser } from '@hey-api/client-fetch';
 import { queryOptions, type UseMutationOptions } from '@tanstack/react-query';
-import type { AuthControllerSignupData, AuthControllerSignupError, AuthControllerSignupResponse, AuthControllerSigninData, AuthControllerSigninError, AuthControllerSigninResponse, ProductsControllerGetFeaturedProductsData, ProductsControllerGetProductByIdData, ProductsControllerGetProductsByFilterData, CartsControllerAddToCartData, CartsControllerAddToCartError, CartsControllerAddToCartResponse, CartsControllerRemoveFromCartData, CartsControllerRemoveFromCartError, CartsControllerRemoveFromCartResponse, OrdersControllerAddOrderError, OrdersControllerAddOrderResponse, OrdersControllerGetOrderData, PaymentsControllerGetIntentClientSecretData } from '../types.gen';
-import { client, authControllerSignup, authControllerSignin, authControllerMe, productsControllerGetFeaturedProducts, productsControllerGetProductById, productsControllerGetProductsByFilter, cartsControllerGetCart, cartsControllerAddToCart, cartsControllerRemoveFromCart, ordersControllerGetOrders, ordersControllerAddOrder, ordersControllerGetOrder, paymentsControllerGetIntentClientSecret } from '../sdk.gen';
+import {
+  authControllerMe,
+  authControllerSignin,
+  authControllerSignup,
+  cartsControllerAddToCart,
+  cartsControllerGetCart,
+  cartsControllerRemoveFromCart,
+  client,
+  ordersControllerAddOrder,
+  ordersControllerGetOrder,
+  ordersControllerGetOrders,
+  paymentsControllerGetIntent,
+  productsControllerGetFeaturedProducts,
+  productsControllerGetProductById,
+  productsControllerGetProductsByFilter,
+} from '../sdk.gen';
+import type {
+  AuthControllerSigninData,
+  AuthControllerSigninError,
+  AuthControllerSigninResponse,
+  AuthControllerSignupData,
+  AuthControllerSignupError,
+  AuthControllerSignupResponse,
+  CartsControllerAddToCartData,
+  CartsControllerAddToCartError,
+  CartsControllerAddToCartResponse,
+  CartsControllerRemoveFromCartData,
+  CartsControllerRemoveFromCartError,
+  CartsControllerRemoveFromCartResponse,
+  OrdersControllerAddOrderError,
+  OrdersControllerAddOrderResponse,
+  OrdersControllerGetOrderData,
+  PaymentsControllerGetIntentData,
+  ProductsControllerGetFeaturedProductsData,
+  ProductsControllerGetProductByIdData,
+  ProductsControllerGetProductsByFilterData,
+} from '../types.gen';
 
 type QueryKey<TOptions extends OptionsLegacyParser> = [
-    Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
-        _id: string;
-        _infinite?: boolean;
-    }
+  Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
+    _id: string;
+    _infinite?: boolean;
+  },
 ];
 
-const createQueryKey = <TOptions extends OptionsLegacyParser>(id: string, options?: TOptions, infinite?: boolean): QueryKey<TOptions>[0] => {
-    const params: QueryKey<TOptions>[0] = { _id: id, baseUrl: (options?.client ?? client).getConfig().baseUrl } as QueryKey<TOptions>[0];
-    if (infinite) {
-        params._infinite = infinite;
-    }
-    if (options?.body) {
-        params.body = options.body;
-    }
-    if (options?.headers) {
-        params.headers = options.headers;
-    }
-    if (options?.path) {
-        params.path = options.path;
-    }
-    if (options?.query) {
-        params.query = options.query;
-    }
-    return params;
+const createQueryKey = <TOptions extends OptionsLegacyParser>(
+  id: string,
+  options?: TOptions,
+  infinite?: boolean,
+): QueryKey<TOptions>[0] => {
+  const params: QueryKey<TOptions>[0] = {
+    _id: id,
+    baseUrl: (options?.client ?? client).getConfig().baseUrl,
+  } as QueryKey<TOptions>[0];
+  if (infinite) {
+    params._infinite = infinite;
+  }
+  if (options?.body) {
+    params.body = options.body;
+  }
+  if (options?.headers) {
+    params.headers = options.headers;
+  }
+  if (options?.path) {
+    params.path = options.path;
+  }
+  if (options?.query) {
+    params.query = options.query;
+  }
+  return params;
 };
 
-export const authControllerSignupQueryKey = (options: OptionsLegacyParser<AuthControllerSignupData>) => [
-    createQueryKey('authControllerSignup', options)
-];
+export const authControllerSignupQueryKey = (
+  options: OptionsLegacyParser<AuthControllerSignupData>,
+) => [createQueryKey('authControllerSignup', options)];
 
-export const authControllerSignupOptions = (options: OptionsLegacyParser<AuthControllerSignupData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await authControllerSignup({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: authControllerSignupQueryKey(options)
-    });
+export const authControllerSignupOptions = (
+  options: OptionsLegacyParser<AuthControllerSignupData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await authControllerSignup({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: authControllerSignupQueryKey(options),
+  });
 };
 
-export const authControllerSignupMutation = (options?: Partial<OptionsLegacyParser<AuthControllerSignupData>>) => {
-    const mutationOptions: UseMutationOptions<AuthControllerSignupResponse, AuthControllerSignupError, OptionsLegacyParser<AuthControllerSignupData>> = {
-        mutationFn: async (localOptions) => {
-            const { data } = await authControllerSignup({
-                ...options,
-                ...localOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
+export const authControllerSignupMutation = (
+  options?: Partial<OptionsLegacyParser<AuthControllerSignupData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    AuthControllerSignupResponse,
+    AuthControllerSignupError,
+    OptionsLegacyParser<AuthControllerSignupData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await authControllerSignup({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
 
-export const authControllerSigninQueryKey = (options: OptionsLegacyParser<AuthControllerSigninData>) => [
-    createQueryKey('authControllerSignin', options)
-];
+export const authControllerSigninQueryKey = (
+  options: OptionsLegacyParser<AuthControllerSigninData>,
+) => [createQueryKey('authControllerSignin', options)];
 
-export const authControllerSigninOptions = (options: OptionsLegacyParser<AuthControllerSigninData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await authControllerSignin({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: authControllerSigninQueryKey(options)
-    });
+export const authControllerSigninOptions = (
+  options: OptionsLegacyParser<AuthControllerSigninData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await authControllerSignin({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: authControllerSigninQueryKey(options),
+  });
 };
 
-export const authControllerSigninMutation = (options?: Partial<OptionsLegacyParser<AuthControllerSigninData>>) => {
-    const mutationOptions: UseMutationOptions<AuthControllerSigninResponse, AuthControllerSigninError, OptionsLegacyParser<AuthControllerSigninData>> = {
-        mutationFn: async (localOptions) => {
-            const { data } = await authControllerSignin({
-                ...options,
-                ...localOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
+export const authControllerSigninMutation = (
+  options?: Partial<OptionsLegacyParser<AuthControllerSigninData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    AuthControllerSigninResponse,
+    AuthControllerSigninError,
+    OptionsLegacyParser<AuthControllerSigninData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await authControllerSignin({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
 
 export const authControllerMeQueryKey = (options?: OptionsLegacyParser) => [
-    createQueryKey('authControllerMe', options)
+  createQueryKey('authControllerMe', options),
 ];
 
 export const authControllerMeOptions = (options?: OptionsLegacyParser) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await authControllerMe({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: authControllerMeQueryKey(options)
-    });
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await authControllerMe({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: authControllerMeQueryKey(options),
+  });
 };
 
-export const productsControllerGetFeaturedProductsQueryKey = (options: OptionsLegacyParser<ProductsControllerGetFeaturedProductsData>) => [
-    createQueryKey('productsControllerGetFeaturedProducts', options)
-];
+export const productsControllerGetFeaturedProductsQueryKey = (
+  options: OptionsLegacyParser<ProductsControllerGetFeaturedProductsData>,
+) => [createQueryKey('productsControllerGetFeaturedProducts', options)];
 
-export const productsControllerGetFeaturedProductsOptions = (options: OptionsLegacyParser<ProductsControllerGetFeaturedProductsData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await productsControllerGetFeaturedProducts({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: productsControllerGetFeaturedProductsQueryKey(options)
-    });
+export const productsControllerGetFeaturedProductsOptions = (
+  options: OptionsLegacyParser<ProductsControllerGetFeaturedProductsData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await productsControllerGetFeaturedProducts({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: productsControllerGetFeaturedProductsQueryKey(options),
+  });
 };
 
-export const productsControllerGetProductByIdQueryKey = (options: OptionsLegacyParser<ProductsControllerGetProductByIdData>) => [
-    createQueryKey('productsControllerGetProductById', options)
-];
+export const productsControllerGetProductByIdQueryKey = (
+  options: OptionsLegacyParser<ProductsControllerGetProductByIdData>,
+) => [createQueryKey('productsControllerGetProductById', options)];
 
-export const productsControllerGetProductByIdOptions = (options: OptionsLegacyParser<ProductsControllerGetProductByIdData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await productsControllerGetProductById({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: productsControllerGetProductByIdQueryKey(options)
-    });
+export const productsControllerGetProductByIdOptions = (
+  options: OptionsLegacyParser<ProductsControllerGetProductByIdData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await productsControllerGetProductById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: productsControllerGetProductByIdQueryKey(options),
+  });
 };
 
-export const productsControllerGetProductsByFilterQueryKey = (options: OptionsLegacyParser<ProductsControllerGetProductsByFilterData>) => [
-    createQueryKey('productsControllerGetProductsByFilter', options)
-];
+export const productsControllerGetProductsByFilterQueryKey = (
+  options: OptionsLegacyParser<ProductsControllerGetProductsByFilterData>,
+) => [createQueryKey('productsControllerGetProductsByFilter', options)];
 
-export const productsControllerGetProductsByFilterOptions = (options: OptionsLegacyParser<ProductsControllerGetProductsByFilterData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await productsControllerGetProductsByFilter({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: productsControllerGetProductsByFilterQueryKey(options)
-    });
+export const productsControllerGetProductsByFilterOptions = (
+  options: OptionsLegacyParser<ProductsControllerGetProductsByFilterData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await productsControllerGetProductsByFilter({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: productsControllerGetProductsByFilterQueryKey(options),
+  });
 };
 
-export const cartsControllerGetCartQueryKey = (options?: OptionsLegacyParser) => [
-    createQueryKey('cartsControllerGetCart', options)
-];
+export const cartsControllerGetCartQueryKey = (
+  options?: OptionsLegacyParser,
+) => [createQueryKey('cartsControllerGetCart', options)];
 
-export const cartsControllerGetCartOptions = (options?: OptionsLegacyParser) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await cartsControllerGetCart({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: cartsControllerGetCartQueryKey(options)
-    });
+export const cartsControllerGetCartOptions = (
+  options?: OptionsLegacyParser,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await cartsControllerGetCart({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: cartsControllerGetCartQueryKey(options),
+  });
 };
 
-export const cartsControllerAddToCartQueryKey = (options: OptionsLegacyParser<CartsControllerAddToCartData>) => [
-    createQueryKey('cartsControllerAddToCart', options)
-];
+export const cartsControllerAddToCartQueryKey = (
+  options: OptionsLegacyParser<CartsControllerAddToCartData>,
+) => [createQueryKey('cartsControllerAddToCart', options)];
 
-export const cartsControllerAddToCartOptions = (options: OptionsLegacyParser<CartsControllerAddToCartData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await cartsControllerAddToCart({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: cartsControllerAddToCartQueryKey(options)
-    });
+export const cartsControllerAddToCartOptions = (
+  options: OptionsLegacyParser<CartsControllerAddToCartData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await cartsControllerAddToCart({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: cartsControllerAddToCartQueryKey(options),
+  });
 };
 
-export const cartsControllerAddToCartMutation = (options?: Partial<OptionsLegacyParser<CartsControllerAddToCartData>>) => {
-    const mutationOptions: UseMutationOptions<CartsControllerAddToCartResponse, CartsControllerAddToCartError, OptionsLegacyParser<CartsControllerAddToCartData>> = {
-        mutationFn: async (localOptions) => {
-            const { data } = await cartsControllerAddToCart({
-                ...options,
-                ...localOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
+export const cartsControllerAddToCartMutation = (
+  options?: Partial<OptionsLegacyParser<CartsControllerAddToCartData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    CartsControllerAddToCartResponse,
+    CartsControllerAddToCartError,
+    OptionsLegacyParser<CartsControllerAddToCartData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await cartsControllerAddToCart({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
 
-export const cartsControllerRemoveFromCartMutation = (options?: Partial<OptionsLegacyParser<CartsControllerRemoveFromCartData>>) => {
-    const mutationOptions: UseMutationOptions<CartsControllerRemoveFromCartResponse, CartsControllerRemoveFromCartError, OptionsLegacyParser<CartsControllerRemoveFromCartData>> = {
-        mutationFn: async (localOptions) => {
-            const { data } = await cartsControllerRemoveFromCart({
-                ...options,
-                ...localOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
+export const cartsControllerRemoveFromCartMutation = (
+  options?: Partial<OptionsLegacyParser<CartsControllerRemoveFromCartData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    CartsControllerRemoveFromCartResponse,
+    CartsControllerRemoveFromCartError,
+    OptionsLegacyParser<CartsControllerRemoveFromCartData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await cartsControllerRemoveFromCart({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
 
-export const ordersControllerGetOrdersQueryKey = (options?: OptionsLegacyParser) => [
-    createQueryKey('ordersControllerGetOrders', options)
-];
+export const ordersControllerGetOrdersQueryKey = (
+  options?: OptionsLegacyParser,
+) => [createQueryKey('ordersControllerGetOrders', options)];
 
-export const ordersControllerGetOrdersOptions = (options?: OptionsLegacyParser) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await ordersControllerGetOrders({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: ordersControllerGetOrdersQueryKey(options)
-    });
+export const ordersControllerGetOrdersOptions = (
+  options?: OptionsLegacyParser,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await ordersControllerGetOrders({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: ordersControllerGetOrdersQueryKey(options),
+  });
 };
 
-export const ordersControllerAddOrderQueryKey = (options?: OptionsLegacyParser) => [
-    createQueryKey('ordersControllerAddOrder', options)
-];
+export const ordersControllerAddOrderQueryKey = (
+  options?: OptionsLegacyParser,
+) => [createQueryKey('ordersControllerAddOrder', options)];
 
-export const ordersControllerAddOrderOptions = (options?: OptionsLegacyParser) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await ordersControllerAddOrder({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: ordersControllerAddOrderQueryKey(options)
-    });
+export const ordersControllerAddOrderOptions = (
+  options?: OptionsLegacyParser,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await ordersControllerAddOrder({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: ordersControllerAddOrderQueryKey(options),
+  });
 };
 
-export const ordersControllerAddOrderMutation = (options?: Partial<OptionsLegacyParser>) => {
-    const mutationOptions: UseMutationOptions<OrdersControllerAddOrderResponse, OrdersControllerAddOrderError, OptionsLegacyParser> = {
-        mutationFn: async (localOptions) => {
-            const { data } = await ordersControllerAddOrder({
-                ...options,
-                ...localOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
+export const ordersControllerAddOrderMutation = (
+  options?: Partial<OptionsLegacyParser>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    OrdersControllerAddOrderResponse,
+    OrdersControllerAddOrderError,
+    OptionsLegacyParser
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await ordersControllerAddOrder({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
 
-export const ordersControllerGetOrderQueryKey = (options: OptionsLegacyParser<OrdersControllerGetOrderData>) => [
-    createQueryKey('ordersControllerGetOrder', options)
-];
+export const ordersControllerGetOrderQueryKey = (
+  options: OptionsLegacyParser<OrdersControllerGetOrderData>,
+) => [createQueryKey('ordersControllerGetOrder', options)];
 
-export const ordersControllerGetOrderOptions = (options: OptionsLegacyParser<OrdersControllerGetOrderData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await ordersControllerGetOrder({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: ordersControllerGetOrderQueryKey(options)
-    });
+export const ordersControllerGetOrderOptions = (
+  options: OptionsLegacyParser<OrdersControllerGetOrderData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await ordersControllerGetOrder({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: ordersControllerGetOrderQueryKey(options),
+  });
 };
 
-export const paymentsControllerGetIntentClientSecretQueryKey = (options: OptionsLegacyParser<PaymentsControllerGetIntentClientSecretData>) => [
-    createQueryKey('paymentsControllerGetIntentClientSecret', options)
-];
+export const paymentsControllerGetIntentQueryKey = (
+  options: OptionsLegacyParser<PaymentsControllerGetIntentData>,
+) => [createQueryKey('paymentsControllerGetIntent', options)];
 
-export const paymentsControllerGetIntentClientSecretOptions = (options: OptionsLegacyParser<PaymentsControllerGetIntentClientSecretData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await paymentsControllerGetIntentClientSecret({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: paymentsControllerGetIntentClientSecretQueryKey(options)
-    });
+export const paymentsControllerGetIntentOptions = (
+  options: OptionsLegacyParser<PaymentsControllerGetIntentData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await paymentsControllerGetIntent({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: paymentsControllerGetIntentQueryKey(options),
+  });
 };

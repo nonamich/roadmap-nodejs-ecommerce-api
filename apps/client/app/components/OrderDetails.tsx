@@ -10,7 +10,7 @@ type Props = {
 export const OrderDetails: FC<Props> = ({ order }) => {
   return (
     <>
-      <p className="text-xl">Order Details:</p>
+      <p className="text-xl">Details:</p>
       <div className="my-5 flow-root">
         <dl className="divide-y divide-gray-100 text-sm dark:divide-gray-700">
           <div className="grid grid-cols-5 gap-1 py-3">

@@ -1,11 +1,20 @@
-import { Controller, Get, Inject, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  ForbiddenException,
+  Get,
+  Inject,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { OrdersServiceClient } from '@repo/grpc/proto/orders';
 import { PaymentsServiceClient } from '@repo/grpc/proto/payments';
 import { firstValueFrom } from 'rxjs';
 import { JWTAuthGuard } from '~/modules/auth/guards/jwt-auth.guard';
+import { AuthorizedUser } from '../auth/auth.interface';
+import { CurrentUser } from '../auth/decorators/authorized-user.decorator';
 import { ORDERS_SERVICE_PROVIDER_TOKEN } from '../orders/orders.constants';
-import { ConformationResponseDto } from './dto';
+import { GetIntentResponseDto } from './dto';
 import { PAYMENTS_SERVICE_PROVIDER_TOKEN } from './payments.constants';
 
 @ApiTags('payments')
@@ -19,15 +28,23 @@ export class PaymentsController {
     private readonly paymentsService: PaymentsServiceClient,
   ) {}
 
-  @ApiOkResponse({ type: ConformationResponseDto })
+  @ApiOkResponse({ type: GetIntentResponseDto })
   @ApiBearerAuth()
   @UseGuards(JWTAuthGuard)
-  @Get('/intent/:intentId')
-  async getIntentClientSecret(@Param('intentId') intentId: string) {
-    const { clientSecret } = await firstValueFrom(
-      this.paymentsService.getIntent({ intentId }),
-    );
+  @Get('/:intentId')
+  async getIntent(
+    @Param('intentId') intentId: string,
+    @CurrentUser() user: AuthorizedUser,
+  ) {
+    const [intent, order] = await Promise.all([
+      firstValueFrom(this.paymentsService.getIntent({ intentId })),
+      firstValueFrom(this.ordersService.getOrderByIntentId({ intentId })),
+    ]);
 
-    return { clientSecret };
+    if (order.userId !== user.id) {
+      throw new ForbiddenException();
+    }
+
+    return intent;
   }
 }

@@ -16,7 +16,7 @@ export class OrderResponseDto implements OrderResponse {
   status!: string;
 
   @ApiProperty()
-  indentId!: string;
+  intentId!: string;
 
   @ApiProperty({ type: OrderItemResponseDto, isArray: true })
   items!: OrderItemResponseDto[];

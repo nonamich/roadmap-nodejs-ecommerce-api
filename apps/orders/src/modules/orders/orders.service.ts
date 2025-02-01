@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { GrpcInvalidArgumentException } from '@repo/grpc/nest';
 import { CartsServiceClient } from '@repo/grpc/proto/carts';
-import { OrderResponse } from '@repo/grpc/proto/orders';
 import { PaymentsServiceClient } from '@repo/grpc/proto/payments';
 import { OrderStatus } from 'prisma-client';
 import { firstValueFrom } from 'rxjs';
@@ -9,6 +8,7 @@ import { ORMService } from '~/modules/orm/orm.service';
 import {
   CompleteOrdersRequestDto,
   CreateOrderRequestDto,
+  GetOrderByIntentIdRequestDto,
   GetOrderRequestDto,
   GetOrdersRequestDto,
 } from './dto';
@@ -31,24 +31,30 @@ export class OrdersService {
   ) {}
 
   async getOrders({ userId }: GetOrdersRequestDto) {
-    const orders = await this.orm.order.findMany({
+    return await this.orm.order.findMany({
       select: ORDER_SELECT,
       where: {
         userId,
       },
     });
-
-    return { orders };
   }
+
   async getOrder({ orderId }: GetOrderRequestDto) {
-    const order: OrderResponse = await this.orm.order.findUniqueOrThrow({
+    return await this.orm.order.findUniqueOrThrow({
       select: ORDER_SELECT,
       where: {
         id: orderId,
       },
     });
+  }
 
-    return order;
+  async getOrderByIntentId({ intentId }: GetOrderByIntentIdRequestDto) {
+    return await this.orm.order.findUniqueOrThrow({
+      select: ORDER_SELECT,
+      where: {
+        intentId,
+      },
+    });
   }
 
   priceToCent(price: number) {
@@ -71,7 +77,7 @@ export class OrdersService {
       select: ORDER_SELECT,
       data: {
         userId,
-        indentId: intent.intentId,
+        intentId: intent.intentId,
         items: {
           createMany: {
             data: cart.items.map(({ quantity, price, productId }) => ({
@@ -89,16 +95,14 @@ export class OrdersService {
     return createdOrder;
   }
 
-  async completeOrder({ indentId }: CompleteOrdersRequestDto) {
+  async completeOrder({ intentId }: CompleteOrdersRequestDto) {
     await this.orm.order.update({
       data: {
         status: OrderStatus.COMPLETED,
       },
       where: {
-        indentId,
+        intentId,
       },
     });
-
-    return;
   }
 }

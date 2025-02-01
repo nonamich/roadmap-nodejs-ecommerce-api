@@ -9,7 +9,7 @@ message OrderResponse {
   int32 id = 1;
   string status = 4;
   int32 userId = 5;
-  string indentId = 6;
+  string intentId = 6;
   google.protobuf.Timestamp createdAt = 7;
   repeated OrderItemResponse items = 8;
 }
@@ -37,12 +37,17 @@ message GetOrdersResponse {
 }
 
 message CompleteOrdersRequest {
-  string indentId = 1;
+  string intentId = 1;
+}
+
+message GetOrderByIntentIdRequest {
+  string intentId = 1;
 }
 
 service OrdersService {
   rpc CreateOrder(CreateOrderRequest) returns (OrderResponse);
   rpc GetOrder(GetOrderRequest) returns (OrderResponse);
+  rpc GetOrderByIntentId(GetOrderByIntentIdRequest) returns (OrderResponse);
   rpc GetOrders(GetOrdersRequest) returns (GetOrdersResponse);
   rpc CompleteOrder(CompleteOrdersRequest) returns (google.protobuf.Empty);
 }
