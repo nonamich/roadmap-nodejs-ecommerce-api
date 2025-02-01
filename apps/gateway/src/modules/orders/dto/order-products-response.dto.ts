@@ -1,13 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { ProductResponseDto } from '~/modules/products/dto';
-import { OrderItemResponseDto, OrderResponseDto } from '.';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
+import { OrderProductsItemResponseDto, OrderResponseDto } from '.';
 
-export class OrderProductsItemResponseDto extends OrderItemResponseDto {
-  @ApiProperty({ type: ProductResponseDto })
-  product!: ProductResponseDto;
-}
-
-export class OrderProductsResponseDto extends OrderResponseDto {
+export class OrderProductsResponseDto extends OmitType(OrderResponseDto, [
+  'items',
+]) {
   @ApiProperty({ type: OrderProductsItemResponseDto, isArray: true })
-  declare items: OrderProductsItemResponseDto[];
+  items!: OrderProductsItemResponseDto[];
 }

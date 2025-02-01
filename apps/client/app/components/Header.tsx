@@ -6,7 +6,7 @@ import { Button } from '.';
 
 export const Header: FC = () => {
   const { user, logout } = useAuth();
-  const { location } = useNavigation();
+  const navigation = useNavigation();
   const cart = useCart();
   const [isDropdown, setDropdown] = useState(false);
 
@@ -16,7 +16,7 @@ export const Header: FC = () => {
 
   useEffect(() => {
     setDropdown(false);
-  }, [location?.pathname]);
+  }, [navigation]);
 
   return (
     <header className="bg-white dark:bg-gray-900">

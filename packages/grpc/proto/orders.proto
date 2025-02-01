@@ -3,15 +3,15 @@ syntax = "proto3";
 package orders;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 message OrderResponse {
   int32 id = 1;
-  string address = 2;
-  string phone = 3;
-  google.protobuf.Timestamp createdAt = 4;
-  string status = 5;
-  repeated OrderItemResponse items = 7;
-  int32 userId = 8;
+  string status = 4;
+  int32 userId = 5;
+  string indentId = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  repeated OrderItemResponse items = 8;
 }
 
 message OrderItemResponse {
@@ -22,8 +22,6 @@ message OrderItemResponse {
 
 message CreateOrderRequest {
   int32 userId = 1;
-  string phone = 2;
-  string address = 3;
 }
 
 message GetOrderRequest {
@@ -38,8 +36,13 @@ message GetOrdersResponse {
   repeated OrderResponse orders = 1;
 }
 
+message CompleteOrdersRequest {
+  string indentId = 1;
+}
+
 service OrdersService {
   rpc CreateOrder(CreateOrderRequest) returns (OrderResponse);
   rpc GetOrder(GetOrderRequest) returns (OrderResponse);
   rpc GetOrders(GetOrdersRequest) returns (GetOrdersResponse);
+  rpc CompleteOrder(CompleteOrdersRequest) returns (google.protobuf.Empty);
 }

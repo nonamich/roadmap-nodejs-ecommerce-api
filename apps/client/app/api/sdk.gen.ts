@@ -25,7 +25,6 @@ import {
   type CartsControllerRemoveFromCartError,
   type CartsControllerRemoveFromCartResponse,
   CartsControllerRemoveFromCartResponseTransformer,
-  type OrdersControllerAddOrderData,
   type OrdersControllerAddOrderError,
   type OrdersControllerAddOrderResponse,
   OrdersControllerAddOrderResponseTransformer,
@@ -209,7 +208,7 @@ export const ordersControllerGetOrders = <ThrowOnError extends boolean = false>(
 };
 
 export const ordersControllerAddOrder = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<OrdersControllerAddOrderData, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<
     OrdersControllerAddOrderResponse,

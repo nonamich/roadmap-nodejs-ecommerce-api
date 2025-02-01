@@ -2,12 +2,15 @@ import { ReflectionService } from '@grpc/reflection';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
-import { UtilsGrpc } from '@packages/grpc/utils';
+import { InternalDisabledLogger } from '@packages/grpc/nest';
 import { USERS_PACKAGE_NAME } from '@packages/grpc/proto/users';
+import { UtilsGrpc } from '@packages/grpc/utils';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: new InternalDisabledLogger(),
+  });
   const config = app.get(ConfigService);
 
   app.connectMicroservice<GrpcOptions>({

@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Get,
   HttpException,
@@ -11,13 +10,15 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { OrdersServiceClient } from '@packages/grpc/proto/orders';
+import { PaymentsServiceClient } from '@packages/grpc/proto/payments';
 import { ProductsServiceClient } from '@packages/grpc/proto/products';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
 import { CurrentUser } from '~/modules/auth/decorators/authorized-user.decorator';
 import { JWTAuthGuard } from '~/modules/auth/guards/jwt-auth.guard';
+import { PAYMENTS_SERVICE_PROVIDER_TOKEN } from '~/modules/payments/payments.constants';
 import { PRODUCTS_SERVICE_PROVIDER_TOKEN } from '~/modules/products/products.constants';
-import { CreateOrderRequestDto, OrderResponseDto } from './dto';
+import { OrderResponseDto } from './dto';
 import { OrderProductsResponseDto } from './dto/order-products-response.dto';
 import { ORDERS_SERVICE_PROVIDER_TOKEN } from './orders.constants';
 
@@ -27,8 +28,12 @@ export class OrdersController {
   constructor(
     @Inject(ORDERS_SERVICE_PROVIDER_TOKEN)
     private readonly ordersService: OrdersServiceClient,
+
     @Inject(PRODUCTS_SERVICE_PROVIDER_TOKEN)
     private readonly productsService: ProductsServiceClient,
+
+    @Inject(PAYMENTS_SERVICE_PROVIDER_TOKEN)
+    private readonly paymentsService: PaymentsServiceClient,
   ) {}
 
   @ApiOkResponse({ type: OrderResponseDto, isArray: true })
@@ -90,13 +95,26 @@ export class OrdersController {
   @ApiOkResponse({ type: OrderResponseDto })
   @ApiBearerAuth()
   @UseGuards(JWTAuthGuard)
-  @Post('/')
-  async addOrder(
-    @Body() { address, phone }: CreateOrderRequestDto,
-    @CurrentUser() user: AuthorizedUser,
-  ) {
-    return await firstValueFrom(
-      this.ordersService.createOrder({ userId: user.id, address, phone }),
+  @Post()
+  async addOrder(@CurrentUser() user: AuthorizedUser) {
+    return this.ordersService.createOrder({ userId: user.id });
+  }
+
+  @ApiOkResponse({})
+  @ApiBearerAuth()
+  @UseGuards(JWTAuthGuard)
+  @Post()
+  async getOrderConformation(@CurrentUser() user: AuthorizedUser) {
+    const order = await firstValueFrom(
+      this.ordersService.createOrder({ userId: user.id }),
     );
+    const intent = await firstValueFrom(
+      this.paymentsService.getIntent({ intentId: order.indentId }),
+    );
+
+    return {
+      ...order,
+      intentSecret: intent.clientSecret,
+    };
   }
 }

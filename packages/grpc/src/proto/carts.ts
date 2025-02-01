@@ -8,7 +8,6 @@
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 import { Empty } from "./google/protobuf/empty";
-import { Product } from "./products";
 
 export const protobufPackage = "carts";
 
@@ -16,7 +15,6 @@ export interface CartItemResponse {
   quantity: number;
   productId: number;
   price: number;
-  product: Product | null;
 }
 
 export interface CartResponse {

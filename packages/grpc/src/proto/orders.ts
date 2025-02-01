@@ -8,17 +8,17 @@
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
+import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "orders";
 
 export interface OrderResponse {
   id: number;
-  address: string;
-  phone: string;
-  createdAt: Date | null;
   status: string;
-  items: OrderItemResponse[];
   userId: number;
+  indentId: string;
+  createdAt: Date | null;
+  items: OrderItemResponse[];
 }
 
 export interface OrderItemResponse {
@@ -29,8 +29,6 @@ export interface OrderItemResponse {
 
 export interface CreateOrderRequest {
   userId: number;
-  phone: string;
-  address: string;
 }
 
 export interface GetOrderRequest {
@@ -43,6 +41,10 @@ export interface GetOrdersRequest {
 
 export interface GetOrdersResponse {
   orders: OrderResponse[];
+}
+
+export interface CompleteOrdersRequest {
+  indentId: string;
 }
 
 export const ORDERS_PACKAGE_NAME = "orders";
@@ -62,6 +64,8 @@ export interface OrdersServiceClient {
   getOrder(request: GetOrderRequest): Observable<OrderResponse>;
 
   getOrders(request: GetOrdersRequest): Observable<GetOrdersResponse>;
+
+  completeOrder(request: CompleteOrdersRequest): Observable<Empty>;
 }
 
 export interface OrdersServiceController {
@@ -70,11 +74,13 @@ export interface OrdersServiceController {
   getOrder(request: GetOrderRequest): Promise<OrderResponse> | Observable<OrderResponse> | OrderResponse;
 
   getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> | Observable<GetOrdersResponse> | GetOrdersResponse;
+
+  completeOrder(request: CompleteOrdersRequest): void;
 }
 
 export function OrdersServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createOrder", "getOrder", "getOrders"];
+    const grpcMethods: string[] = ["createOrder", "getOrder", "getOrders", "completeOrder"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("OrdersService", method)(constructor.prototype[method], method, descriptor);

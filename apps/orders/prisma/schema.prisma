@@ -9,18 +9,17 @@ datasource db {
 }
 
 enum OrderStatus {
-  PAYMENT
-  PROCESSING
+  WAITING_FOR_PAYMENT
+  PROCESSING_PAYMENT
   COMPLETED
 }
 
 model Order {
   id        Int         @id @default(autoincrement())
   userId    Int
-  address   String
-  phone     String
+  indentId  String      @unique()
   createdAt DateTime    @default(now())
-  status    OrderStatus @default(PAYMENT)
+  status    OrderStatus @default(WAITING_FOR_PAYMENT)
   items     OrderItem[]
 }
 

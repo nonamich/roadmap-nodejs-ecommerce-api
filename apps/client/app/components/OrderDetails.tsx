@@ -12,40 +12,32 @@ export const OrderDetails: FC<Props> = ({ order }) => {
     <>
       <p className="text-xl">Order Details:</p>
       <div className="my-5 flow-root">
-        <dl className="-my-3 divide-y divide-gray-100 text-sm dark:divide-gray-700">
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-            <dt className="font-medium text-gray-900 dark:text-white">ID</dt>
+        <dl className="divide-y divide-gray-100 text-sm dark:divide-gray-700">
+          <div className="grid grid-cols-5 gap-1 py-3">
+            <dt className="font-medium text-gray-900 dark:text-white">ID:</dt>
             <dd className="text-gray-700 sm:col-span-2 dark:text-gray-200">
-              #{order.id}
+              {order.id}
             </dd>
           </div>
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <div className="grid grid-cols-5 gap-1 py-3">
             <dt className="font-medium text-gray-900 dark:text-white">
-              Created At
+              Created At:
             </dt>
             <dd className="text-gray-700 sm:col-span-2 dark:text-gray-200">
               {order.createdAt.toLocaleString()}
             </dd>
           </div>
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <div className="grid grid-cols-5 gap-1 py-3">
             <dt className="font-medium text-gray-900 dark:text-white">
-              Status
+              Status:
             </dt>
             <dd className="text-gray-700 sm:col-span-2 dark:text-gray-200">
               {order.status}
             </dd>
           </div>
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <div className="grid grid-cols-5 gap-1 py-3">
             <dt className="font-medium text-gray-900 dark:text-white">
-              Address
-            </dt>
-            <dd className="text-gray-700 sm:col-span-2 dark:text-gray-200">
-              <address>{order.address}</address>
-            </dd>
-          </div>
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-            <dt className="font-medium text-gray-900 dark:text-white">
-              Order Price
+              Order Price:
             </dt>
             <dd className="text-gray-700 sm:col-span-2 dark:text-gray-200">
               <Price
@@ -53,12 +45,6 @@ export const OrderDetails: FC<Props> = ({ order }) => {
                   return acc + item.price * item.quantity;
                 }, 0)}
               />
-            </dd>
-          </div>
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-            <dt className="font-medium text-gray-900 dark:text-white">Phone</dt>
-            <dd className="text-gray-700 sm:col-span-2 dark:text-gray-200">
-              <a href={`tel:${order.phone}`}>{order.phone}</a>
             </dd>
           </div>
         </dl>

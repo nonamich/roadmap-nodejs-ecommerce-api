@@ -30,7 +30,6 @@ import type {
   CartsControllerRemoveFromCartData,
   CartsControllerRemoveFromCartError,
   CartsControllerRemoveFromCartResponse,
-  OrdersControllerAddOrderData,
   OrdersControllerAddOrderError,
   OrdersControllerAddOrderResponse,
   OrdersControllerGetOrderData,
@@ -341,11 +340,11 @@ export const ordersControllerGetOrdersOptions = (
 };
 
 export const ordersControllerAddOrderQueryKey = (
-  options: OptionsLegacyParser<OrdersControllerAddOrderData>,
+  options?: OptionsLegacyParser,
 ) => [createQueryKey('ordersControllerAddOrder', options)];
 
 export const ordersControllerAddOrderOptions = (
-  options: OptionsLegacyParser<OrdersControllerAddOrderData>,
+  options?: OptionsLegacyParser,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -362,12 +361,12 @@ export const ordersControllerAddOrderOptions = (
 };
 
 export const ordersControllerAddOrderMutation = (
-  options?: Partial<OptionsLegacyParser<OrdersControllerAddOrderData>>,
+  options?: Partial<OptionsLegacyParser>,
 ) => {
   const mutationOptions: UseMutationOptions<
     OrdersControllerAddOrderResponse,
     OrdersControllerAddOrderError,
-    OptionsLegacyParser<OrdersControllerAddOrderData>
+    OptionsLegacyParser
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await ordersControllerAddOrder({

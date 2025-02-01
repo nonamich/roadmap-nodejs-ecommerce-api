@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package payments;
+
+message CreateIntentRequest {
+  int32 amountInCent = 1;
+}
+
+message CreateResponse {
+  string intentId = 1;
+}
+
+message GetIntentRequest {
+  string intentId = 1;
+}
+
+message GetIntentResponse {
+  string clientSecret = 1;
+  int32 amount = 2;
+  string status = 3;
+  string currency = 4;
+}
+
+service PaymentsService {
+  rpc createIntent(CreateIntentRequest) returns (CreateResponse);
+  rpc getIntent(GetIntentRequest) returns (GetIntentResponse);
+}

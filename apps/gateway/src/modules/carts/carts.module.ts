@@ -4,7 +4,6 @@ import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
 import {
   CARTS_PACKAGE_NAME,
   CARTS_SERVICE_NAME,
-  CartsServiceClient,
 } from '@packages/grpc/proto/carts';
 import { UtilsGrpc } from '@packages/grpc/utils';
 import { ProductsModule } from '../products/products.module';
@@ -13,6 +12,7 @@ import {
   CARTS_SERVICE_PROVIDER_TOKEN,
 } from './carts.constants';
 import { CartsController } from './carts.controller';
+import { CartsService } from './carts.service';
 
 @Module({
   imports: [
@@ -43,9 +43,10 @@ import { CartsController } from './carts.controller';
       provide: CARTS_SERVICE_PROVIDER_TOKEN,
       inject: [CARTS_CLIENT_GRPC_PROVIDER_TOKEN],
       useFactory(client: ClientGrpc) {
-        return client.getService<CartsServiceClient>(CARTS_SERVICE_NAME);
+        return client.getService(CARTS_SERVICE_NAME);
       },
     },
+    CartsService,
   ],
   exports: [CARTS_SERVICE_PROVIDER_TOKEN],
   controllers: [CartsController],

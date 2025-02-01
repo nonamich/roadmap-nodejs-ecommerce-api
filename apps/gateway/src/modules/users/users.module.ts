@@ -40,7 +40,7 @@ import {
       provide: USERS_SERVICE_PROVIDER_TOKEN,
       inject: [USERS_CLIENT_GRPC_PROVIDER_TOKEN],
       useFactory(client: ClientGrpc) {
-        return client.getService<UsersServiceClient>(USERS_SERVICE_NAME);
+        return client.getService(USERS_SERVICE_NAME);
       },
     },
   ],

@@ -27,11 +27,6 @@ export type CategoryDto = {
   name: string;
 };
 
-export type CreateOrderRequestDto = {
-  phone: string;
-  address: string;
-};
-
 export type OrderItemResponseDto = {
   productId: number;
   quantity: number;
@@ -48,20 +43,18 @@ export type OrderProductsItemResponseDto = {
 export type OrderProductsResponseDto = {
   id: number;
   userId: number;
-  address: string;
-  phone: string;
   createdAt: Date;
   status: string;
+  indentId: string;
   items: Array<OrderProductsItemResponseDto>;
 };
 
 export type OrderResponseDto = {
   id: number;
   userId: number;
-  address: string;
-  phone: string;
   createdAt: Date;
   status: string;
+  indentId: string;
   items: Array<OrderItemResponseDto>;
 };
 
@@ -204,10 +197,6 @@ export type CartsControllerRemoveFromCartError = unknown;
 export type OrdersControllerGetOrdersResponse = Array<OrderResponseDto>;
 
 export type OrdersControllerGetOrdersError = unknown;
-
-export type OrdersControllerAddOrderData = {
-  body: CreateOrderRequestDto;
-};
 
 export type OrdersControllerAddOrderResponse = OrderResponseDto;
 

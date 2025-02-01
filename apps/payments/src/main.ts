@@ -1,0 +1,34 @@
+import { ReflectionService } from '@grpc/reflection';
+import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import { GrpcOptions, Transport } from '@nestjs/microservices';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { InternalDisabledLogger } from '@packages/grpc/nest';
+import { PAYMENTS_PACKAGE_NAME } from '@packages/grpc/proto/payments';
+import { UtilsGrpc } from '@packages/grpc/utils';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    rawBody: true,
+    logger: new InternalDisabledLogger(),
+  });
+  const config = app.get(ConfigService);
+
+  app.connectMicroservice<GrpcOptions>({
+    transport: Transport.GRPC,
+    options: {
+      url: config.getOrThrow('PAYMENTS_GRPC_LISTEN_URL'),
+      package: PAYMENTS_PACKAGE_NAME,
+      protoPath: UtilsGrpc.getProtoFilePath(PAYMENTS_PACKAGE_NAME),
+      onLoadPackageDefinition: (pkg, server) => {
+        new ReflectionService(pkg).addToServer(server);
+      },
+    },
+  });
+
+  await app.startAllMicroservices();
+  await app.listen(config.getOrThrow('PAYMENTS_WEB_PORT'));
+}
+
+bootstrap();

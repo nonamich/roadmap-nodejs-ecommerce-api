@@ -6,6 +6,7 @@ export * from './CartItem';
 export * from './Footer';
 export * from './Header';
 export * from './LoginForm';
+export * from './OrderDetails';
 export * from './Orders';
 export * from './Pagination';
 export * from './Price';

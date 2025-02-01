@@ -5,11 +5,17 @@ export const CARTS_SERVICE_PROVIDER_TOKEN = Symbol(
   'CARTS_SERVICE_PROVIDER_TOKEN',
 );
 
+export const PAYMENTS_CLIENT_GRPC_PROVIDER_TOKEN = Symbol(
+  'PAYMENTS_CLIENT_GRPC_PROVIDER_TOKEN',
+);
+export const PAYMENTS_SERVICE_PROVIDER_TOKEN = Symbol(
+  'PAYMENTS_SERVICE_PROVIDER_TOKEN',
+);
+
 export const ORDER_SELECT = {
   id: true,
-  address: true,
-  phone: true,
   status: true,
+  indentId: true,
   createdAt: true,
   userId: true,
   items: {

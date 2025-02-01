@@ -1,2 +1,5 @@
-export * from './create-order-request.dto';
+export * from './order-conformation-response.dto';
+export * from './order-item-response.dto';
+export * from './order-products-item-response.dto';
+export * from './order-products-response.dto';
 export * from './order-response.dto';
