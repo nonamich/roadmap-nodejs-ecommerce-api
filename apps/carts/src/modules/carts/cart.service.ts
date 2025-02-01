@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { GrpcInvalidArgumentException } from '@packages/grpc/nest';
-import { CartItemResponse } from '@packages/grpc/proto/carts';
-import { ProductsServiceClient } from '@packages/grpc/proto/products';
+import { GrpcInvalidArgumentException } from '@repo/grpc/nest';
+import { CartItemResponse } from '@repo/grpc/proto/carts';
+import { ProductsServiceClient } from '@repo/grpc/proto/products';
 import { firstValueFrom } from 'rxjs';
 import { ORMService } from '~/modules/orm/orm.service';
 import { PRODUCTS_SERVICE_PROVIDER_TOKEN } from './carts.constants';

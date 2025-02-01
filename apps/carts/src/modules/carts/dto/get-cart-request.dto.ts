@@ -1,4 +1,4 @@
-import { GetCartRequest } from '@packages/grpc/proto/carts';
+import { GetCartRequest } from '@repo/grpc/proto/carts';
 import { IsInt } from 'class-validator';
 
 export class GetCartRequestDto implements GetCartRequest {

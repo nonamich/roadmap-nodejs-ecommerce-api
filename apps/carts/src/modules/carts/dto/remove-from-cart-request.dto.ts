@@ -1,4 +1,4 @@
-import { RemoveCartRequest } from '@packages/grpc/proto/carts';
+import { RemoveCartRequest } from '@repo/grpc/proto/carts';
 import { IsInt } from 'class-validator';
 
 export class RemoveCartRequestDto implements RemoveCartRequest {

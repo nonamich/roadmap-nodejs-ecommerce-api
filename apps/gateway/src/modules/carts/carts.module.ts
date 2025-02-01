@@ -4,8 +4,8 @@ import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
 import {
   CARTS_PACKAGE_NAME,
   CARTS_SERVICE_NAME,
-} from '@packages/grpc/proto/carts';
-import { UtilsGrpc } from '@packages/grpc/utils';
+} from '@repo/grpc/proto/carts';
+import { UtilsGrpc } from '@repo/grpc/utils';
 import { ProductsModule } from '../products/products.module';
 import {
   CARTS_CLIENT_GRPC_PROVIDER_TOKEN,

@@ -1,5 +1,5 @@
 {
-  "name": "@apps/gateway",
+  "name": "@repo/gateway",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -13,11 +13,11 @@
     "test:e2e": "jest --config ./test/jest.config.mjs"
   },
   "dependencies": {
-    "@apps/orders": "workspace:*",
-    "@apps/carts": "workspace:*",
-    "@apps/products": "workspace:*",
-    "@apps/users": "workspace:*",
-    "@apps/payments": "workspace:*",
+    "@repo/orders": "workspace:*",
+    "@repo/carts": "workspace:*",
+    "@repo/products": "workspace:*",
+    "@repo/users": "workspace:*",
+    "@repo/payments": "workspace:*",
     "@nestjs/common": "^11.0.6",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.6",
@@ -26,7 +26,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.6",
     "@nestjs/swagger": "^11.0.3",
-    "@packages/grpc": "workspace:*",
+    "@repo/grpc": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
@@ -39,7 +39,7 @@
     "@nestjs/cli": "^11.0.2",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.6",
-    "@packages/configs": "workspace:*",
+    "@repo/configs": "workspace:*",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.11",
     "@swc/jest": "^0.2.37",

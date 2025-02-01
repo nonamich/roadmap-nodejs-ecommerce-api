@@ -1,4 +1,4 @@
-import { GetUserByEmailRequest } from '@packages/grpc/proto/users';
+import { GetUserByEmailRequest } from '@repo/grpc/proto/users';
 import { IsEmail } from 'class-validator';
 
 export class GetUserByEmailRequestDto implements GetUserByEmailRequest {

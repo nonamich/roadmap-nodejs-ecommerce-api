@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { OrdersServiceClient } from '@packages/grpc/proto/orders';
-import { ProductsServiceClient } from '@packages/grpc/proto/products';
+import { OrdersServiceClient } from '@repo/grpc/proto/orders';
+import { ProductsServiceClient } from '@repo/grpc/proto/products';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
 import { CurrentUser } from '~/modules/auth/decorators/authorized-user.decorator';

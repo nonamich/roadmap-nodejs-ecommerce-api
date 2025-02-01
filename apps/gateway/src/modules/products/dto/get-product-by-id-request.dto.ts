@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { GetProductByIdRequest } from '@packages/grpc/proto/products';
+import { GetProductByIdRequest } from '@repo/grpc/proto/products';
 import { Type } from 'class-transformer';
 import { IsInt } from 'class-validator';
 

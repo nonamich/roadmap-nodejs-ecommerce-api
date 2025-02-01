@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ProductsByFilterResponse } from '@packages/grpc/proto/products';
+import { ProductsByFilterResponse } from '@repo/grpc/proto/products';
 import {
   BrandDto,
   CategoryDto,

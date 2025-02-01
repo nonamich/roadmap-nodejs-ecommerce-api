@@ -1,3 +1,3 @@
-import { User } from '@packages/grpc/proto/users';
+import { User } from '@repo/grpc/proto/users';
 
 export type AuthorizedUser = User;

@@ -3,11 +3,11 @@ import { Payload } from '@nestjs/microservices';
 import {
   GrpcToGrpcExceptionFilter,
   GrpcValidationPipe,
-} from '@packages/grpc/nest';
+} from '@repo/grpc/nest';
 import {
   PaymentsServiceController,
   PaymentsServiceControllerMethods,
-} from '@packages/grpc/proto/payments';
+} from '@repo/grpc/proto/payments';
 import { CreateIntentRequestDto, GetIntentRequestDto } from './dto';
 import { PaymentsService } from './payments.service';
 

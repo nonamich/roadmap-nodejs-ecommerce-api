@@ -1,5 +1,5 @@
 {
-  "name": "@apps/products",
+  "name": "@repo/products",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -24,7 +24,7 @@
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.6",
     "@nestjs/microservices": "^11.0.6",
-    "@packages/grpc": "workspace:*",
+    "@repo/grpc": "workspace:*",
     "@prisma/client": "^6.3.0",
     "argon2": "^0.41.1",
     "class-transformer": "^0.5.1",
@@ -39,7 +39,7 @@
     "@nestjs/cli": "^11.0.2",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.6",
-    "@packages/configs": "workspace:*",
+    "@repo/configs": "workspace:*",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.11",
     "@swc/jest": "^0.2.37",

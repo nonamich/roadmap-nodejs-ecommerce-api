@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GrpcInternalException } from '@packages/grpc/nest';
+import { GrpcInternalException } from '@repo/grpc/nest';
 import Stripe from 'stripe';
 import { CreateIntentRequestDto, GetIntentRequestDto } from './dto';
 import { StripeMethod } from './methods/stripe.method';

@@ -3,11 +3,11 @@ import { Payload } from '@nestjs/microservices';
 import {
   GrpcToGrpcExceptionFilter,
   GrpcValidationPipe,
-} from '@packages/grpc/nest';
+} from '@repo/grpc/nest';
 import {
   CartsServiceController,
   CartsServiceControllerMethods,
-} from '@packages/grpc/proto/carts';
+} from '@repo/grpc/proto/carts';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
 import { CartsService } from './cart.service';
 import {

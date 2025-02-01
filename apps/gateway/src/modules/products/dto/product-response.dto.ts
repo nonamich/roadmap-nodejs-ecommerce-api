@@ -4,7 +4,7 @@ import {
   Category,
   Product,
   ProductsResponse,
-} from '@packages/grpc/proto/products';
+} from '@repo/grpc/proto/products';
 import { PaginationResponseDto } from './pagination-response.dto';
 
 export class BrandDto implements Brand {

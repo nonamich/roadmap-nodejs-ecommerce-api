@@ -1,9 +1,0 @@
-{
-  "name": "@packages/typescript-config",
-  "version": "0.0.0",
-  "type": "module",
-  "private": true,
-  "devDependencies": {
-    "@tsconfig/node22": "^22.0.0"
-  }
-}

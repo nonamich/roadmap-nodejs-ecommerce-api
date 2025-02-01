@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { OrderResponse } from '@packages/grpc/proto/orders';
+import { OrderResponse } from '@repo/grpc/proto/orders';
 import { OrderItemResponseDto } from './order-item-response.dto';
 
 export class OrderResponseDto implements OrderResponse {

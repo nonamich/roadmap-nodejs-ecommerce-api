@@ -1,4 +1,4 @@
-import { GetUsersRequest } from '@packages/grpc/proto/users';
+import { GetUsersRequest } from '@repo/grpc/proto/users';
 import { IsNumber, Min } from 'class-validator';
 
 export class GetUsersRequestDto implements GetUsersRequest {

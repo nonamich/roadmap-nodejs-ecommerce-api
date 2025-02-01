@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { GetProductsByFilterRequest } from '@packages/grpc/proto/products';
+import { GetProductsByFilterRequest } from '@repo/grpc/proto/products';
 import { Type } from 'class-transformer';
 import { IsInt, IsObject, IsOptional, ValidateNested } from 'class-validator';
 import { ApiPropertyDeepObject } from '~/decorators';

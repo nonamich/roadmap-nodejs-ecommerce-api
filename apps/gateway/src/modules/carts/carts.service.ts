@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CartResponse, CartsServiceClient } from '@packages/grpc/proto/carts';
-import { ProductsServiceClient } from '@packages/grpc/proto/products';
+import { CartResponse, CartsServiceClient } from '@repo/grpc/proto/carts';
+import { ProductsServiceClient } from '@repo/grpc/proto/products';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '../auth/auth.interface';
 import { PRODUCTS_SERVICE_PROVIDER_TOKEN } from '../products/products.constants';

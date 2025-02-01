@@ -4,8 +4,8 @@ import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
 import {
   PAYMENTS_PACKAGE_NAME,
   PAYMENTS_SERVICE_NAME,
-} from '@packages/grpc/proto/payments';
-import { UtilsGrpc } from '@packages/grpc/utils';
+} from '@repo/grpc/proto/payments';
+import { UtilsGrpc } from '@repo/grpc/utils';
 import {
   PAYMENTS_CLIENT_GRPC_PROVIDER_TOKEN,
   PAYMENTS_SERVICE_PROVIDER_TOKEN,

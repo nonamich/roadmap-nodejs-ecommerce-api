@@ -1,4 +1,4 @@
-import { GetOrderRequest } from '@packages/grpc/proto/orders';
+import { GetOrderRequest } from '@repo/grpc/proto/orders';
 import { IsInt } from 'class-validator';
 
 export class GetOrderRequestDto implements GetOrderRequest {

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PaginationRequest } from '@packages/grpc/proto/products';
+import { PaginationRequest } from '@repo/grpc/proto/products';
 import { Type } from 'class-transformer';
 import { IsInt } from 'class-validator';
 

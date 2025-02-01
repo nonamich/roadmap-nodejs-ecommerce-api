@@ -5,8 +5,8 @@ import {
   USERS_PACKAGE_NAME,
   USERS_SERVICE_NAME,
   UsersServiceClient,
-} from '@packages/grpc/proto/users';
-import { UtilsGrpc } from '@packages/grpc/utils';
+} from '@repo/grpc/proto/users';
+import { UtilsGrpc } from '@repo/grpc/utils';
 import {
   USERS_CLIENT_GRPC_PROVIDER_TOKEN,
   USERS_SERVICE_PROVIDER_TOKEN,

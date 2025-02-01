@@ -1,6 +1,6 @@
 import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ProductsServiceClient } from '@packages/grpc/proto/products';
+import { ProductsServiceClient } from '@repo/grpc/proto/products';
 import {
   GetFeaturedProductsRequestDto,
   GetProductByIdRequestDto,

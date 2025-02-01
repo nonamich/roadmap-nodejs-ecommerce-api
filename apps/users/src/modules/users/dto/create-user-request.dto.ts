@@ -1,4 +1,4 @@
-import { CreateUserRequest } from '@packages/grpc/proto/users';
+import { CreateUserRequest } from '@repo/grpc/proto/users';
 import { IsEmail, IsString, IsStrongPassword, Length } from 'class-validator';
 
 export class CreateUserRequestDto implements CreateUserRequest {

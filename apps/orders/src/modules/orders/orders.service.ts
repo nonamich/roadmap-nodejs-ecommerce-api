@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { GrpcInvalidArgumentException } from '@packages/grpc/nest';
-import { CartsServiceClient } from '@packages/grpc/proto/carts';
-import { OrderResponse } from '@packages/grpc/proto/orders';
-import { PaymentsServiceClient } from '@packages/grpc/proto/payments';
+import { GrpcInvalidArgumentException } from '@repo/grpc/nest';
+import { CartsServiceClient } from '@repo/grpc/proto/carts';
+import { OrderResponse } from '@repo/grpc/proto/orders';
+import { PaymentsServiceClient } from '@repo/grpc/proto/payments';
 import { OrderStatus } from 'prisma-client';
 import { firstValueFrom } from 'rxjs';
 import { ORMService } from '~/modules/orm/orm.service';

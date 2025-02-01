@@ -4,11 +4,11 @@ import {
   GrpcToGrpcExceptionFilter,
   GrpcUnauthenticatedException,
   GrpcValidationPipe,
-} from '@packages/grpc/nest';
+} from '@repo/grpc/nest';
 import {
   UsersServiceController,
   UsersServiceControllerMethods,
-} from '@packages/grpc/proto/users';
+} from '@repo/grpc/proto/users';
 import { from, mergeAll } from 'rxjs';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
 import { ORMService } from '~/modules/orm/orm.service';

@@ -1,4 +1,4 @@
-import { GetProductsByFilterRequest } from '@packages/grpc/proto/products';
+import { GetProductsByFilterRequest } from '@repo/grpc/proto/products';
 import { Type } from 'class-transformer';
 import {
   IsInt,

@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { OrdersServiceClient } from '@packages/grpc/proto/orders';
+import { OrdersServiceClient } from '@repo/grpc/proto/orders';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
 import { CurrentUser } from '~/modules/auth/decorators/authorized-user.decorator';
@@ -17,7 +17,7 @@ import { JWTAuthGuard } from '~/modules/auth/guards/jwt-auth.guard';
 import { ConformationResponseDto } from './dto';
 import { ORDERS_SERVICE_PROVIDER_TOKEN } from '../orders/orders.constants';
 import { PAYMENTS_SERVICE_PROVIDER_TOKEN } from './payments.constants';
-import { PaymentsServiceClient } from '@packages/grpc/proto/payments';
+import { PaymentsServiceClient } from '@repo/grpc/proto/payments';
 
 @ApiTags('payments')
 @Controller('payments')

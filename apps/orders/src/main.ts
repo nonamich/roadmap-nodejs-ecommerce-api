@@ -2,9 +2,9 @@ import { ReflectionService } from '@grpc/reflection';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
-import { InternalDisabledLogger } from '@packages/grpc/nest';
-import { ORDERS_PACKAGE_NAME } from '@packages/grpc/proto/orders';
-import { UtilsGrpc } from '@packages/grpc/utils';
+import { InternalDisabledLogger } from '@repo/grpc/nest';
+import { ORDERS_PACKAGE_NAME } from '@repo/grpc/proto/orders';
+import { UtilsGrpc } from '@repo/grpc/utils';
 import { AppModule } from './app.module';
 
 async function bootstrap() {

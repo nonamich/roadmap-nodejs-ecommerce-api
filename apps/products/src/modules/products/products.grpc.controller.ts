@@ -4,11 +4,11 @@ import {
   GrpcNotFoundException,
   GrpcToGrpcExceptionFilter,
   GrpcValidationPipe,
-} from '@packages/grpc/nest';
+} from '@repo/grpc/nest';
 import {
   ProductsServiceController,
   ProductsServiceControllerMethods,
-} from '@packages/grpc/proto/products';
+} from '@repo/grpc/proto/products';
 import { mergeAll } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';

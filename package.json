@@ -1,10 +1,7 @@
 {
   "name": "roadmap-nodejs-ecommerce-api",
-  "packageManager": "pnpm@10.1.0",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "dev": "pnpm --parallel --filter @apps/client... run /^dev/"
-  },
-  "dependencies": {
-    "turbo": "^2.3.4"
+    "dev": "pnpm --parallel --filter @repo/client... run /^dev/"
   }
 }

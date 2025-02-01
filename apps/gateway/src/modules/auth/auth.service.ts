@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UsersServiceClient } from '@packages/grpc/proto/users';
+import { UsersServiceClient } from '@repo/grpc/proto/users';
 import { firstValueFrom } from 'rxjs';
 import { USERS_SERVICE_PROVIDER_TOKEN } from '../users/users.constants';
 import { AuthorizedUser } from './auth.interface';

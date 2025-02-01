@@ -1,4 +1,4 @@
-import { GetFeaturedProductsRequest } from '@packages/grpc/proto/products';
+import { GetFeaturedProductsRequest } from '@repo/grpc/proto/products';
 import { Type } from 'class-transformer';
 import { IsObject, ValidateNested } from 'class-validator';
 import { PaginationRequestDto } from '.';

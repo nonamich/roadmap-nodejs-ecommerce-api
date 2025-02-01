@@ -3,9 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { InternalDisabledLogger } from '@packages/grpc/nest';
-import { PAYMENTS_PACKAGE_NAME } from '@packages/grpc/proto/payments';
-import { UtilsGrpc } from '@packages/grpc/utils';
+import { InternalDisabledLogger } from '@repo/grpc/nest';
+import { PAYMENTS_PACKAGE_NAME } from '@repo/grpc/proto/payments';
+import { UtilsGrpc } from '@repo/grpc/utils';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
