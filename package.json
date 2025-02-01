@@ -3,6 +3,7 @@
   "packageManager": "pnpm@9.15.4",
   "scripts": {
     "dev": "pnpm --parallel run /^dev/",
-    "lint": "pnpm --parallel --filter @repo/client... run /^lint/"
+    "lint": "pnpm --parallel run /^lint/",
+    "predev": "docker compose -f compose.infra.yml up -d"
   }
 }
