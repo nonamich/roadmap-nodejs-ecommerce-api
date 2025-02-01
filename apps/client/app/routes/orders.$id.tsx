@@ -5,7 +5,7 @@ import {
 } from 'react-router';
 import { ordersControllerGetOrder } from '~/api';
 import { Breadcrumbs } from '~/components';
-import { OrderDetails } from '~/components/OrderDetails';
+import { OrderDetails } from '~/components';
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   if (!params.id) {

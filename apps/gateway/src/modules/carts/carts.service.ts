@@ -50,13 +50,13 @@ export class CartsService {
   }
 
   async getCartWithProducts(cart: CartResponse) {
-    const products = await firstValueFrom(
+    const products = cart.items.length ? await firstValueFrom(
       this.productsService
         .getProductsByIds({
           ids: cart.items.map((item) => item.productId),
         })
         .pipe(toArray()),
-    );
+    ) : [];
 
     return {
       ...cart,

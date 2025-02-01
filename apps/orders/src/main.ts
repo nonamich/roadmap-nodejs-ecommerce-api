@@ -16,7 +16,7 @@ async function bootstrap() {
   app.connectMicroservice<GrpcOptions>({
     transport: Transport.GRPC,
     options: {
-      url: config.getOrThrow('ORDERS_GRPC_LISTEN_URL'),
+      url: config.getOrThrow('GRPC_SERVER_URL_ORDERS'),
       package: ORDERS_PACKAGE_NAME,
       protoPath: UtilsGrpc.getProtoFilePath(ORDERS_PACKAGE_NAME),
       onLoadPackageDefinition: (pkg, server) => {

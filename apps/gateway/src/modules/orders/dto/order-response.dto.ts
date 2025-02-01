@@ -2,9 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { OrderResponse } from '@packages/grpc/proto/orders';
 import { OrderItemResponseDto } from './order-item-response.dto';
 
-export { OrderResponseDto };
-
-class OrderResponseDto implements OrderResponse {
+export class OrderResponseDto implements OrderResponse {
   @ApiProperty()
   id!: number;
 

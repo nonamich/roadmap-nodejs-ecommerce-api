@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { GrpcToHttpInterceptor } from '@packages/grpc/nest';
+import { DefaultValidationPipe } from './pipes/default-validation.pipe';
 import { AuthModule } from './modules/auth/auth.module';
 import { CartsModule } from './modules/carts/carts.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
-import { DefaultValidationPipe } from './pipes/default-validation.pipe';
+import { PaymentModule } from './modules/payments/payments.module';
 
 @Module({
   providers: [
@@ -27,6 +28,7 @@ import { DefaultValidationPipe } from './pipes/default-validation.pipe';
     ProductsModule,
     CartsModule,
     OrdersModule,
+    PaymentModule
   ],
 })
 export class AppModule {}

@@ -26,7 +26,7 @@ import { ProductsController } from './products.controller';
                 arrays: true,
                 defaults: true,
               },
-              url: config.getOrThrow('PRODUCTS_GRPC_SERVER_URL'),
+              url: config.getOrThrow('GRPC_SERVER_URL_PRODUCTS'),
               package: PRODUCTS_PACKAGE_NAME,
               protoPath: UtilsGrpc.getProtoFilePath(PRODUCTS_PACKAGE_NAME),
             },

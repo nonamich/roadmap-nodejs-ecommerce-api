@@ -10,9 +10,12 @@ import {
   PAYMENTS_CLIENT_GRPC_PROVIDER_TOKEN,
   PAYMENTS_SERVICE_PROVIDER_TOKEN,
 } from './payments.constants';
+import { OrdersModule } from '~/modules/orders/orders.module';
+import { PaymentsController } from './payments.controller';
 
 @Module({
   imports: [
+    OrdersModule,
     ClientsModule.registerAsync([
       {
         name: PAYMENTS_CLIENT_GRPC_PROVIDER_TOKEN,
@@ -25,7 +28,7 @@ import {
                 arrays: true,
                 defaults: true,
               },
-              url: config.getOrThrow('PAYMENTS_GRPC_SERVER_URL'),
+              url: config.getOrThrow('GRPC_SERVER_URL_PAYMENTS'),
               package: PAYMENTS_PACKAGE_NAME,
               protoPath: UtilsGrpc.getProtoFilePath(PAYMENTS_PACKAGE_NAME),
             },
@@ -44,5 +47,6 @@ import {
     },
   ],
   exports: [PAYMENTS_SERVICE_PROVIDER_TOKEN],
+  controllers: [PaymentsController]
 })
-export class UsersModule {}
+export class PaymentModule {}

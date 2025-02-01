@@ -4,8 +4,8 @@ import { NestFactory } from '@nestjs/core';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
 import { InternalDisabledLogger } from '@packages/grpc/nest';
 import { PRODUCTS_PACKAGE_NAME } from '@packages/grpc/proto/products';
-import { UtilsGrpc } from '@packages/grpc/utils';
 import { AppModule } from './app.module';
+import { UtilsGrpc } from '@packages/grpc/utils';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -16,7 +16,7 @@ async function bootstrap() {
   app.connectMicroservice<GrpcOptions>({
     transport: Transport.GRPC,
     options: {
-      url: config.getOrThrow('PRODUCTS_GRPC_LISTEN_URL'),
+      url: config.getOrThrow('GRPC_SERVER_URL_PRODUCTS'),
       package: PRODUCTS_PACKAGE_NAME,
       protoPath: UtilsGrpc.getProtoFilePath(PRODUCTS_PACKAGE_NAME),
       onLoadPackageDefinition: (pkg, server) => {

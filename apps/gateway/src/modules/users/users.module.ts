@@ -26,7 +26,7 @@ import {
                 arrays: true,
                 defaults: true,
               },
-              url: config.getOrThrow('USERS_GRPC_SERVER_URL'),
+              url: config.getOrThrow('GRPC_SERVER_URL_USERS'),
               package: USERS_PACKAGE_NAME,
               protoPath: UtilsGrpc.getProtoFilePath(USERS_PACKAGE_NAME),
             },

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ORMModule } from './modules/orm/orm.module';
 import { ProductsModule } from './modules/products/products.module';
+import { ORMModule } from './modules/orm/orm.module';
 
 @Module({
   imports: [

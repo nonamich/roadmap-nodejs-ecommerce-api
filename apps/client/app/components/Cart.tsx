@@ -11,11 +11,11 @@ export const Cart: FC = () => {
   const navigate = useNavigate();
   const addToOrderMutation = useMutation(ordersControllerAddOrderMutation());
   const onSubmit = async () => {
-    const { id: orderId } = await addToOrderMutation.mutateAsync({});
-
-    await navigate(`/orders/${orderId}`);
+    const { indentId } = await addToOrderMutation.mutateAsync({});
 
     await cart.refresh();
+
+    await navigate(`/confirmation/${indentId}`);
   };
 
   return (

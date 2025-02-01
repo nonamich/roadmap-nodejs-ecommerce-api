@@ -29,7 +29,7 @@ import { CartsService } from './carts.service';
                 arrays: true,
                 defaults: true,
               },
-              url: config.getOrThrow('CARTS_GRPC_SERVER_URL'),
+              url: config.getOrThrow('GRPC_SERVER_URL_CARTS'),
               package: CARTS_PACKAGE_NAME,
               protoPath: UtilsGrpc.getProtoFilePath(CARTS_PACKAGE_NAME),
             },

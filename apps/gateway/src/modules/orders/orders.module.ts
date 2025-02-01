@@ -6,7 +6,7 @@ import {
   ORDERS_SERVICE_NAME,
 } from '@packages/grpc/proto/orders';
 import { UtilsGrpc } from '@packages/grpc/utils';
-import { ProductsModule } from '../products/products.module';
+import { ProductsModule } from '~/modules/products/products.module';
 import {
   ORDERS_CLIENT_GRPC_PROVIDER_TOKEN,
   ORDERS_SERVICE_PROVIDER_TOKEN,
@@ -14,6 +14,8 @@ import {
 import { OrdersController } from './orders.controller';
 
 @Module({
+  exports: [ORDERS_SERVICE_PROVIDER_TOKEN],
+  controllers: [OrdersController],
   imports: [
     ProductsModule,
     ClientsModule.registerAsync([
@@ -28,7 +30,7 @@ import { OrdersController } from './orders.controller';
                 arrays: true,
                 defaults: true,
               },
-              url: config.getOrThrow('ORDERS_GRPC_SERVER_URL'),
+              url: config.getOrThrow('GRPC_SERVER_URL_ORDERS'),
               package: ORDERS_PACKAGE_NAME,
               protoPath: UtilsGrpc.getProtoFilePath(ORDERS_PACKAGE_NAME),
             },
@@ -46,7 +48,5 @@ import { OrdersController } from './orders.controller';
       },
     },
   ],
-  exports: [ORDERS_SERVICE_PROVIDER_TOKEN],
-  controllers: [OrdersController],
 })
 export class OrdersModule {}
