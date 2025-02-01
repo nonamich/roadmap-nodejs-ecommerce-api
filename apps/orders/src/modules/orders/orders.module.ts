@@ -1,10 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
-import {
-  CARTS_PACKAGE_NAME,
-  CARTS_SERVICE_NAME,
-} from '@repo/grpc/proto/carts';
+import { CARTS_PACKAGE_NAME, CARTS_SERVICE_NAME } from '@repo/grpc/proto/carts';
 import {
   PAYMENTS_PACKAGE_NAME,
   PAYMENTS_SERVICE_NAME,

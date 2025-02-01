@@ -1,9 +1,6 @@
 import { Controller, UseFilters } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
-import {
-  GrpcToGrpcExceptionFilter,
-  GrpcValidationPipe,
-} from '@repo/grpc/nest';
+import { GrpcToGrpcExceptionFilter, GrpcValidationPipe } from '@repo/grpc/nest';
 import {
   PaymentsServiceController,
   PaymentsServiceControllerMethods,

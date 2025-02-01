@@ -4,8 +4,8 @@ import { NestFactory } from '@nestjs/core';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
 import { InternalDisabledLogger } from '@repo/grpc/nest';
 import { PRODUCTS_PACKAGE_NAME } from '@repo/grpc/proto/products';
-import { AppModule } from './app.module';
 import { UtilsGrpc } from '@repo/grpc/utils';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

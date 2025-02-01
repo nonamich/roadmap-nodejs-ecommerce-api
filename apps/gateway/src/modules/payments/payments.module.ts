@@ -6,11 +6,11 @@ import {
   PAYMENTS_SERVICE_NAME,
 } from '@repo/grpc/proto/payments';
 import { UtilsGrpc } from '@repo/grpc/utils';
+import { OrdersModule } from '~/modules/orders/orders.module';
 import {
   PAYMENTS_CLIENT_GRPC_PROVIDER_TOKEN,
   PAYMENTS_SERVICE_PROVIDER_TOKEN,
 } from './payments.constants';
-import { OrdersModule } from '~/modules/orders/orders.module';
 import { PaymentsController } from './payments.controller';
 
 @Module({
@@ -47,6 +47,6 @@ import { PaymentsController } from './payments.controller';
     },
   ],
   exports: [PAYMENTS_SERVICE_PROVIDER_TOKEN],
-  controllers: [PaymentsController]
+  controllers: [PaymentsController],
 })
 export class PaymentModule {}
