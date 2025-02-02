@@ -74,6 +74,7 @@ export class PaymentsService {
     }
 
     return {
+      id: intent.id,
       clientSecret: intent.client_secret,
       amount: intent.amount,
       status: intent.status,

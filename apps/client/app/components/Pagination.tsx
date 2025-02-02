@@ -17,7 +17,12 @@ export const Pagination: FC<Props> = ({ page, limit, totalCount }) => {
     <RCPagination
       className="mt-8 flex justify-center gap-1 text-xs font-medium"
       onChange={(page) => {
-        navigate({ search: `page=${page}` });
+        navigate(
+          { search: `page=${page}` },
+          {
+            viewTransition: true,
+          },
+        );
       }}
       itemRender={(current, type) => {
         const isJump = type === 'jump-next' || type === 'jump-prev';

@@ -13,9 +13,13 @@ export const Cart: FC = () => {
   const onSubmit = async () => {
     const { id } = await addToOrderMutation.mutateAsync({});
 
-    await cart.refresh();
+    await navigate(`/order/payment/${id}`, {
+      viewTransition: true,
+    });
 
-    await navigate(`/order/${id}/payment`);
+    setTimeout(() => {
+      cart.refresh();
+    }, 1000);
   };
 
   return (

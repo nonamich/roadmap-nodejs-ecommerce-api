@@ -49,6 +49,12 @@ export class PaymentsController {
       throw new ForbiddenException();
     }
 
+    if (intent.status === 'succeeded' && order.status !== 'COMPLETED') {
+      await firstValueFrom(
+        this.ordersService.completeOrder({ intentId: intent.id }),
+      );
+    }
+
     return intent;
   }
 }

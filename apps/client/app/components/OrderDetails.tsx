@@ -73,7 +73,9 @@ export const OrderDetails: FC<Props> = ({ order }) => {
               return (
                 <tr key={product.id}>
                   <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
-                    <Link to={`/product/${product.id}`}>{product.title}</Link>
+                    <Link viewTransition to={`/product/${product.id}`}>
+                      {product.title}
+                    </Link>
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
                     <Price price={product.price} />

@@ -9,7 +9,7 @@ type Props = {
 
 export const ProductItem: FC<Props> = ({ product }) => {
   return (
-    <Link to={`/product/${product.id}`} className="group block">
+    <Link to={`/product/${product.id}`} viewTransition className="group block">
       <div className="overflow-hidden">
         <img
           src={product.image}

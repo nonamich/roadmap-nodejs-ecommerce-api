@@ -30,7 +30,7 @@ export const Breadcrumbs: FC<Props> = ({ links }) => {
             <li key={index} className="flex items-center">
               {Boolean(index) && <span className="mx-3">/</span>}
               {href && (
-                <Link to={href} className={classes}>
+                <Link to={href} viewTransition className={classes}>
                   {text}
                 </Link>
               )}

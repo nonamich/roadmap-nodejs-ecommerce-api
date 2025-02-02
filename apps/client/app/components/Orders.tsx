@@ -57,12 +57,60 @@ export const Orders: FC = () => {
                         />
                       </td>
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200">
-                        {order.status.toString()}
+                        <If condition={order.status === 'COMPLETED'}>
+                          <Then>
+                            <span className="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700 dark:bg-emerald-700 dark:text-emerald-100">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                className="-ms-1 me-1.5 size-4"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path>
+                              </svg>
+
+                              <p className="whitespace-nowrap text-sm">Paid</p>
+                            </span>
+                          </Then>
+                          <Else>
+                            <span className="inline-flex items-center justify-center rounded-full bg-amber-100 px-2.5 py-0.5 text-amber-700 dark:bg-amber-700 dark:text-amber-100">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                className="-ms-1 me-1.5 size-4"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M8.25 9.75h4.875a2.625 2.625 0 010 5.25H12M8.25 9.75L10.5 7.5M8.25 9.75L10.5 12m9-7.243V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185z"
+                                ></path>
+                              </svg>
+
+                              <p className="whitespace-nowrap text-sm">
+                                Waiting For Payment
+                              </p>
+                            </span>
+                          </Else>
+                        </If>
                       </td>
-                      <td className="whitespace-nowrap px-4 py-2">
-                        <Button tag="a" to={`/orders/${order.id}`}>
+                      <td className="flex gap-2 whitespace-nowrap px-4 py-2">
+                        <Button tag="a" to={`/order/${order.id}`}>
                           View
                         </Button>
+                        {order.status === 'WAITING_FOR_PAYMENT' && (
+                          <Button tag="a" to={`/order/payment/${order.id}`}>
+                            Pay
+                          </Button>
+                        )}
                       </td>
                     </tr>
                   );

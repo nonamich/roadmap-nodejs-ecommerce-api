@@ -5,7 +5,9 @@ export default function OrderSuccess() {
   const navigate = useNavigate();
 
   const onBack = () => {
-    navigate('/');
+    navigate('/', {
+      viewTransition: true,
+    });
   };
 
   return (

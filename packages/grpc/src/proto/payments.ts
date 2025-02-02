@@ -10,6 +10,28 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "payments";
 
+export const PaymentStatus = {
+  canceled: "canceled",
+  processing: "processing",
+  requires_action: "requires_action",
+  requires_capture: "requires_capture",
+  requires_confirmation: "requires_confirmation",
+  requires_payment_method: "requires_payment_method",
+  succeeded: "succeeded",
+} as const;
+
+export type PaymentStatus = typeof PaymentStatus[keyof typeof PaymentStatus];
+
+export namespace PaymentStatus {
+  export type canceled = typeof PaymentStatus.canceled;
+  export type processing = typeof PaymentStatus.processing;
+  export type requires_action = typeof PaymentStatus.requires_action;
+  export type requires_capture = typeof PaymentStatus.requires_capture;
+  export type requires_confirmation = typeof PaymentStatus.requires_confirmation;
+  export type requires_payment_method = typeof PaymentStatus.requires_payment_method;
+  export type succeeded = typeof PaymentStatus.succeeded;
+}
+
 export interface CreateIntentRequest {
   amountInCent: number;
 }
@@ -23,9 +45,10 @@ export interface GetIntentRequest {
 }
 
 export interface GetIntentResponse {
+  id: string;
   clientSecret: string;
   amount: number;
-  status: string;
+  status: PaymentStatus;
   currency: string;
 }
 

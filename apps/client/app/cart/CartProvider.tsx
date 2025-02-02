@@ -69,7 +69,9 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       setLoading(true);
 
       if (!user) {
-        navigate('/signin');
+        navigate('/signin', {
+          viewTransition: true,
+        });
 
         return;
       }

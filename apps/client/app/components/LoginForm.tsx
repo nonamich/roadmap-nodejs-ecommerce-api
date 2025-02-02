@@ -36,7 +36,10 @@ export const LoginForm: FC<Props> = ({ isRegister = false }) => {
 
     await promise
       .then(() => {
-        navigate(from, { replace: true });
+        navigate(from, {
+          replace: true,
+          viewTransition: true,
+        });
       })
       .catch((err) => {
         if (err.message) {
@@ -155,13 +158,13 @@ export const LoginForm: FC<Props> = ({ isRegister = false }) => {
             <If condition={isRegister}>
               <Then>
                 Already have account?{' '}
-                <Link className="underline" to="/signin">
+                <Link className="underline" to="/signin" viewTransition>
                   Sign in
                 </Link>
               </Then>
               <Else>
                 No account?{' '}
-                <Link className="underline" to="/signup">
+                <Link className="underline" to="/signup" viewTransition>
                   Sign up
                 </Link>
               </Else>
