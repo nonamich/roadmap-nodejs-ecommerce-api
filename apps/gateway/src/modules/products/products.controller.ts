@@ -8,10 +8,12 @@ import {
   GetFeaturedProductsRequestDto,
   GetProductByIdRequestDto,
   GetProductsByFilterRequestDto,
-  ProductResponseDto,
-  ProductsResponseDto,
 } from './dto';
-import { ProductsByFilterResponseDto } from './dto/product-by-filter-response.dto';
+import {
+  ProductEntity,
+  ProductsByFilterEntity,
+  ProductsEntity,
+} from './entities';
 
 @ApiTags('products')
 @Controller('products')
@@ -21,19 +23,19 @@ export class ProductsController {
     private readonly productsService: ProductsServiceClient,
   ) {}
 
-  @ApiOkResponse({ type: ProductsResponseDto })
+  @ApiOkResponse({ type: ProductsEntity })
   @Get('/featured')
   getFeaturedProducts(@Query() request: GetFeaturedProductsRequestDto) {
     return this.productsService.getFeaturedProducts(request);
   }
 
-  @ApiOkResponse({ type: ProductResponseDto })
+  @ApiOkResponse({ type: ProductEntity })
   @Get('/:id')
   getProductById(@Param() request: GetProductByIdRequestDto) {
     return this.productsService.getProductById(request);
   }
 
-  @ApiOkResponse({ type: ProductsByFilterResponseDto })
+  @ApiOkResponse({ type: ProductsByFilterEntity })
   @Get('/')
   getProductsByFilter(@Query() request: GetProductsByFilterRequestDto) {
     return this.productsService.getProductsByFilter(request);

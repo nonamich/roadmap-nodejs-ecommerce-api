@@ -1,6 +1,6 @@
 import { UseFilters } from '@nestjs/common';
-import { GrpcService, Payload } from '@nestjs/microservices';
-import { GrpcToGrpcExceptionFilter, GrpcValidationPipe } from '@repo/grpc/nest';
+import { GrpcService } from '@nestjs/microservices';
+import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
 import {
   GetOrderByIntentIdRequest,
   OrderResponse,
@@ -17,35 +17,29 @@ import {
 import { OrdersService } from './orders.service';
 
 @GrpcService()
+@UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
 @OrdersServiceControllerMethods()
 export class OrdersGrpcController implements OrdersServiceController {
   constructor(private readonly service: OrdersService) {}
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  async getOrders(@Payload(GrpcValidationPipe) dto: GetOrdersRequestDto) {
+  async getOrders(@GrpcPayload() dto: GetOrdersRequestDto) {
     const orders = await this.service.getOrders(dto);
 
     return { orders };
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  async getOrder(@Payload(GrpcValidationPipe) dto: GetOrderRequestDto) {
+  async getOrder(@GrpcPayload() dto: GetOrderRequestDto) {
     return await this.service.getOrder(dto);
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  async createOrder(@Payload(GrpcValidationPipe) dto: CreateOrderRequestDto) {
+  async createOrder(@GrpcPayload() dto: CreateOrderRequestDto) {
     return await this.service.createOrder(dto);
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  async completeOrder(
-    @Payload(GrpcValidationPipe) dto: CompleteOrdersRequestDto,
-  ) {
+  async completeOrder(@GrpcPayload() dto: CompleteOrdersRequestDto) {
     return await this.service.completeOrder(dto);
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async getOrderByIntentId(
     dto: GetOrderByIntentIdRequest,
   ): Promise<OrderResponse> {

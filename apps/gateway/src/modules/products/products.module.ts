@@ -13,7 +13,7 @@ import { ProductsController } from './products.controller';
   imports: [
     GrpcClientModule.registerAsync({
       packageName: PRODUCTS_PACKAGE_NAME,
-      serviceName: PRODUCTS_SERVICE_NAME,
+      serviceNameAndToken: PRODUCTS_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {

@@ -14,7 +14,7 @@ import { CartsService } from './carts.service';
     ProductsModule,
     GrpcClientModule.registerAsync({
       packageName: CARTS_PACKAGE_NAME,
-      serviceName: CARTS_SERVICE_NAME,
+      serviceNameAndToken: CARTS_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {

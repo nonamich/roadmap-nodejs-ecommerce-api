@@ -6,9 +6,8 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
   ORDERS_SERVICE_NAME,
   OrdersServiceClient,
@@ -19,10 +18,8 @@ import {
 } from '@repo/grpc/proto/products';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
-import { CurrentUser } from '~/modules/auth/decorators/authorized-user.decorator';
-import { JWTAuthGuard } from '~/modules/auth/guards/jwt-auth.guard';
-import { OrderResponseDto } from './dto';
-import { OrderProductsResponseDto } from './dto/order-products-response.dto';
+import { Auth, CurrentUser } from '~/modules/auth/decorators';
+import { OrderEntity, OrderProductsEntity } from './entities';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -35,9 +32,8 @@ export class OrdersController {
     private readonly productsService: ProductsServiceClient,
   ) {}
 
-  @ApiOkResponse({ type: OrderResponseDto, isArray: true })
-  @ApiBearerAuth()
-  @UseGuards(JWTAuthGuard)
+  @ApiOkResponse({ type: OrderEntity, isArray: true })
+  @Auth()
   @Get()
   async getOrders(@CurrentUser() user: AuthorizedUser) {
     const { orders } = await firstValueFrom(
@@ -51,9 +47,8 @@ export class OrdersController {
     return orders;
   }
 
-  @ApiOkResponse({ type: OrderProductsResponseDto })
-  @ApiBearerAuth()
-  @UseGuards(JWTAuthGuard)
+  @ApiOkResponse({ type: OrderProductsEntity })
+  @Auth()
   @Get('/:orderId')
   async getOrder(
     @Param('orderId', ParseIntPipe) orderId: number,
@@ -91,9 +86,8 @@ export class OrdersController {
     };
   }
 
-  @ApiOkResponse({ type: OrderResponseDto })
-  @ApiBearerAuth()
-  @UseGuards(JWTAuthGuard)
+  @ApiOkResponse({ type: OrderEntity })
+  @Auth()
   @Post()
   async addOrder(@CurrentUser() user: AuthorizedUser) {
     return this.ordersService.createOrder({ userId: user.id });

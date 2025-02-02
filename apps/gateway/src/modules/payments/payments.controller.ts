@@ -4,9 +4,8 @@ import {
   Get,
   Inject,
   Param,
-  UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
   ORDERS_SERVICE_NAME,
   OrdersServiceClient,
@@ -16,10 +15,9 @@ import {
   PaymentsServiceClient,
 } from '@repo/grpc/proto/payments';
 import { firstValueFrom } from 'rxjs';
-import { JWTAuthGuard } from '~/modules/auth/guards/jwt-auth.guard';
-import { AuthorizedUser } from '../auth/auth.interface';
-import { CurrentUser } from '../auth/decorators/authorized-user.decorator';
-import { GetIntentResponseDto } from './dto';
+import { AuthorizedUser } from '~/modules/auth/auth.interface';
+import { Auth, CurrentUser } from '~/modules/auth/decorators';
+import { IntentEntity } from './entities';
 
 @ApiTags('payments')
 @Controller('payments')
@@ -32,9 +30,8 @@ export class PaymentsController {
     private readonly paymentsService: PaymentsServiceClient,
   ) {}
 
-  @ApiOkResponse({ type: GetIntentResponseDto })
-  @ApiBearerAuth()
-  @UseGuards(JWTAuthGuard)
+  @ApiOkResponse({ type: IntentEntity })
+  @Auth()
   @Get('/:intentId')
   async getIntent(
     @Param('intentId') intentId: string,

@@ -15,7 +15,7 @@ import { PaymentsController } from './payments.controller';
     OrdersModule,
     GrpcClientModule.registerAsync({
       packageName: PAYMENTS_PACKAGE_NAME,
-      serviceName: PAYMENTS_SERVICE_NAME,
+      serviceNameAndToken: PAYMENTS_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {

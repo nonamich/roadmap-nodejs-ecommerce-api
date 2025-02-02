@@ -6,31 +6,28 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
-import { CurrentUser } from '~/modules/auth/decorators/authorized-user.decorator';
-import { JWTAuthGuard } from '~/modules/auth/guards/jwt-auth.guard';
+import { Auth, CurrentUser } from '~/modules/auth/decorators';
 import { CartsService } from './carts.service';
-import { AddToCartRequestDto, CartResponseDto } from './dto';
+import { AddToCartRequestDto } from './dto';
+import { CartEntity } from './entities';
 
 @ApiTags('cart')
 @Controller('cart')
 export class CartsController {
   constructor(private readonly service: CartsService) {}
 
-  @ApiOkResponse({ type: CartResponseDto })
-  @ApiBearerAuth()
-  @UseGuards(JWTAuthGuard)
+  @ApiOkResponse({ type: CartEntity })
+  @Auth()
   @Get()
   async getCart(@CurrentUser() user: AuthorizedUser) {
     return await this.service.getCart(user);
   }
 
-  @ApiOkResponse({ type: CartResponseDto })
-  @ApiBearerAuth()
-  @UseGuards(JWTAuthGuard)
+  @ApiOkResponse({ type: CartEntity })
+  @Auth()
   @Post('/product/:productId')
   async addToCart(
     @Param('productId', ParseIntPipe) productId: number,
@@ -40,9 +37,8 @@ export class CartsController {
     return await this.service.addToCart(productId, dto, user);
   }
 
-  @ApiOkResponse({ type: CartResponseDto })
-  @ApiBearerAuth()
-  @UseGuards(JWTAuthGuard)
+  @ApiOkResponse({ type: CartEntity })
+  @Auth()
   @Delete('/product/:productId')
   async removeFromCart(
     @Param('productId', ParseIntPipe) productId: number,

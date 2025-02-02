@@ -1,7 +1,7 @@
 import type { FC } from 'react';
-import type { ProductResponseDto } from '~/api';
+import type { ProductResponseEntity } from '~/api';
 
-type Props = Pick<ProductResponseDto, 'price'>;
+type Props = Pick<ProductResponseEntity, 'price'>;
 
 export const Price: FC<Props> = ({ price }) => {
   return (

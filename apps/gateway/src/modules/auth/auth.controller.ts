@@ -1,37 +1,32 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 import { AuthorizedUser } from './auth.interface';
 import { AuthService } from './auth.service';
+import { Auth } from './decorators/auth.decorator';
 import { CurrentUser } from './decorators/authorized-user.decorator';
-import {
-  RequestSigninDto,
-  RequestSignupDto,
-  ResponseAuthorizedUserDto,
-  ResponseLoggedInDto,
-} from './dto';
-import { JWTAuthGuard } from './guards/jwt-auth.guard';
+import { RequestSigninDto, RequestSignupDto } from './dto';
+import { AuthorizedUserEntity, LoggedInEntity } from './entities';
 
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOkResponse({ type: ResponseLoggedInDto })
+  @ApiOkResponse({ type: LoggedInEntity })
   @Post('signup')
-  async signup(@Body() dto: RequestSignupDto): Promise<ResponseLoggedInDto> {
+  async signup(@Body() dto: RequestSignupDto): Promise<LoggedInEntity> {
     return await this.authService.signup(dto);
   }
 
-  @ApiOkResponse({ type: ResponseLoggedInDto })
+  @ApiOkResponse({ type: LoggedInEntity })
   @Post('signin')
-  async signin(@Body() dto: RequestSigninDto): Promise<ResponseLoggedInDto> {
+  async signin(@Body() dto: RequestSigninDto): Promise<LoggedInEntity> {
     return await this.authService.signin(dto);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(JWTAuthGuard)
-  @ApiOkResponse({ type: ResponseAuthorizedUserDto })
+  @Auth()
+  @ApiOkResponse({ type: AuthorizedUserEntity })
   @Get('me')
   me(@CurrentUser() user: AuthorizedUser): AuthorizedUser {
     return user;

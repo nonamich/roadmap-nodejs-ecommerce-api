@@ -1,6 +1,7 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
 import { UtilsGrpc } from '../../utils';
+import { GRPC_MICROSERVICE_DEFAULT_OPTIONS } from '../utils';
 
 interface GrpcOptionsCustom {
   url: string;
@@ -8,7 +9,7 @@ interface GrpcOptionsCustom {
 
 export interface ConfigModuleOptions {
   packageName: string;
-  serviceName: string;
+  serviceNameAndToken: string;
 
   useFactory: (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,7 +22,7 @@ export interface ConfigModuleOptions {
 @Module({})
 export class GrpcClientModule {
   static registerAsync({
-    serviceName,
+    serviceNameAndToken,
     packageName,
     ...options
   }: ConfigModuleOptions): DynamicModule {
@@ -35,13 +36,13 @@ export class GrpcClientModule {
 
     return {
       module: this,
-      exports: [serviceName],
+      exports: [serviceNameAndToken],
       providers: [
         {
-          provide: serviceName,
+          provide: serviceNameAndToken,
           inject: [GRPC_CLIENT_TOKEN],
           useFactory(client: ClientGrpc) {
-            return client.getService(serviceName);
+            return client.getService(serviceNameAndToken);
           },
         },
       ],
@@ -55,11 +56,8 @@ export class GrpcClientModule {
               return {
                 transport: Transport.GRPC,
                 options: {
+                  ...GRPC_MICROSERVICE_DEFAULT_OPTIONS,
                   url,
-                  loader: {
-                    arrays: true,
-                    enums: String,
-                  },
                   package: packageName,
                   protoPath: UtilsGrpc.getProtoFilePath(packageName),
                 },

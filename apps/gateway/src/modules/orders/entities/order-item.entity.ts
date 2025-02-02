@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { OrderItemResponse } from '@repo/grpc/proto/orders';
 
-export class OrderItemResponseDto implements OrderItemResponse {
+export class OrderItemEntity implements OrderItemResponse {
   @ApiProperty()
   productId!: number;
 

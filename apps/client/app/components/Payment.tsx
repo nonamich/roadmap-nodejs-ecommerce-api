@@ -8,7 +8,7 @@ import { loadStripe, type BaseStripeElementsOptions } from '@stripe/stripe-js';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import type { FC, SyntheticEvent } from 'react';
 import { Navigate } from 'react-router';
-import { type OrderResponseDto } from '~/api';
+import { type OrderResponseEntity } from '~/api';
 import { paymentsControllerGetIntentOptions } from '~/api/@tanstack/react-query.gen';
 import { Button } from './Button';
 
@@ -20,7 +20,7 @@ const options: BaseStripeElementsOptions = {
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
-type Props = OrderResponseDto;
+type Props = OrderResponseEntity;
 
 export const Payment: FC<Props> = ({ intentId }) => {
   const { data: intent } = useSuspenseQuery(

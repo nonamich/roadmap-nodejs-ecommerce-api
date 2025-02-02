@@ -13,7 +13,7 @@ message CartItemResponse {
 message CartResponse {
   repeated CartItemResponse items = 1;
   int32 totalQuantity = 2;
-  int32 totalPrice = 3;
+  double totalPrice = 3;
 }
 
 message GetCartRequest {

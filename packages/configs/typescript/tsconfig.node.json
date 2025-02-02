@@ -4,6 +4,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "declaration": true,
+    "declarationMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "incremental": true,

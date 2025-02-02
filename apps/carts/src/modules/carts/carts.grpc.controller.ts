@@ -1,6 +1,6 @@
 import { UseFilters } from '@nestjs/common';
-import { GrpcService, Payload } from '@nestjs/microservices';
-import { GrpcToGrpcExceptionFilter, GrpcValidationPipe } from '@repo/grpc/nest';
+import { GrpcService } from '@nestjs/microservices';
+import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
 import {
   CartsServiceController,
   CartsServiceControllerMethods,
@@ -16,31 +16,26 @@ import {
 
 @GrpcService()
 @CartsServiceControllerMethods()
+@UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
 export class CartsGrpcController implements CartsServiceController {
   constructor(private readonly service: CartsService) {}
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  async removeCart(@Payload(GrpcValidationPipe) dto: RemoveCartRequestDto) {
+  async removeCart(@GrpcPayload() dto: RemoveCartRequestDto) {
     return this.service.removeCart(dto);
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  async getCart(@Payload(GrpcValidationPipe) dto: GetCartRequestDto) {
+  async getCart(@GrpcPayload() dto: GetCartRequestDto) {
     return await this.service.getCart(dto);
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async addToCart(
-    @Payload(GrpcValidationPipe)
+    @GrpcPayload()
     dto: AddToCartRequestDto,
   ) {
     return await this.service.addToCart(dto);
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  async removeFromCart(
-    @Payload(GrpcValidationPipe) dto: RemoveFromCartRequestDto,
-  ) {
+  async removeFromCart(@GrpcPayload() dto: RemoveFromCartRequestDto) {
     return await this.service.removeFromCart(dto);
   }
 }

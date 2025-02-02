@@ -8,7 +8,7 @@ import { USERS_PACKAGE_NAME, USERS_SERVICE_NAME } from '@repo/grpc/proto/users';
   imports: [
     GrpcClientModule.registerAsync({
       packageName: USERS_PACKAGE_NAME,
-      serviceName: USERS_SERVICE_NAME,
+      serviceNameAndToken: USERS_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {

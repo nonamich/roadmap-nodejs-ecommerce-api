@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { OrderResponse, OrderStatus } from '@repo/grpc/proto/orders';
-import { OrderItemResponseDto } from './order-item-response.dto';
+import { OrderItemEntity } from './order-item.entity';
 
-export class OrderResponseDto implements OrderResponse {
+export class OrderEntity implements OrderResponse {
   @ApiProperty()
   id!: number;
 
@@ -18,6 +18,6 @@ export class OrderResponseDto implements OrderResponse {
   @ApiProperty()
   intentId!: string;
 
-  @ApiProperty({ type: OrderItemResponseDto, isArray: true })
-  items!: OrderItemResponseDto[];
+  @ApiProperty({ type: OrderItemEntity, isArray: true })
+  items!: OrderItemEntity[];
 }

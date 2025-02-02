@@ -1,10 +1,10 @@
 import type { FC } from 'react';
 import { Link } from 'react-router';
-import type { ProductResponseDto } from '~/api';
+import type { ProductResponseEntity } from '~/api';
 import { Price } from './Price';
 
 type Props = {
-  product: ProductResponseDto;
+  product: ProductResponseEntity;
 };
 
 export const ProductItem: FC<Props> = ({ product }) => {

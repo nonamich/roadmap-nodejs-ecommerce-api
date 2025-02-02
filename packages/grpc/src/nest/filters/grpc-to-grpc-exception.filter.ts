@@ -1,7 +1,6 @@
 import { ArgumentsHost, Catch } from '@nestjs/common';
-import { createGrpcExceptionObject, GrpcExceptionMessage } from '../utils';
 import { BaseRpcExceptionFilter, RpcException } from '@nestjs/microservices';
-import { throwError } from 'rxjs';
+import { createGrpcExceptionObject, GrpcExceptionMessage } from '../utils';
 
 @Catch(Error)
 export class GrpcToGrpcExceptionFilter extends BaseRpcExceptionFilter {
@@ -21,6 +20,6 @@ export class GrpcToGrpcExceptionFilter extends BaseRpcExceptionFilter {
       }
     }
 
-    return throwError(() => error);
+    return super.catch(error, host);
   }
 }

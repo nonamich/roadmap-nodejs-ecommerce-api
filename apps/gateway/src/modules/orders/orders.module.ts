@@ -15,7 +15,7 @@ import { OrdersController } from './orders.controller';
     ProductsModule,
     GrpcClientModule.registerAsync({
       packageName: ORDERS_PACKAGE_NAME,
-      serviceName: ORDERS_SERVICE_NAME,
+      serviceNameAndToken: ORDERS_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {

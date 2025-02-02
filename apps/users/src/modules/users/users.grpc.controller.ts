@@ -1,9 +1,9 @@
 import { UseFilters } from '@nestjs/common';
-import { GrpcService, Payload } from '@nestjs/microservices';
+import { GrpcService } from '@nestjs/microservices';
 import {
+  GrpcPayload,
   GrpcToGrpcExceptionFilter,
   GrpcUnauthenticatedException,
-  GrpcValidationPipe,
 } from '@repo/grpc/nest';
 import {
   UsersServiceController,
@@ -25,15 +25,15 @@ import { PasswordService } from './password.service';
 
 @GrpcService()
 @UsersServiceControllerMethods()
+@UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
 export class UsersGrpcController implements UsersServiceController {
   constructor(
     private readonly orm: ORMService,
     private readonly passwordService: PasswordService,
   ) {}
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async createUser(
-    @Payload(GrpcValidationPipe)
+    @GrpcPayload()
     { email, name, password: unsanitizedPassword }: CreateUserRequestDto,
   ) {
     const hashedPassword =
@@ -51,8 +51,7 @@ export class UsersGrpcController implements UsersServiceController {
     return user;
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  async deleteUser(@Payload(GrpcValidationPipe) { id }: DeleteUserRequestDto) {
+  async deleteUser(@GrpcPayload() { id }: DeleteUserRequestDto) {
     await this.orm.user.delete({
       where: {
         id,
@@ -60,29 +59,22 @@ export class UsersGrpcController implements UsersServiceController {
     });
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  async getUserById(
-    @Payload(GrpcValidationPipe) { id }: GetUserByIdRequestDto,
-  ) {
+  async getUserById(@GrpcPayload() { id }: GetUserByIdRequestDto) {
     return await this.orm.user.findUniqueOrThrow({
       where: { id },
       omit: { password: true },
     });
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  async getUserByEmail(
-    @Payload(GrpcValidationPipe) { email }: GetUserByEmailRequestDto,
-  ) {
+  async getUserByEmail(@GrpcPayload() { email }: GetUserByEmailRequestDto) {
     return await this.orm.user.findUniqueOrThrow({
       where: { email },
       omit: { password: true },
     });
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async getUserByCredentials(
-    @Payload(GrpcValidationPipe)
+    @GrpcPayload()
     { email, password }: GetUserByCredentialsRequestDto,
   ) {
     const { password: hashedPassword, ...user } =
@@ -108,9 +100,8 @@ export class UsersGrpcController implements UsersServiceController {
     return user;
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
   async updateUser(
-    @Payload(GrpcValidationPipe)
+    @GrpcPayload()
     { id, ...data }: UpdateUserRequestDto,
   ) {
     if (data.password) {
@@ -130,10 +121,7 @@ export class UsersGrpcController implements UsersServiceController {
     });
   }
 
-  @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  getUsers(
-    @Payload(GrpcValidationPipe) { page, pageSize }: GetUsersRequestDto,
-  ) {
+  getUsers(@GrpcPayload() { page, pageSize }: GetUsersRequestDto) {
     const promise = this.orm.user.findMany({
       skip: Math.floor(pageSize * page - pageSize),
       take: pageSize,
