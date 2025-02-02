@@ -1,10 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { GrpcInvalidArgumentException } from '@repo/grpc/nest';
 import { CartItemResponse } from '@repo/grpc/proto/carts';
-import { ProductsServiceClient } from '@repo/grpc/proto/products';
+import {
+  PRODUCTS_SERVICE_NAME,
+  ProductsServiceClient,
+} from '@repo/grpc/proto/products';
 import { firstValueFrom } from 'rxjs';
 import { ORMService } from '~/modules/orm/orm.service';
-import { PRODUCTS_SERVICE_PROVIDER_TOKEN } from './carts.constants';
 import {
   AddToCartRequestDto,
   GetCartRequestDto,
@@ -15,7 +17,7 @@ import {
 @Injectable()
 export class CartsService {
   constructor(
-    @Inject(PRODUCTS_SERVICE_PROVIDER_TOKEN)
+    @Inject(PRODUCTS_SERVICE_NAME)
     private readonly productsService: ProductsServiceClient,
     private readonly orm: ORMService,
   ) {}

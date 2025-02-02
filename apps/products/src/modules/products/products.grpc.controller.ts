@@ -1,5 +1,5 @@
-import { Controller, UseFilters } from '@nestjs/common';
-import { Payload } from '@nestjs/microservices';
+import { UseFilters } from '@nestjs/common';
+import { GrpcService, Payload } from '@nestjs/microservices';
 import {
   GrpcNotFoundException,
   GrpcToGrpcExceptionFilter,
@@ -21,7 +21,7 @@ import {
 } from './dto';
 import { PRODUCTS_SELECT } from './products.constants';
 
-@Controller()
+@GrpcService()
 @ProductsServiceControllerMethods()
 export class ProductsGrpcController implements ProductsServiceController {
   constructor(private readonly orm: ORMService) {}

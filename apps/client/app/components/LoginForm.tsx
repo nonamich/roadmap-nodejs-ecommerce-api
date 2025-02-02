@@ -4,6 +4,7 @@ import { Else, If, Then } from 'react-if';
 import { Link, useLocation, useNavigate } from 'react-router';
 import type { RequestSignupDto } from '~/api';
 import { useAuth } from '~/auth/hooks';
+import { Button } from './Button';
 
 type Props = {
   isRegister?: boolean;
@@ -166,7 +167,7 @@ export const LoginForm: FC<Props> = ({ isRegister = false }) => {
               </Else>
             </If>
           </p>
-          <button
+          <Button
             type="submit"
             disabled={loading}
             className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
@@ -180,7 +181,7 @@ export const LoginForm: FC<Props> = ({ isRegister = false }) => {
                 </If>
               </Else>
             </If>
-          </button>
+          </Button>
         </div>
       </form>
     </div>

@@ -5,9 +5,14 @@ package orders;
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
+enum OrderStatus {
+  WAITING_FOR_PAYMENT = 0;
+  COMPLETED = 1;
+}
+
 message OrderResponse {
   int32 id = 1;
-  string status = 4;
+  OrderStatus status = 4;
   int32 userId = 5;
   string intentId = 6;
   google.protobuf.Timestamp createdAt = 7;

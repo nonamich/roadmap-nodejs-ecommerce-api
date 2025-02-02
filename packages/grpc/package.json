@@ -13,12 +13,13 @@
     "./proto/*": "./dist/proto/*.js"
   },
   "devDependencies": {
-    "@repo/configs": "workspace:*",
     "@grpc/grpc-js": "^1.12.5",
     "@grpc/proto-loader": "^0.7.13",
+    "@grpc/reflection": "^1.0.4",
     "@nestjs/common": "^11.0.6",
     "@nestjs/core": "^11.0.6",
     "@nestjs/microservices": "^11.0.6",
+    "@repo/configs": "workspace:*",
     "@types/node": "^22.10.7",
     "protobufjs": "^7.4.0",
     "rxjs": "^7.8.1",
@@ -28,6 +29,7 @@
   "peerDependencies": {
     "@grpc/grpc-js": "*",
     "@grpc/proto-loader": "*",
+    "@grpc/reflection": "^1.0.4",
     "@nestjs/common": "*",
     "@nestjs/core": "*",
     "@nestjs/microservices": "*",

@@ -1,52 +1,27 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
+import { GrpcClientModule } from '@repo/grpc/nest';
 import {
   PRODUCTS_PACKAGE_NAME,
   PRODUCTS_SERVICE_NAME,
 } from '@repo/grpc/proto/products';
-import { UtilsGrpc } from '@repo/grpc/utils';
-import { CartsService } from './cart.service';
-import {
-  PRODUCTS_CLIENT_GRPC_PROVIDER_TOKEN,
-  PRODUCTS_SERVICE_PROVIDER_TOKEN,
-} from './carts.constants';
 import { CartsGrpcController } from './carts.grpc.controller';
+import { CartsService } from './carts.service';
 
 @Module({
   controllers: [CartsGrpcController],
+  providers: [CartsService],
   imports: [
-    ClientsModule.registerAsync([
-      {
-        name: PRODUCTS_CLIENT_GRPC_PROVIDER_TOKEN,
-        inject: [ConfigService],
-        useFactory(config: ConfigService) {
-          return {
-            transport: Transport.GRPC,
-            options: {
-              loader: {
-                arrays: true,
-                defaults: true,
-              },
-              url: config.getOrThrow('GRPC_SERVER_URL_PRODUCTS'),
-              package: PRODUCTS_PACKAGE_NAME,
-              protoPath: UtilsGrpc.getProtoFilePath(PRODUCTS_PACKAGE_NAME),
-            },
-          };
-        },
+    GrpcClientModule.registerAsync({
+      packageName: PRODUCTS_PACKAGE_NAME,
+      serviceName: PRODUCTS_SERVICE_NAME,
+      inject: [ConfigService],
+      useFactory(config: ConfigService) {
+        return {
+          url: config.getOrThrow('GRPC_SERVER_URL_PRODUCTS'),
+        };
       },
-    ]),
+    }),
   ],
-  providers: [
-    CartsService,
-    {
-      provide: PRODUCTS_SERVICE_PROVIDER_TOKEN,
-      inject: [PRODUCTS_CLIENT_GRPC_PROVIDER_TOKEN],
-      useFactory(client: ClientGrpc) {
-        return client.getService(PRODUCTS_SERVICE_NAME);
-      },
-    },
-  ],
-  exports: [PRODUCTS_SERVICE_PROVIDER_TOKEN],
 })
 export class CartsModule {}

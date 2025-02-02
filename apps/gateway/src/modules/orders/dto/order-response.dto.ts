@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { OrderResponse } from '@repo/grpc/proto/orders';
+import { OrderResponse, OrderStatus } from '@repo/grpc/proto/orders';
 import { OrderItemResponseDto } from './order-item-response.dto';
 
 export class OrderResponseDto implements OrderResponse {
@@ -12,8 +12,8 @@ export class OrderResponseDto implements OrderResponse {
   @ApiProperty()
   createdAt!: Date;
 
-  @ApiProperty()
-  status!: string;
+  @ApiProperty({ enum: OrderStatus })
+  status!: OrderStatus;
 
   @ApiProperty()
   intentId!: string;

@@ -12,9 +12,18 @@ import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "orders";
 
+export const OrderStatus = { WAITING_FOR_PAYMENT: "WAITING_FOR_PAYMENT", COMPLETED: "COMPLETED" } as const;
+
+export type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus];
+
+export namespace OrderStatus {
+  export type WAITING_FOR_PAYMENT = typeof OrderStatus.WAITING_FOR_PAYMENT;
+  export type COMPLETED = typeof OrderStatus.COMPLETED;
+}
+
 export interface OrderResponse {
   id: number;
-  status: string;
+  status: OrderStatus;
   userId: number;
   intentId: string;
   createdAt: Date | null;

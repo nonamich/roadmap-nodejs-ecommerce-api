@@ -59,13 +59,14 @@ const PaymentForm: FC = () => {
     await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: new URL(
-          `/confirmation/success`,
-          location.origin,
-        ).toString(),
+        return_url: new URL(`/order/succeeded`, location.origin).toString(),
       },
     });
   };
+
+  if (!elements || !stripe) {
+    return <></>;
+  }
 
   return (
     <form onSubmit={handleSubmit}>

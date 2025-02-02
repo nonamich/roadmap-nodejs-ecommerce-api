@@ -1,16 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UsersServiceClient } from '@repo/grpc/proto/users';
+import { USERS_SERVICE_NAME, UsersServiceClient } from '@repo/grpc/proto/users';
 import { firstValueFrom } from 'rxjs';
-import { USERS_SERVICE_PROVIDER_TOKEN } from '../users/users.constants';
 import { AuthorizedUser } from './auth.interface';
 import { RequestSigninDto, RequestSignupDto } from './dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(USERS_SERVICE_PROVIDER_TOKEN)
+    @Inject(USERS_SERVICE_NAME)
     private usersService: UsersServiceClient,
     private jwtService: JwtService,
   ) {}

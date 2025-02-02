@@ -1,5 +1,5 @@
-import { Controller, UseFilters } from '@nestjs/common';
-import { Payload } from '@nestjs/microservices';
+import { UseFilters } from '@nestjs/common';
+import { GrpcService, Payload } from '@nestjs/microservices';
 import {
   GrpcToGrpcExceptionFilter,
   GrpcUnauthenticatedException,
@@ -23,7 +23,7 @@ import {
 } from './dto';
 import { PasswordService } from './password.service';
 
-@Controller()
+@GrpcService()
 @UsersServiceControllerMethods()
 export class UsersGrpcController implements UsersServiceController {
   constructor(

@@ -37,7 +37,7 @@ export const OrderDetails: FC<Props> = ({ order }) => {
           </div>
           <div className="grid grid-cols-5 gap-1 py-3">
             <dt className="font-medium text-gray-900 dark:text-white">
-              Order Price:
+              Price:
             </dt>
             <dd className="text-gray-700 sm:col-span-2 dark:text-gray-200">
               <Price

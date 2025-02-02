@@ -1,5 +1,5 @@
-import { Controller, UseFilters } from '@nestjs/common';
-import { Payload } from '@nestjs/microservices';
+import { UseFilters } from '@nestjs/common';
+import { GrpcService, Payload } from '@nestjs/microservices';
 import { GrpcToGrpcExceptionFilter, GrpcValidationPipe } from '@repo/grpc/nest';
 import {
   PaymentsServiceController,
@@ -8,7 +8,7 @@ import {
 import { CreateIntentRequestDto, GetIntentRequestDto } from './dto';
 import { PaymentsService } from './payments.service';
 
-@Controller()
+@GrpcService()
 @PaymentsServiceControllerMethods()
 export class PaymentsGrpcController implements PaymentsServiceController {
   constructor(private readonly service: PaymentsService) {}

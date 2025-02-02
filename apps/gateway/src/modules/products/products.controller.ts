@@ -1,6 +1,9 @@
 import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ProductsServiceClient } from '@repo/grpc/proto/products';
+import {
+  PRODUCTS_SERVICE_NAME,
+  ProductsServiceClient,
+} from '@repo/grpc/proto/products';
 import {
   GetFeaturedProductsRequestDto,
   GetProductByIdRequestDto,
@@ -9,13 +12,12 @@ import {
   ProductsResponseDto,
 } from './dto';
 import { ProductsByFilterResponseDto } from './dto/product-by-filter-response.dto';
-import { PRODUCTS_SERVICE_PROVIDER_TOKEN } from './products.constants';
 
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {
   constructor(
-    @Inject(PRODUCTS_SERVICE_PROVIDER_TOKEN)
+    @Inject(PRODUCTS_SERVICE_NAME)
     private readonly productsService: ProductsServiceClient,
   ) {}
 

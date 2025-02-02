@@ -1,10 +1,10 @@
-import { ReflectionService } from '@grpc/reflection';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { GrpcOptions, Transport } from '@nestjs/microservices';
-import { InternalDisabledLogger } from '@repo/grpc/nest';
+import {
+  connectGrpcMicroservice,
+  InternalDisabledLogger,
+} from '@repo/grpc/nest';
 import { ORDERS_PACKAGE_NAME } from '@repo/grpc/proto/orders';
-import { UtilsGrpc } from '@repo/grpc/utils';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -13,16 +13,9 @@ async function bootstrap() {
   });
   const config = app.get(ConfigService);
 
-  app.connectMicroservice<GrpcOptions>({
-    transport: Transport.GRPC,
-    options: {
-      url: config.getOrThrow('GRPC_SERVER_URL_ORDERS'),
-      package: ORDERS_PACKAGE_NAME,
-      protoPath: UtilsGrpc.getProtoFilePath(ORDERS_PACKAGE_NAME),
-      onLoadPackageDefinition: (pkg, server) => {
-        new ReflectionService(pkg).addToServer(server);
-      },
-    },
+  connectGrpcMicroservice(app, {
+    url: config.getOrThrow('GRPC_SERVER_URL_ORDERS'),
+    packageName: ORDERS_PACKAGE_NAME,
   });
 
   await app.startAllMicroservices();

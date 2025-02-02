@@ -9,9 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { AuthorizedUser } from '../auth/auth.interface';
-import { CurrentUser } from '../auth/decorators/authorized-user.decorator';
-import { JWTAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AuthorizedUser } from '~/modules/auth/auth.interface';
+import { CurrentUser } from '~/modules/auth/decorators/authorized-user.decorator';
+import { JWTAuthGuard } from '~/modules/auth/guards/jwt-auth.guard';
 import { CartsService } from './carts.service';
 import { AddToCartRequestDto, CartResponseDto } from './dto';
 

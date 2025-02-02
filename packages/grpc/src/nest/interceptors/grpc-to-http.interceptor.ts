@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   CallHandler,
   ExecutionContext,
@@ -16,8 +15,8 @@ import { GrpcExceptionMessage, HTTP_CODE_FROM_GRPC } from '../utils';
 export class GrpcToHttpInterceptor implements NestInterceptor {
   intercept(
     _context: ExecutionContext,
-    next: CallHandler<any>,
-  ): Observable<any> | Promise<Observable<any>> {
+    next: CallHandler<unknown>,
+  ): Observable<unknown> | Promise<Observable<unknown>> {
     return next.handle().pipe(
       catchError((err) => {
         if (

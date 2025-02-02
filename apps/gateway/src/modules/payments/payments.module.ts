@@ -1,52 +1,28 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
+import { GrpcClientModule } from '@repo/grpc/nest';
 import {
   PAYMENTS_PACKAGE_NAME,
   PAYMENTS_SERVICE_NAME,
 } from '@repo/grpc/proto/payments';
-import { UtilsGrpc } from '@repo/grpc/utils';
 import { OrdersModule } from '~/modules/orders/orders.module';
-import {
-  PAYMENTS_CLIENT_GRPC_PROVIDER_TOKEN,
-  PAYMENTS_SERVICE_PROVIDER_TOKEN,
-} from './payments.constants';
 import { PaymentsController } from './payments.controller';
 
 @Module({
+  exports: [GrpcClientModule],
+  controllers: [PaymentsController],
   imports: [
     OrdersModule,
-    ClientsModule.registerAsync([
-      {
-        name: PAYMENTS_CLIENT_GRPC_PROVIDER_TOKEN,
-        inject: [ConfigService],
-        useFactory(config: ConfigService) {
-          return {
-            transport: Transport.GRPC,
-            options: {
-              loader: {
-                arrays: true,
-                defaults: true,
-              },
-              url: config.getOrThrow('GRPC_SERVER_URL_PAYMENTS'),
-              package: PAYMENTS_PACKAGE_NAME,
-              protoPath: UtilsGrpc.getProtoFilePath(PAYMENTS_PACKAGE_NAME),
-            },
-          };
-        },
+    GrpcClientModule.registerAsync({
+      packageName: PAYMENTS_PACKAGE_NAME,
+      serviceName: PAYMENTS_SERVICE_NAME,
+      inject: [ConfigService],
+      useFactory(config: ConfigService) {
+        return {
+          url: config.getOrThrow('GRPC_SERVER_URL_PAYMENTS'),
+        };
       },
-    ]),
+    }),
   ],
-  providers: [
-    {
-      provide: PAYMENTS_SERVICE_PROVIDER_TOKEN,
-      inject: [PAYMENTS_CLIENT_GRPC_PROVIDER_TOKEN],
-      useFactory(client: ClientGrpc) {
-        return client.getService(PAYMENTS_SERVICE_NAME);
-      },
-    },
-  ],
-  exports: [PAYMENTS_SERVICE_PROVIDER_TOKEN],
-  controllers: [PaymentsController],
 })
 export class PaymentModule {}

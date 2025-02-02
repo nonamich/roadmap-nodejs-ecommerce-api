@@ -7,24 +7,28 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { OrdersServiceClient } from '@repo/grpc/proto/orders';
-import { PaymentsServiceClient } from '@repo/grpc/proto/payments';
+import {
+  ORDERS_SERVICE_NAME,
+  OrdersServiceClient,
+} from '@repo/grpc/proto/orders';
+import {
+  PAYMENTS_SERVICE_NAME,
+  PaymentsServiceClient,
+} from '@repo/grpc/proto/payments';
 import { firstValueFrom } from 'rxjs';
 import { JWTAuthGuard } from '~/modules/auth/guards/jwt-auth.guard';
 import { AuthorizedUser } from '../auth/auth.interface';
 import { CurrentUser } from '../auth/decorators/authorized-user.decorator';
-import { ORDERS_SERVICE_PROVIDER_TOKEN } from '../orders/orders.constants';
 import { GetIntentResponseDto } from './dto';
-import { PAYMENTS_SERVICE_PROVIDER_TOKEN } from './payments.constants';
 
 @ApiTags('payments')
 @Controller('payments')
 export class PaymentsController {
   constructor(
-    @Inject(ORDERS_SERVICE_PROVIDER_TOKEN)
+    @Inject(ORDERS_SERVICE_NAME)
     private readonly ordersService: OrdersServiceClient,
 
-    @Inject(PAYMENTS_SERVICE_PROVIDER_TOKEN)
+    @Inject(PAYMENTS_SERVICE_NAME)
     private readonly paymentsService: PaymentsServiceClient,
   ) {}
 

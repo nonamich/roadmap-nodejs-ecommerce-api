@@ -1,8 +1,9 @@
-import { Controller, UseFilters } from '@nestjs/common';
-import { Payload } from '@nestjs/microservices';
+import { UseFilters } from '@nestjs/common';
+import { GrpcService, Payload } from '@nestjs/microservices';
 import { GrpcToGrpcExceptionFilter, GrpcValidationPipe } from '@repo/grpc/nest';
 import {
   GetOrderByIntentIdRequest,
+  OrderResponse,
   OrdersServiceController,
   OrdersServiceControllerMethods,
 } from '@repo/grpc/proto/orders';
@@ -15,7 +16,7 @@ import {
 } from './dto';
 import { OrdersService } from './orders.service';
 
-@Controller()
+@GrpcService()
 @OrdersServiceControllerMethods()
 export class OrdersGrpcController implements OrdersServiceController {
   constructor(private readonly service: OrdersService) {}
@@ -45,7 +46,11 @@ export class OrdersGrpcController implements OrdersServiceController {
   }
 
   @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-  async getOrderByIntentId(dto: GetOrderByIntentIdRequest) {
-    return await this.service.getOrderByIntentId(dto);
+  async getOrderByIntentId(
+    dto: GetOrderByIntentIdRequest,
+  ): Promise<OrderResponse> {
+    const order = await this.service.getOrderByIntentId(dto);
+
+    return order;
   }
 }

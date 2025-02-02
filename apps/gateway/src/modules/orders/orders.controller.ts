@@ -9,25 +9,29 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { OrdersServiceClient } from '@repo/grpc/proto/orders';
-import { ProductsServiceClient } from '@repo/grpc/proto/products';
+import {
+  ORDERS_SERVICE_NAME,
+  OrdersServiceClient,
+} from '@repo/grpc/proto/orders';
+import {
+  PRODUCTS_SERVICE_NAME,
+  ProductsServiceClient,
+} from '@repo/grpc/proto/products';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
 import { CurrentUser } from '~/modules/auth/decorators/authorized-user.decorator';
 import { JWTAuthGuard } from '~/modules/auth/guards/jwt-auth.guard';
-import { PRODUCTS_SERVICE_PROVIDER_TOKEN } from '~/modules/products/products.constants';
 import { OrderResponseDto } from './dto';
 import { OrderProductsResponseDto } from './dto/order-products-response.dto';
-import { ORDERS_SERVICE_PROVIDER_TOKEN } from './orders.constants';
 
 @ApiTags('orders')
 @Controller('orders')
 export class OrdersController {
   constructor(
-    @Inject(ORDERS_SERVICE_PROVIDER_TOKEN)
+    @Inject(ORDERS_SERVICE_NAME)
     private readonly ordersService: OrdersServiceClient,
 
-    @Inject(PRODUCTS_SERVICE_PROVIDER_TOKEN)
+    @Inject(PRODUCTS_SERVICE_NAME)
     private readonly productsService: ProductsServiceClient,
   ) {}
 

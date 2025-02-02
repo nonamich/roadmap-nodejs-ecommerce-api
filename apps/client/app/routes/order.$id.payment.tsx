@@ -29,9 +29,7 @@ export default function OrderPayment() {
   return (
     <>
       {order.status === 'WAITING_FOR_PAYMENT' && <Payment {...order} />}
-      {order.status !== 'WAITING_FOR_PAYMENT' && (
-        <Navigate to="/order/succeeded" />
-      )}
+      {order.status === 'COMPLETED' && <Navigate to="/order/succeeded" />}
     </>
   );
 }

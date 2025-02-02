@@ -51,16 +51,18 @@ export type OrderProductsResponseDto = {
   id: number;
   userId: number;
   createdAt: Date;
-  status: string;
+  status: 'WAITING_FOR_PAYMENT' | 'COMPLETED';
   intentId: string;
   items: Array<OrderProductsItemResponseDto>;
 };
+
+export type status = 'WAITING_FOR_PAYMENT' | 'COMPLETED';
 
 export type OrderResponseDto = {
   id: number;
   userId: number;
   createdAt: Date;
-  status: string;
+  status: 'WAITING_FOR_PAYMENT' | 'COMPLETED';
   intentId: string;
   items: Array<OrderItemResponseDto>;
 };

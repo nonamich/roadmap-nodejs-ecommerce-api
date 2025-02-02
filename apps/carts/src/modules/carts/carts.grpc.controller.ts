@@ -1,12 +1,12 @@
-import { Controller, UseFilters } from '@nestjs/common';
-import { Payload } from '@nestjs/microservices';
+import { UseFilters } from '@nestjs/common';
+import { GrpcService, Payload } from '@nestjs/microservices';
 import { GrpcToGrpcExceptionFilter, GrpcValidationPipe } from '@repo/grpc/nest';
 import {
   CartsServiceController,
   CartsServiceControllerMethods,
 } from '@repo/grpc/proto/carts';
 import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
-import { CartsService } from './cart.service';
+import { CartsService } from './carts.service';
 import {
   AddToCartRequestDto,
   GetCartRequestDto,
@@ -14,7 +14,7 @@ import {
   RemoveFromCartRequestDto,
 } from './dto';
 
-@Controller()
+@GrpcService()
 @CartsServiceControllerMethods()
 export class CartsGrpcController implements CartsServiceController {
   constructor(private readonly service: CartsService) {}

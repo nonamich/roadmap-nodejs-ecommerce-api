@@ -1,19 +1,24 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CartResponse, CartsServiceClient } from '@repo/grpc/proto/carts';
-import { ProductsServiceClient } from '@repo/grpc/proto/products';
+import {
+  CartResponse,
+  CARTS_SERVICE_NAME,
+  CartsServiceClient,
+} from '@repo/grpc/proto/carts';
+import {
+  PRODUCTS_SERVICE_NAME,
+  ProductsServiceClient,
+} from '@repo/grpc/proto/products';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '../auth/auth.interface';
-import { PRODUCTS_SERVICE_PROVIDER_TOKEN } from '../products/products.constants';
-import { CARTS_SERVICE_PROVIDER_TOKEN } from './carts.constants';
 import { AddToCartRequestDto } from './dto';
 
 @Injectable()
 export class CartsService {
   constructor(
-    @Inject(CARTS_SERVICE_PROVIDER_TOKEN)
+    @Inject(CARTS_SERVICE_NAME)
     private readonly cartsService: CartsServiceClient,
 
-    @Inject(PRODUCTS_SERVICE_PROVIDER_TOKEN)
+    @Inject(PRODUCTS_SERVICE_NAME)
     private readonly productsService: ProductsServiceClient,
   ) {}
 
