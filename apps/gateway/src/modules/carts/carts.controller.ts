@@ -22,7 +22,7 @@ export class CartsController {
   @ApiOkResponse({ type: CartEntity })
   @Auth()
   @Get()
-  async getCart(@CurrentUser() user: AuthorizedUser) {
+  async getCart(@CurrentUser() user: AuthorizedUser): Promise<CartEntity> {
     return await this.service.getCart(user);
   }
 
@@ -33,7 +33,7 @@ export class CartsController {
     @Param('productId', ParseIntPipe) productId: number,
     @Body() dto: AddToCartRequestDto,
     @CurrentUser() user: AuthorizedUser,
-  ) {
+  ): Promise<CartEntity> {
     return await this.service.addToCart(productId, dto, user);
   }
 
@@ -43,7 +43,7 @@ export class CartsController {
   async removeFromCart(
     @Param('productId', ParseIntPipe) productId: number,
     @CurrentUser() user: AuthorizedUser,
-  ) {
+  ): Promise<CartEntity> {
     return await this.service.removeFromCart(productId, user);
   }
 }

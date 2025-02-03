@@ -35,7 +35,7 @@ export class OrdersController {
   @ApiOkResponse({ type: OrderEntity, isArray: true })
   @Auth()
   @Get()
-  async getOrders(@CurrentUser() user: AuthorizedUser) {
+  async getOrders(@CurrentUser() user: AuthorizedUser): Promise<OrderEntity[]> {
     const { orders } = await firstValueFrom(
       this.ordersService.getOrders({ userId: user.id }),
     );
@@ -53,7 +53,7 @@ export class OrdersController {
   async getOrder(
     @Param('orderId', ParseIntPipe) orderId: number,
     @CurrentUser() user: AuthorizedUser,
-  ) {
+  ): Promise<OrderProductsEntity> {
     const order = await firstValueFrom(
       this.ordersService.getOrder({ orderId }),
     );
@@ -89,7 +89,9 @@ export class OrdersController {
   @ApiOkResponse({ type: OrderEntity })
   @Auth()
   @Post()
-  async addOrder(@CurrentUser() user: AuthorizedUser) {
-    return this.ordersService.createOrder({ userId: user.id });
+  async addOrder(@CurrentUser() user: AuthorizedUser): Promise<OrderEntity> {
+    return await firstValueFrom(
+      this.ordersService.createOrder({ userId: user.id }),
+    );
   }
 }

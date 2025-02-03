@@ -791,6 +791,9 @@ importers:
       '@nestjs/microservices':
         specifier: ^11.0.6
         version: 11.0.7(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.7)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nonamich/ts-proto':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@repo/configs':
         specifier: workspace:*
         version: link:../configs
@@ -803,9 +806,6 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
-      ts-proto:
-        specifier: ^2.6.1
-        version: 2.6.1
       typescript:
         specifier: ^5.7.3
         version: 5.7.3
@@ -1917,6 +1917,10 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@nonamich/ts-proto@1.0.0':
+    resolution: {integrity: sha512-B7pAus5zN34qYDyGoLC7PogNEM1BUyuNq/G/vQNSnIITq+hWRDPxwd5MSh3ko+7qoTpnVoK91dGakNgMhMZ09g==}
+    hasBin: true
 
   '@npmcli/git@4.1.0':
     resolution: {integrity: sha512-9hwoB3gStVfa0N31ymBmrX+GuDGdVA/QWShZVqE0HK2Af+7QGGrCTbZia/SW0ImUTjTne7SP91qxDmtXvDHRPQ==}
@@ -5311,15 +5315,11 @@ packages:
       '@swc/wasm':
         optional: true
 
-  ts-poet@6.9.0:
-    resolution: {integrity: sha512-roe6W6MeZmCjRmppyfOURklO5tQFQ6Sg7swURKkwYJvV7dbGCrK28um5+51iW3twdPRKtwarqFAVMU6G1mvnuQ==}
+  ts-poet@6.10.0:
+    resolution: {integrity: sha512-+Wp7d2ROwRNkSVWLsPaZQ0SJVGI2t83QpgN19xMZjX6hS7HLxJ7wS319oeFacFYB1M/xW3sifnTpm/a88VRS5A==}
 
   ts-proto-descriptors@2.0.0:
     resolution: {integrity: sha512-wHcTH3xIv11jxgkX5OyCSFfw27agpInAd6yh89hKG6zqIXnjW9SYqSER2CVQxdPj4czeOhGagNvZBEbJPy7qkw==}
-
-  ts-proto@2.6.1:
-    resolution: {integrity: sha512-4LTT99MkwkF1+fIA0b2mZu/58Qlpq3Q1g53TwEMZZgR1w/uX00PoVT4Z8aKJxMw0LeKQD4s9NrJYsF27Clckrg==}
-    hasBin: true
 
   tsconfck@3.1.4:
     resolution: {integrity: sha512-kdqWFGVJqe+KGYvlSO9NIaWn9jT1Ny4oKVzAJsKii5eoE9snzTJzL4+MMVOMn+fikWGFmKEylcXL710V/kIPJQ==}
@@ -6756,6 +6756,13 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.0
+
+  '@nonamich/ts-proto@1.0.0':
+    dependencies:
+      '@bufbuild/protobuf': 2.2.3
+      case-anything: 2.1.13
+      ts-poet: 6.10.0
+      ts-proto-descriptors: 2.0.0
 
   '@npmcli/git@4.1.0':
     dependencies:
@@ -10128,7 +10135,7 @@ snapshots:
 
   send@1.1.0:
     dependencies:
-      debug: 4.3.6
+      debug: 4.4.0
       destroy: 1.2.0
       encodeurl: 2.0.0
       escape-html: 1.0.3
@@ -10533,20 +10540,13 @@ snapshots:
     optionalDependencies:
       '@swc/core': 1.10.12
 
-  ts-poet@6.9.0:
+  ts-poet@6.10.0:
     dependencies:
       dprint-node: 1.0.8
 
   ts-proto-descriptors@2.0.0:
     dependencies:
       '@bufbuild/protobuf': 2.2.3
-
-  ts-proto@2.6.1:
-    dependencies:
-      '@bufbuild/protobuf': 2.2.3
-      case-anything: 2.1.13
-      ts-poet: 6.9.0
-      ts-proto-descriptors: 2.0.0
 
   tsconfck@3.1.4(typescript@5.7.3):
     optionalDependencies:

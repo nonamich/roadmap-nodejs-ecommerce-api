@@ -36,7 +36,7 @@ export class PaymentsController {
   async getIntent(
     @Param('intentId') intentId: string,
     @CurrentUser() user: AuthorizedUser,
-  ) {
+  ): Promise<IntentEntity> {
     const [intent, order] = await Promise.all([
       firstValueFrom(this.paymentsService.getIntent({ intentId })),
       firstValueFrom(this.ordersService.getOrderByIntentId({ intentId })),

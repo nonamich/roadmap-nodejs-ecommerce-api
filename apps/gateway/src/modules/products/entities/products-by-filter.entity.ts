@@ -8,9 +8,9 @@ export class ProductsByFilterEntity
   extends ProductsEntity
   implements ProductsByFilterResponse
 {
-  @ApiProperty({ type: BrandEntity })
-  brand?: BrandEntity;
+  @ApiProperty({ type: BrandEntity, nullable: true })
+  brand?: BrandEntity | null | undefined;
 
-  @ApiProperty({ type: CategoryEntity })
-  category?: CategoryEntity;
+  @ApiProperty({ type: CategoryEntity, nullable: true })
+  category?: CategoryEntity | null | undefined;
 }

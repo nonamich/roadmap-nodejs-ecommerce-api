@@ -23,7 +23,7 @@ export class ProductEntity implements Product {
   description!: string;
 
   @ApiProperty({ required: false, nullable: true, type: Number })
-  rating?: number;
+  rating?: number | null | undefined;
 
   @ApiProperty({ type: Date })
   createdAt!: Date;

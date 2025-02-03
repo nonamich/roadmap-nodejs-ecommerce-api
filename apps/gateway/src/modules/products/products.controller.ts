@@ -4,6 +4,7 @@ import {
   PRODUCTS_SERVICE_NAME,
   ProductsServiceClient,
 } from '@repo/grpc/proto/products';
+import { Observable } from 'rxjs';
 import {
   GetFeaturedProductsRequestDto,
   GetProductByIdRequestDto,
@@ -25,19 +26,25 @@ export class ProductsController {
 
   @ApiOkResponse({ type: ProductsEntity })
   @Get('/featured')
-  getFeaturedProducts(@Query() request: GetFeaturedProductsRequestDto) {
+  getFeaturedProducts(
+    @Query() request: GetFeaturedProductsRequestDto,
+  ): Observable<ProductsEntity> {
     return this.productsService.getFeaturedProducts(request);
   }
 
   @ApiOkResponse({ type: ProductEntity })
   @Get('/:id')
-  getProductById(@Param() request: GetProductByIdRequestDto) {
+  getProductById(
+    @Param() request: GetProductByIdRequestDto,
+  ): Observable<ProductEntity> {
     return this.productsService.getProductById(request);
   }
 
   @ApiOkResponse({ type: ProductsByFilterEntity })
   @Get('/')
-  getProductsByFilter(@Query() request: GetProductsByFilterRequestDto) {
+  getProductsByFilter(
+    @Query() request: GetProductsByFilterRequestDto,
+  ): Observable<ProductsByFilterEntity> {
     return this.productsService.getProductsByFilter(request);
   }
 }
