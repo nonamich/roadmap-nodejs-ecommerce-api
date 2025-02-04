@@ -7,7 +7,7 @@ import {
 import { PRODUCTS_PACKAGE_NAME } from '@repo/grpc/proto/products';
 import { AppModule } from './app.module';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
     logger: new InternalDisabledLogger(),
   });

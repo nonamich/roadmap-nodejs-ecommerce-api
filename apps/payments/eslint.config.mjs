@@ -1,8 +1,8 @@
-import { baseESLintConfig } from '@repo/configs/eslint/base.js';
+import { nodeESLintConfig } from '@repo/configs/eslint/node.js';
 
 /** @type {import("eslint").Linter.Config} */
 export default [
-  ...baseESLintConfig,
+  ...nodeESLintConfig,
   {
     ignores: ['dist', 'node_modules'],
   },

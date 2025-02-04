@@ -6,55 +6,59 @@ import {
   GrpcToGrpcExceptionFilter,
 } from '@repo/grpc/nest';
 import {
+  ProductsByFilterResponse,
+  ProductsResponse,
   ProductsServiceController,
   ProductsServiceControllerMethods,
 } from '@repo/grpc/proto/products';
-import { mergeAll } from 'rxjs';
-import { fromPromise } from 'rxjs/internal/observable/innerFrom';
-import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
-import { ORMService } from '~/modules/orm/orm.service';
+import { from, mergeAll, Observable } from 'rxjs';
+import { PrismaClientExceptionFilter } from '~/modules/orm/filters/prisma-client-exception.filter';
+import { BrandsRepository } from '../brands/brands.repository';
+import { CategoriesRepository } from '../categories/categories.repository';
 import {
   GetFeaturedProductsRequestDto,
   GetProductByIdRequestDto,
   GetProductsByFilterRequestDto,
   GetProductsByIdsRequestDto,
 } from './dto';
-import { PRODUCTS_SELECT } from './products.constants';
+import { ProductEntity } from './product.entity';
+import { ProductsRepository } from './products.repository';
 
 @GrpcService()
 @ProductsServiceControllerMethods()
 @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
 export class ProductsGrpcController implements ProductsServiceController {
-  constructor(private readonly orm: ORMService) {}
+  constructor(
+    private readonly productsRepository: ProductsRepository,
+    private readonly brandsRepository: BrandsRepository,
+    private readonly categoriesRepository: CategoriesRepository,
+  ) {}
 
-  async getProductById(@GrpcPayload() { id }: GetProductByIdRequestDto) {
-    const product = await this.orm.product.findUniqueOrThrow({
-      where: { id },
-      select: PRODUCTS_SELECT,
-    });
-
-    return product;
+  async getProductById(
+    @GrpcPayload() { id }: GetProductByIdRequestDto,
+  ): Promise<ProductEntity> {
+    return await this.productsRepository.findUniqueOrThrow({ id });
   }
 
-  getProductsByIds(@GrpcPayload() { ids }: GetProductsByIdsRequestDto) {
-    const promise = this.orm.product.findMany({
+  getProductsByIds(
+    @GrpcPayload() { ids }: GetProductsByIdsRequestDto,
+  ): Observable<ProductEntity> {
+    const promise = this.productsRepository.findMany({
       where: {
         id: {
           in: ids,
         },
       },
-      select: PRODUCTS_SELECT,
     });
 
-    return fromPromise(promise).pipe(mergeAll());
+    return from(promise).pipe(mergeAll());
   }
 
   async getFeaturedProducts(
     @GrpcPayload() { pagination }: GetFeaturedProductsRequestDto,
-  ) {
+  ): Promise<ProductsResponse> {
     const [products, totalCount] = await Promise.all([
-      this.orm.product.findMany({
-        select: PRODUCTS_SELECT,
+      this.productsRepository.findMany({
         where: {
           featuredProduct: {
             is: {},
@@ -63,7 +67,7 @@ export class ProductsGrpcController implements ProductsServiceController {
         take: pagination.limit,
         skip: Math.floor(pagination.limit * pagination.page - pagination.limit),
       }),
-      this.orm.featuredProduct.count(),
+      this.productsRepository.count(),
     ]);
 
     if (!products.length || !totalCount) {
@@ -82,31 +86,26 @@ export class ProductsGrpcController implements ProductsServiceController {
   async getProductsByFilter(
     @GrpcPayload()
     { pagination, brandId, categoryId }: GetProductsByFilterRequestDto,
-  ) {
+  ): Promise<ProductsByFilterResponse> {
     const where = {
       brandId,
       categoryId,
     };
     const [products, totalCount, brand, category] = await Promise.all([
-      this.orm.product.findMany({
-        select: PRODUCTS_SELECT,
+      this.productsRepository.findMany({
         where: where,
         take: pagination.limit,
         skip: Math.floor(pagination.limit * pagination.page - pagination.limit),
       }),
-      this.orm.product.count({ where }),
+      this.productsRepository.count({ where }),
       brandId
-        ? this.orm.brand.findUniqueOrThrow({
-            where: {
-              id: brandId,
-            },
+        ? this.brandsRepository.findUniqueOrThrow({
+            id: brandId,
           })
         : undefined,
       categoryId
-        ? this.orm.category.findUniqueOrThrow({
-            where: {
-              id: categoryId,
-            },
+        ? this.categoriesRepository.findUniqueOrThrow({
+            id: categoryId,
           })
         : undefined,
     ]);

@@ -11,10 +11,4 @@ export const baseESLintConfig = [
   js.configs.recommended,
   ...typescriptEslint.configs.recommended,
   eslintPluginPrettierRecommended,
-  {
-    ignores: ['eslint.config.mjs', 'eslint.config.js'],
-    rules: {
-      "@typescript-eslint/no-empty-object-type": "off"
-    }
-  },
 ];

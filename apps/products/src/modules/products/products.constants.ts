@@ -1,4 +1,4 @@
-export const PRODUCTS_SELECT = {
+export const PRODUCT_SELECT = {
   id: true,
   amount: true,
   brandId: true,
