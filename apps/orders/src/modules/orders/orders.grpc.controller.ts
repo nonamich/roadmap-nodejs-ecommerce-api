@@ -8,7 +8,7 @@ import {
   OrdersServiceController,
   OrdersServiceControllerMethods,
 } from '@repo/grpc/proto/orders';
-import { PrismaClientExceptionFilter } from '~/modules/orm/filters/prisma-client-exception.filter';
+import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import {
   CompleteOrdersRequestDto,
   CreateOrderRequestDto,

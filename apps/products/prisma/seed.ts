@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 main();
 
-async function main() {
+async function main(): Promise<void> {
   await prisma.product.deleteMany({});
   await prisma.category.deleteMany({});
   await prisma.brand.deleteMany({});

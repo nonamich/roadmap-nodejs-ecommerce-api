@@ -5,7 +5,7 @@ import {
   CartsServiceController,
   CartsServiceControllerMethods,
 } from '@repo/grpc/proto/carts';
-import { PrismaClientExceptionFilter } from '~/modules/orm/filters/prisma-client-exception.filter';
+import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import { CartsService } from './carts.service';
 import {
   AddToCartRequestDto,

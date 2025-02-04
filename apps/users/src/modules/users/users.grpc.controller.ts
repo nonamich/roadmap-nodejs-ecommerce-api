@@ -6,7 +6,7 @@ import {
   UsersServiceControllerMethods,
 } from '@repo/grpc/proto/users';
 import { Observable } from 'rxjs';
-import { PrismaClientExceptionFilter } from '~/modules/orm/filters/prisma-client-exception.filter';
+import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import {
   CreateUserRequestDto,
   DeleteUserRequestDto,

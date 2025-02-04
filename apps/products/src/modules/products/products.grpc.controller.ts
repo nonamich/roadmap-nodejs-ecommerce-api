@@ -8,7 +8,7 @@ import {
   ProductsServiceControllerMethods,
 } from '@repo/grpc/proto/products';
 import { Observable } from 'rxjs';
-import { PrismaClientExceptionFilter } from '~/modules/orm/filters/prisma-client-exception.filter';
+import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import {
   GetFeaturedProductsRequestDto,
   GetProductByIdRequestDto,
