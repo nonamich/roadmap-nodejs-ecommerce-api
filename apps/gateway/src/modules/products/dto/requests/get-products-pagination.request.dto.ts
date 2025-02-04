@@ -1,9 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PaginationRequest } from '@repo/grpc/proto/products';
+import { GetProductsPaginationRequest } from '@repo/grpc/proto/products';
 import { Type } from 'class-transformer';
 import { IsInt } from 'class-validator';
 
-export class PaginationRequestDto implements PaginationRequest {
+export class GetProductsPaginationRequestDto
+  implements GetProductsPaginationRequest
+{
   @ApiProperty({ default: 1 })
   @Type(() => Number)
   @IsInt()
