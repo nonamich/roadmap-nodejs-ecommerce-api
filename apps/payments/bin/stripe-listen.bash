@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 DIRNAME=$(dirname "$0")
-STRIPE="$DIRNAME/stripe"
+STRIPE="$DIRNAME/stripe.bash"
 
 . "$DIRNAME/../.env"
 
