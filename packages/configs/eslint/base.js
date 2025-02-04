@@ -10,5 +10,5 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 export const baseESLintConfig = [
   js.configs.recommended,
   ...typescriptEslint.configs.recommended,
-  eslintPluginPrettierRecommended,
+  eslintPluginPrettierRecommended
 ];

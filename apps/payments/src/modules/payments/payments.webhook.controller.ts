@@ -19,7 +19,9 @@ export class PaymentsWebhookController {
 
   @Post()
   @HttpCode(200)
-  async webhook(@Req() req: RawBodyRequest<Request>) {
+  async webhook(
+    @Req() req: RawBodyRequest<Request>,
+  ): Promise<{ received: true }> {
     const {
       rawBody: payload,
       headers: { 'stripe-signature': signature },

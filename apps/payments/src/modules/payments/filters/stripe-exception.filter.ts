@@ -10,8 +10,8 @@ import { BaseExceptionFilter } from '@nestjs/core';
 
 @Catch(Stripe.errors.StripeError)
 export class StripeExceptionFilter extends BaseExceptionFilter {
-  catch(exception: Stripe.errors.StripeError, host: ArgumentsHost) {
-    return super.catch(
+  catch(exception: Stripe.errors.StripeError, host: ArgumentsHost): void {
+    super.catch(
       new HttpException(
         exception.message,
         exception.statusCode || HttpStatus.UNPROCESSABLE_ENTITY,

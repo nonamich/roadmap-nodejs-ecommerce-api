@@ -6,11 +6,12 @@ import {
   PRODUCTS_SERVICE_NAME,
 } from '@repo/grpc/proto/products';
 import { CartsGrpcController } from './carts.grpc.controller';
+import { CartItemsRepository } from './carts.repository';
 import { CartsService } from './carts.service';
 
 @Module({
   controllers: [CartsGrpcController],
-  providers: [CartsService],
+  providers: [CartsService, CartItemsRepository],
   imports: [
     GrpcClientModule.registerAsync({
       packageName: PRODUCTS_PACKAGE_NAME,

@@ -19,10 +19,11 @@ export class InternalDisabledLogger extends ConsoleLogger {
     super.log(message, ...optionalParams);
   }
 
-  getContextFromLog(args: unknown[]) {
+  getContextFromLog(args: unknown[]): string | undefined {
     if (args?.length <= 1) {
       return this.context;
     }
+
     const lastElement = args[args.length - 1];
     const isContext = this.isString(lastElement);
 
@@ -32,6 +33,7 @@ export class InternalDisabledLogger extends ConsoleLogger {
 
     return lastElement;
   }
+
   isString(val: unknown): val is string {
     return typeof val === 'string';
   }

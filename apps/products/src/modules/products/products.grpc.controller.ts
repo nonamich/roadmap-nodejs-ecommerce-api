@@ -1,20 +1,14 @@
 import { UseFilters } from '@nestjs/common';
 import { GrpcService } from '@nestjs/microservices';
-import {
-  GrpcNotFoundException,
-  GrpcPayload,
-  GrpcToGrpcExceptionFilter,
-} from '@repo/grpc/nest';
+import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
 import {
   ProductsByFilterResponse,
   ProductsResponse,
   ProductsServiceController,
   ProductsServiceControllerMethods,
 } from '@repo/grpc/proto/products';
-import { from, mergeAll, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PrismaClientExceptionFilter } from '~/modules/orm/filters/prisma-client-exception.filter';
-import { BrandsRepository } from '../brands/brands.repository';
-import { CategoriesRepository } from '../categories/categories.repository';
 import {
   GetFeaturedProductsRequestDto,
   GetProductByIdRequestDto,
@@ -22,106 +16,35 @@ import {
   GetProductsByIdsRequestDto,
 } from './dto';
 import { ProductEntity } from './product.entity';
-import { ProductsRepository } from './products.repository';
+import { ProductsService } from './products.services';
 
 @GrpcService()
 @ProductsServiceControllerMethods()
 @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
 export class ProductsGrpcController implements ProductsServiceController {
-  constructor(
-    private readonly productsRepository: ProductsRepository,
-    private readonly brandsRepository: BrandsRepository,
-    private readonly categoriesRepository: CategoriesRepository,
-  ) {}
+  constructor(private readonly service: ProductsService) {}
 
   async getProductById(
-    @GrpcPayload() { id }: GetProductByIdRequestDto,
+    @GrpcPayload() dto: GetProductByIdRequestDto,
   ): Promise<ProductEntity> {
-    return await this.productsRepository.findUniqueOrThrow({ id });
+    return await this.service.getProductById(dto);
   }
 
   getProductsByIds(
-    @GrpcPayload() { ids }: GetProductsByIdsRequestDto,
+    @GrpcPayload() dto: GetProductsByIdsRequestDto,
   ): Observable<ProductEntity> {
-    const promise = this.productsRepository.findMany({
-      where: {
-        id: {
-          in: ids,
-        },
-      },
-    });
-
-    return from(promise).pipe(mergeAll());
+    return this.service.getProductsByIds(dto);
   }
 
   async getFeaturedProducts(
-    @GrpcPayload() { pagination }: GetFeaturedProductsRequestDto,
+    @GrpcPayload() dto: GetFeaturedProductsRequestDto,
   ): Promise<ProductsResponse> {
-    const [products, totalCount] = await Promise.all([
-      this.productsRepository.findMany({
-        where: {
-          featuredProduct: {
-            is: {},
-          },
-        },
-        take: pagination.limit,
-        skip: Math.floor(pagination.limit * pagination.page - pagination.limit),
-      }),
-      this.productsRepository.count(),
-    ]);
-
-    if (!products.length || !totalCount) {
-      throw new GrpcNotFoundException('Products Not Found');
-    }
-
-    return {
-      products,
-      pagination: {
-        ...pagination,
-        totalCount,
-      },
-    };
+    return this.service.getFeaturedProducts(dto);
   }
 
   async getProductsByFilter(
-    @GrpcPayload()
-    { pagination, brandId, categoryId }: GetProductsByFilterRequestDto,
+    @GrpcPayload() dto: GetProductsByFilterRequestDto,
   ): Promise<ProductsByFilterResponse> {
-    const where = {
-      brandId,
-      categoryId,
-    };
-    const [products, totalCount, brand, category] = await Promise.all([
-      this.productsRepository.findMany({
-        where: where,
-        take: pagination.limit,
-        skip: Math.floor(pagination.limit * pagination.page - pagination.limit),
-      }),
-      this.productsRepository.count({ where }),
-      brandId
-        ? this.brandsRepository.findUniqueOrThrow({
-            id: brandId,
-          })
-        : undefined,
-      categoryId
-        ? this.categoriesRepository.findUniqueOrThrow({
-            id: categoryId,
-          })
-        : undefined,
-    ]);
-
-    if (!products.length || !totalCount) {
-      throw new GrpcNotFoundException('Product Not Found');
-    }
-
-    return {
-      products,
-      brand,
-      category,
-      pagination: {
-        ...pagination,
-        totalCount,
-      },
-    };
+    return this.service.getProductsByFilter(dto);
   }
 }

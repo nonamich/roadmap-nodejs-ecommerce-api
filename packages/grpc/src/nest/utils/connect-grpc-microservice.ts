@@ -1,5 +1,5 @@
 import { ReflectionService } from '@grpc/reflection';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, INestMicroservice } from '@nestjs/common';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
 import { UtilsGrpc } from '../../utils';
 import { GRPC_MICROSERVICE_DEFAULT_OPTIONS } from './constants';
@@ -12,7 +12,7 @@ export interface GrpcMicroserviceOptions {
 export const connectGrpcMicroservice = (
   app: INestApplication,
   { url, packageName }: GrpcMicroserviceOptions,
-) => {
+): INestMicroservice => {
   return app.connectMicroservice<GrpcOptions>(
     {
       transport: Transport.GRPC,

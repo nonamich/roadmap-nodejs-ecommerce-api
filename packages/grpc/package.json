@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
+    "lint": "eslint \"src/**/*.ts\" --fix",
     "prebuild": "rm -rf dist"
   },
   "exports": {

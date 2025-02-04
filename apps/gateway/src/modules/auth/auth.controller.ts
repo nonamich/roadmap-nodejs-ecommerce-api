@@ -28,7 +28,7 @@ export class AuthController {
   @Auth()
   @ApiOkResponse({ type: AuthorizedUserEntity })
   @Get('me')
-  me(@CurrentUser() user: AuthorizedUser): AuthorizedUser {
+  me(@CurrentUser() user: AuthorizedUser): AuthorizedUserEntity {
     return user;
   }
 }

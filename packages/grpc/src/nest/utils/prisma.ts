@@ -1,11 +1,14 @@
 import {
   GrpcAlreadyExistsException,
+  GrpcBaseException,
   GrpcNotFoundException,
   GrpcUnknownException,
 } from '../exceptions';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const prismaToGrpcError = (code: string, context?: any) => {
+export const prismaToGrpcError = (
+  code: string,
+  context?: unknown,
+): GrpcBaseException => {
   const messagePrefix = context ? `[${context}] ` : '';
 
   switch (code) {

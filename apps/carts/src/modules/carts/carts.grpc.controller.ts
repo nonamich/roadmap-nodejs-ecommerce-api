@@ -5,7 +5,7 @@ import {
   CartsServiceController,
   CartsServiceControllerMethods,
 } from '@repo/grpc/proto/carts';
-import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
+import { PrismaClientExceptionFilter } from '~/modules/orm/filters/prisma-client-exception.filter';
 import { CartsService } from './carts.service';
 import {
   AddToCartRequestDto,
@@ -13,6 +13,7 @@ import {
   RemoveCartRequestDto,
   RemoveFromCartRequestDto,
 } from './dto';
+import { CartModel } from './model';
 
 @GrpcService()
 @CartsServiceControllerMethods()
@@ -20,22 +21,24 @@ import {
 export class CartsGrpcController implements CartsServiceController {
   constructor(private readonly service: CartsService) {}
 
-  async removeCart(@GrpcPayload() dto: RemoveCartRequestDto) {
+  async removeCart(@GrpcPayload() dto: RemoveCartRequestDto): Promise<void> {
     return this.service.removeCart(dto);
   }
 
-  async getCart(@GrpcPayload() dto: GetCartRequestDto) {
+  async getCart(@GrpcPayload() dto: GetCartRequestDto): Promise<CartModel> {
     return await this.service.getCart(dto);
   }
 
   async addToCart(
     @GrpcPayload()
     dto: AddToCartRequestDto,
-  ) {
+  ): Promise<CartModel> {
     return await this.service.addToCart(dto);
   }
 
-  async removeFromCart(@GrpcPayload() dto: RemoveFromCartRequestDto) {
+  async removeFromCart(
+    @GrpcPayload() dto: RemoveFromCartRequestDto,
+  ): Promise<CartModel> {
     return await this.service.removeFromCart(dto);
   }
 }

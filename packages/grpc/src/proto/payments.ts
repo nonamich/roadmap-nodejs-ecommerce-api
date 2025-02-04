@@ -7,8 +7,7 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-
-export const protobufPackage = "payments";
+ export const protobufPackage = "payments";
 
 export const PaymentStatus = {
   canceled: "canceled",

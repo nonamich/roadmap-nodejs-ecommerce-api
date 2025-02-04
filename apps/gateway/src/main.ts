@@ -5,9 +5,9 @@ import { InternalDisabledLogger } from '@repo/grpc/nest';
 import { AppModule } from './app.module';
 import { initSwagger } from './swagger';
 
-main();
+bootstrap();
 
-async function main() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: new InternalDisabledLogger(),
   });

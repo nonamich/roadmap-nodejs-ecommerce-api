@@ -1,10 +1,11 @@
 import { ArgumentsHost, Catch } from '@nestjs/common';
 import { BaseRpcExceptionFilter, RpcException } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 import { createGrpcExceptionObject, GrpcExceptionMessage } from '../utils';
 
 @Catch(Error)
 export class GrpcToGrpcExceptionFilter extends BaseRpcExceptionFilter {
-  catch(error: Error, host: ArgumentsHost) {
+  catch(error: Error, host: ArgumentsHost): Observable<unknown> {
     if ('details' in error && typeof error.details === 'string') {
       try {
         const details: GrpcExceptionMessage = JSON.parse(error.details);

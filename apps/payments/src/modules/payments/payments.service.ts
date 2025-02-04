@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GrpcInternalException } from '@repo/grpc/nest';
 import {
   ORDERS_SERVICE_NAME,
   OrdersServiceClient,
@@ -9,6 +8,7 @@ import { firstValueFrom } from 'rxjs';
 import Stripe from 'stripe';
 import { CreateIntentRequestDto, GetIntentRequestDto } from './dto';
 import { StripeMethod } from './methods/stripe.method';
+import { IntentModel } from './models/intent.model';
 import { PAYMENTS_STRIPE_CURRENCY } from './payments.constants';
 
 @Injectable()
@@ -25,22 +25,22 @@ export class PaymentsService {
     this.webhookWhsec = config.getOrThrow('STRIPE_WEBHOOK_WHSEC');
   }
 
-  async createIntent({ amountInCent }: CreateIntentRequestDto) {
+  async createIntent({
+    amountInCent,
+  }: CreateIntentRequestDto): Promise<IntentModel> {
     const intent = await this.stripe.paymentIntents.create({
       amount: amountInCent,
       currency: PAYMENTS_STRIPE_CURRENCY,
       payment_method_types: ['card'],
     });
 
-    return {
-      intentId: intent.id,
-    };
+    return IntentModel.createFromIntent(intent);
   }
 
   async processWebhook(
     payload: string | Buffer,
     signature: string | Buffer | Array<string>,
-  ) {
+  ): Promise<void> {
     const event = await this.stripe.webhooks.constructEventAsync(
       payload,
       signature,
@@ -52,8 +52,12 @@ export class PaymentsService {
     }
   }
 
-  async onSucceededPaymentIntent(event: Stripe.PaymentIntentSucceededEvent) {
-    const paymentIntent = event.data.object;
+  async onSucceededPaymentIntent(
+    event: Stripe.PaymentIntentSucceededEvent,
+  ): Promise<void> {
+    const {
+      data: { object: paymentIntent },
+    } = event;
 
     if (paymentIntent.status !== 'succeeded') {
       return;
@@ -66,19 +70,9 @@ export class PaymentsService {
     );
   }
 
-  async getIntent({ intentId }: GetIntentRequestDto) {
+  async getIntent({ intentId }: GetIntentRequestDto): Promise<IntentModel> {
     const intent = await this.stripe.paymentIntents.retrieve(intentId);
 
-    if (!intent.client_secret) {
-      throw new GrpcInternalException('intent has no client_secret');
-    }
-
-    return {
-      id: intent.id,
-      clientSecret: intent.client_secret,
-      amount: intent.amount,
-      status: intent.status,
-      currency: intent.currency,
-    };
+    return IntentModel.createFromIntent(intent);
   }
 }

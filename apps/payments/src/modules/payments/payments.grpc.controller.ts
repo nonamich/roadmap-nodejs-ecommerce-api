@@ -2,6 +2,8 @@ import { UseFilters } from '@nestjs/common';
 import { GrpcService } from '@nestjs/microservices';
 import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
 import {
+  CreateResponse,
+  GetIntentResponse,
   PaymentsServiceController,
   PaymentsServiceControllerMethods,
 } from '@repo/grpc/proto/payments';
@@ -14,11 +16,17 @@ import { PaymentsService } from './payments.service';
 export class PaymentsGrpcController implements PaymentsServiceController {
   constructor(private readonly service: PaymentsService) {}
 
-  async createIntent(@GrpcPayload() dto: CreateIntentRequestDto) {
-    return await this.service.createIntent(dto);
+  async createIntent(
+    @GrpcPayload() dto: CreateIntentRequestDto,
+  ): Promise<CreateResponse> {
+    const intent = await this.service.createIntent(dto);
+
+    return { intentId: intent.id };
   }
 
-  async getIntent(@GrpcPayload() dto: GetIntentRequestDto) {
+  async getIntent(
+    @GrpcPayload() dto: GetIntentRequestDto,
+  ): Promise<GetIntentResponse> {
     return await this.service.getIntent(dto);
   }
 }

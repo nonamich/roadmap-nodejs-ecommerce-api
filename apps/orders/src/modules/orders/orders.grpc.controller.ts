@@ -3,11 +3,12 @@ import { GrpcService } from '@nestjs/microservices';
 import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
 import {
   GetOrderByIntentIdRequest,
+  GetOrdersResponse,
   OrderResponse,
   OrdersServiceController,
   OrdersServiceControllerMethods,
 } from '@repo/grpc/proto/orders';
-import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
+import { PrismaClientExceptionFilter } from '~/modules/orm/filters/prisma-client-exception.filter';
 import {
   CompleteOrdersRequestDto,
   CreateOrderRequestDto,
@@ -22,21 +23,29 @@ import { OrdersService } from './orders.service';
 export class OrdersGrpcController implements OrdersServiceController {
   constructor(private readonly service: OrdersService) {}
 
-  async getOrders(@GrpcPayload() dto: GetOrdersRequestDto) {
+  async getOrders(
+    @GrpcPayload() dto: GetOrdersRequestDto,
+  ): Promise<GetOrdersResponse> {
     const orders = await this.service.getOrders(dto);
 
     return { orders };
   }
 
-  async getOrder(@GrpcPayload() dto: GetOrderRequestDto) {
+  async getOrder(
+    @GrpcPayload() dto: GetOrderRequestDto,
+  ): Promise<OrderResponse> {
     return await this.service.getOrder(dto);
   }
 
-  async createOrder(@GrpcPayload() dto: CreateOrderRequestDto) {
+  async createOrder(
+    @GrpcPayload() dto: CreateOrderRequestDto,
+  ): Promise<OrderResponse> {
     return await this.service.createOrder(dto);
   }
 
-  async completeOrder(@GrpcPayload() dto: CompleteOrdersRequestDto) {
+  async completeOrder(
+    @GrpcPayload() dto: CompleteOrdersRequestDto,
+  ): Promise<void> {
     return await this.service.completeOrder(dto);
   }
 

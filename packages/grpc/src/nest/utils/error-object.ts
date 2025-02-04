@@ -7,10 +7,15 @@ export type GrpcExceptionMessage = {
   exception: string;
 };
 
-export function createGrpcExceptionObject(
+export type GrpcExceptionObject = {
+  message: string;
+  code: GrpcStatusCode;
+};
+
+export const createGrpcExceptionObject = (
   message: string,
   code: GrpcStatusCode,
-) {
+): GrpcExceptionObject => {
   return {
     message: createMessage({
       exception: GrpcBaseException.name,
@@ -19,8 +24,8 @@ export function createGrpcExceptionObject(
     }),
     code,
   };
-}
+};
 
-function createMessage(obj: GrpcExceptionMessage) {
+function createMessage(obj: GrpcExceptionMessage): string {
   return JSON.stringify(obj);
 }

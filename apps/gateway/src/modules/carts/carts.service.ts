@@ -11,6 +11,7 @@ import {
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '../auth/auth.interface';
 import { AddToCartRequestDto } from './dto';
+import { CartEntity } from './entities';
 
 @Injectable()
 export class CartsService {
@@ -22,7 +23,7 @@ export class CartsService {
     private readonly productsService: ProductsServiceClient,
   ) {}
 
-  async getCart(user: AuthorizedUser) {
+  async getCart(user: AuthorizedUser): Promise<CartEntity> {
     const cart = await firstValueFrom(
       this.cartsService.getCart({ userId: user.id }),
     );
@@ -34,7 +35,7 @@ export class CartsService {
     productId: number,
     { quantity }: AddToCartRequestDto,
     user: AuthorizedUser,
-  ) {
+  ): Promise<CartEntity> {
     const cart = await firstValueFrom(
       this.cartsService.addToCart({
         userId: user.id,
@@ -46,7 +47,10 @@ export class CartsService {
     return await this.getCartWithProducts(cart);
   }
 
-  async removeFromCart(productId: number, user: AuthorizedUser) {
+  async removeFromCart(
+    productId: number,
+    user: AuthorizedUser,
+  ): Promise<CartEntity> {
     const cart = await firstValueFrom(
       this.cartsService.removeFromCart({ userId: user.id, productId }),
     );
@@ -54,7 +58,7 @@ export class CartsService {
     return await this.getCartWithProducts(cart);
   }
 
-  async getCartWithProducts(cart: CartResponse) {
+  async getCartWithProducts(cart: CartResponse): Promise<CartEntity> {
     const products = cart.items.length
       ? await firstValueFrom(
           this.productsService

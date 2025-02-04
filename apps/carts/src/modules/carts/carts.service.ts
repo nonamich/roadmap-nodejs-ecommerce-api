@@ -13,6 +13,7 @@ import {
   RemoveCartRequestDto,
   RemoveFromCartRequestDto,
 } from './dto';
+import { CartModel } from './model';
 
 @Injectable()
 export class CartsService {
@@ -22,7 +23,7 @@ export class CartsService {
     private readonly orm: ORMService,
   ) {}
 
-  async removeCart({ userId }: RemoveCartRequestDto) {
+  async removeCart({ userId }: RemoveCartRequestDto): Promise<void> {
     await this.orm.cartItem.deleteMany({
       where: {
         userId,
@@ -30,7 +31,7 @@ export class CartsService {
     });
   }
 
-  async getCart({ userId }: GetCartRequestDto) {
+  async getCart({ userId }: GetCartRequestDto): Promise<CartModel> {
     const cartItems = await this.orm.cartItem.findMany({
       select: {
         quantity: true,
@@ -49,15 +50,11 @@ export class CartsService {
     };
   }
 
-  calculateTotalPrice(items: CartItemResponse[]) {
-    return items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  }
-
-  calculateTotalQuantity(items: CartItemResponse[]) {
-    return items.reduce((acc, item) => acc + item.quantity, 0);
-  }
-
-  async addToCart({ productId, quantity, userId }: AddToCartRequestDto) {
+  async addToCart({
+    productId,
+    quantity,
+    userId,
+  }: AddToCartRequestDto): Promise<CartModel> {
     const product = await firstValueFrom(
       this.productsService.getProductById({ id: productId }),
     );
@@ -87,7 +84,10 @@ export class CartsService {
     return await this.getCart({ userId });
   }
 
-  async removeFromCart({ productId, userId }: RemoveFromCartRequestDto) {
+  async removeFromCart({
+    productId,
+    userId,
+  }: RemoveFromCartRequestDto): Promise<CartModel> {
     await this.orm.cartItem.delete({
       where: {
         productId_userId: {
@@ -98,5 +98,13 @@ export class CartsService {
     });
 
     return await this.getCart({ userId });
+  }
+
+  calculateTotalPrice(items: CartItemResponse[]): number {
+    return items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  }
+
+  calculateTotalQuantity(items: CartItemResponse[]): number {
+    return items.reduce((acc, item) => acc + item.quantity, 0);
   }
 }

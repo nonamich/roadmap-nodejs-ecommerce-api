@@ -5,7 +5,7 @@ const PACKAGE_DIR = path.resolve(__dirname, '../');
 const PROTO_DIR = path.join(PACKAGE_DIR, 'proto');
 
 export abstract class UtilsGrpc {
-  static getProtoFilePath(packageName: string) {
+  static getProtoFilePath(packageName: string): string {
     const filePath = path.join(PROTO_DIR, `${packageName}.proto`);
 
     if (!fs.existsSync(filePath)) {

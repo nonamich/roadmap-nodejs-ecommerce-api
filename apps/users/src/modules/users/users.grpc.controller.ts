@@ -1,17 +1,12 @@
 import { UseFilters } from '@nestjs/common';
 import { GrpcService } from '@nestjs/microservices';
-import {
-  GrpcPayload,
-  GrpcToGrpcExceptionFilter,
-  GrpcUnauthenticatedException,
-} from '@repo/grpc/nest';
+import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
 import {
   UsersServiceController,
   UsersServiceControllerMethods,
 } from '@repo/grpc/proto/users';
-import { from, mergeAll } from 'rxjs';
-import { PrismaClientExceptionFilter } from '~/filters/prisma-client-exception.filter';
-import { ORMService } from '~/modules/orm/orm.service';
+import { Observable } from 'rxjs';
+import { PrismaClientExceptionFilter } from '~/modules/orm/filters/prisma-client-exception.filter';
 import {
   CreateUserRequestDto,
   DeleteUserRequestDto,
@@ -21,112 +16,53 @@ import {
   GetUsersRequestDto,
   UpdateUserRequestDto,
 } from './dto';
-import { PasswordService } from './password.service';
+import { UserEntity } from './entities/user.entity';
+import { UsersService } from './users.service';
 
 @GrpcService()
 @UsersServiceControllerMethods()
 @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
 export class UsersGrpcController implements UsersServiceController {
-  constructor(
-    private readonly orm: ORMService,
-    private readonly passwordService: PasswordService,
-  ) {}
+  constructor(private readonly service: UsersService) {}
 
   async createUser(
     @GrpcPayload()
-    { email, name, password: unsanitizedPassword }: CreateUserRequestDto,
-  ) {
-    const hashedPassword =
-      await this.passwordService.hashPassword(unsanitizedPassword);
-
-    const user = await this.orm.user.create({
-      data: {
-        email,
-        name,
-        password: hashedPassword,
-      },
-      omit: { password: true },
-    });
-
-    return user;
+    dto: CreateUserRequestDto,
+  ): Promise<UserEntity> {
+    return await this.service.createUser(dto);
   }
 
-  async deleteUser(@GrpcPayload() { id }: DeleteUserRequestDto) {
-    await this.orm.user.delete({
-      where: {
-        id,
-      },
-    });
+  async deleteUser(@GrpcPayload() dto: DeleteUserRequestDto): Promise<void> {
+    return await this.service.deleteUser(dto);
   }
 
-  async getUserById(@GrpcPayload() { id }: GetUserByIdRequestDto) {
-    return await this.orm.user.findUniqueOrThrow({
-      where: { id },
-      omit: { password: true },
-    });
+  async getUserById(
+    @GrpcPayload() dto: GetUserByIdRequestDto,
+  ): Promise<UserEntity> {
+    return await this.service.getUserById(dto);
   }
 
-  async getUserByEmail(@GrpcPayload() { email }: GetUserByEmailRequestDto) {
-    return await this.orm.user.findUniqueOrThrow({
-      where: { email },
-      omit: { password: true },
-    });
+  async getUserByEmail(
+    @GrpcPayload() dto: GetUserByEmailRequestDto,
+  ): Promise<UserEntity> {
+    return await this.service.getUserByEmail(dto);
   }
 
   async getUserByCredentials(
     @GrpcPayload()
-    { email, password }: GetUserByCredentialsRequestDto,
-  ) {
-    const { password: hashedPassword, ...user } =
-      await this.orm.user.findUniqueOrThrow({
-        where: { email },
-      });
-
-    let isVerifiedPassword: boolean;
-
-    try {
-      isVerifiedPassword = await this.passwordService.verifyPassword(
-        hashedPassword,
-        password,
-      );
-    } catch {
-      isVerifiedPassword = false;
-    }
-
-    if (!isVerifiedPassword) {
-      throw new GrpcUnauthenticatedException('Password does not match');
-    }
-
-    return user;
+    dto: GetUserByCredentialsRequestDto,
+  ): Promise<UserEntity> {
+    return this.service.getUserByCredentials(dto);
   }
 
   async updateUser(
     @GrpcPayload()
-    { id, ...data }: UpdateUserRequestDto,
-  ) {
-    if (data.password) {
-      const hashedPassword = await this.passwordService.hashPassword(
-        data.password,
-      );
-
-      data.password = hashedPassword;
-    }
-
-    return this.orm.user.update({
-      data,
-      where: {
-        id,
-      },
-      omit: { password: true },
-    });
+    dto: UpdateUserRequestDto,
+  ): Promise<UserEntity> {
+    return await this.service.updateUser(dto);
   }
 
-  getUsers(@GrpcPayload() { page, pageSize }: GetUsersRequestDto) {
-    const promise = this.orm.user.findMany({
-      skip: Math.floor(pageSize * page - pageSize),
-      take: pageSize,
-    });
-
-    return from(promise).pipe(mergeAll());
+  getUsers(@GrpcPayload() dto: GetUsersRequestDto): Observable<UserEntity> {
+    return this.service.getUsers(dto);
   }
 }

@@ -8,7 +8,7 @@ import {
 import { PAYMENTS_PACKAGE_NAME } from '@repo/grpc/proto/payments';
 import { AppModule } from './app.module';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     rawBody: true,
     logger: new InternalDisabledLogger(),

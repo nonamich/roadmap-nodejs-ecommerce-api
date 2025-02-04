@@ -7,7 +7,6 @@ import {
 } from '@repo/grpc/proto/payments';
 import { OrderStatus } from 'prisma-client';
 import { firstValueFrom } from 'rxjs';
-import { ORMService } from '~/modules/orm/orm.service';
 import {
   CompleteOrdersRequestDto,
   CreateOrderRequestDto,
@@ -15,7 +14,8 @@ import {
   GetOrderRequestDto,
   GetOrdersRequestDto,
 } from './dto';
-import { ORDER_SELECT } from './orders.constants';
+import { OrderEntity } from './entities';
+import { OrdersRepository } from './orders.repository';
 
 @Injectable()
 export class OrdersService {
@@ -26,12 +26,11 @@ export class OrdersService {
     @Inject(PAYMENTS_SERVICE_NAME)
     private readonly paymentsService: PaymentsServiceClient,
 
-    private readonly orm: ORMService,
+    private readonly repository: OrdersRepository,
   ) {}
 
-  async getOrders({ userId }: GetOrdersRequestDto) {
-    return await this.orm.order.findMany({
-      select: ORDER_SELECT,
+  async getOrders({ userId }: GetOrdersRequestDto): Promise<OrderEntity[]> {
+    return await this.repository.findMany({
       where: {
         userId,
       },
@@ -41,29 +40,21 @@ export class OrdersService {
     });
   }
 
-  async getOrder({ orderId }: GetOrderRequestDto) {
-    return await this.orm.order.findUniqueOrThrow({
-      select: ORDER_SELECT,
-      where: {
-        id: orderId,
-      },
+  async getOrder({ orderId }: GetOrderRequestDto): Promise<OrderEntity> {
+    return await this.repository.findUniqueOrThrow({
+      id: orderId,
     });
   }
 
-  async getOrderByIntentId({ intentId }: GetOrderByIntentIdRequestDto) {
-    return await this.orm.order.findUniqueOrThrow({
-      select: ORDER_SELECT,
-      where: {
-        intentId,
-      },
+  async getOrderByIntentId({
+    intentId,
+  }: GetOrderByIntentIdRequestDto): Promise<OrderEntity> {
+    return await this.repository.findUniqueOrThrow({
+      intentId,
     });
   }
 
-  priceToCent(price: number) {
-    return Math.ceil(price * 100);
-  }
-
-  async createOrder({ userId }: CreateOrderRequestDto) {
+  async createOrder({ userId }: CreateOrderRequestDto): Promise<OrderEntity> {
     const cart = await firstValueFrom(this.cartsService.getCart({ userId }));
     const intent = await firstValueFrom(
       this.paymentsService.createIntent({
@@ -75,19 +66,16 @@ export class OrdersService {
       throw new GrpcInvalidArgumentException('your cart is empty');
     }
 
-    const createdOrder = await this.orm.order.create({
-      select: ORDER_SELECT,
-      data: {
-        userId,
-        intentId: intent.intentId,
-        items: {
-          createMany: {
-            data: cart.items.map(({ quantity, price, productId }) => ({
-              price,
-              productId,
-              quantity,
-            })),
-          },
+    const createdOrder = await this.repository.create({
+      userId,
+      intentId: intent.intentId,
+      items: {
+        createMany: {
+          data: cart.items.map(({ quantity, price, productId }) => ({
+            price,
+            productId,
+            quantity,
+          })),
         },
       },
     });
@@ -97,8 +85,8 @@ export class OrdersService {
     return createdOrder;
   }
 
-  async completeOrder({ intentId }: CompleteOrdersRequestDto) {
-    await this.orm.order.update({
+  async completeOrder({ intentId }: CompleteOrdersRequestDto): Promise<void> {
+    await this.repository.update({
       data: {
         status: OrderStatus.COMPLETED,
       },
@@ -106,5 +94,9 @@ export class OrdersService {
         intentId,
       },
     });
+  }
+
+  priceToCent(price: number): number {
+    return Math.ceil(price * 100);
   }
 }

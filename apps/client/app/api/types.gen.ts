@@ -151,7 +151,8 @@ export type ProductsControllerGetFeaturedProductsData = {
   };
 };
 
-export type ProductsControllerGetFeaturedProductsResponse = ProductsResponseEntity;
+export type ProductsControllerGetFeaturedProductsResponse =
+  ProductsResponseEntity;
 
 export type ProductsControllerGetFeaturedProductsError = unknown;
 
@@ -411,7 +412,9 @@ export const OrderProductsResponseEntityModelResponseTransformer: OrderProductsR
       data.createdAt = new Date(data.createdAt);
     }
     if (Array.isArray(data?.items)) {
-      data.items.forEach(OrderProductsItemResponseEntityModelResponseTransformer);
+      data.items.forEach(
+        OrderProductsItemResponseEntityModelResponseTransformer,
+      );
     }
     return data;
   };

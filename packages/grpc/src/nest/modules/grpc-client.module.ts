@@ -1,5 +1,10 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ClientGrpc, ClientsModule, Transport } from '@nestjs/microservices';
+import {
+  ClientGrpc,
+  ClientsModule,
+  GrpcOptions,
+  Transport,
+} from '@nestjs/microservices';
 import { UtilsGrpc } from '../../utils';
 import { GRPC_MICROSERVICE_DEFAULT_OPTIONS } from '../utils';
 
@@ -41,8 +46,8 @@ export class GrpcClientModule {
         {
           provide: serviceNameAndToken,
           inject: [GRPC_CLIENT_TOKEN],
-          useFactory(client: ClientGrpc) {
-            return client.getService(serviceNameAndToken);
+          useFactory(client: ClientGrpc): object {
+            return client.getService<object>(serviceNameAndToken);
           },
         },
       ],
@@ -52,7 +57,7 @@ export class GrpcClientModule {
             name: GRPC_CLIENT_TOKEN,
             extraProviders: [optionsProvider],
             inject: [GRPC_MODULE_OPTIONS_TOKEN],
-            useFactory({ url }: GrpcOptionsCustom) {
+            useFactory({ url }: GrpcOptionsCustom): GrpcOptions {
               return {
                 transport: Transport.GRPC,
                 options: {

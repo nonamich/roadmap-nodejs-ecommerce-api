@@ -7,9 +7,12 @@ import {
   PAYMENTS_SERVICE_NAME,
 } from '@repo/grpc/proto/payments';
 import { OrdersGrpcController } from './orders.grpc.controller';
+import { OrdersRepository } from './orders.repository';
+import { OrdersService } from './orders.service';
 
 @Module({
   controllers: [OrdersGrpcController],
+  providers: [OrdersRepository, OrdersService],
   imports: [
     GrpcClientModule.registerAsync({
       packageName: CARTS_PACKAGE_NAME,
@@ -21,7 +24,6 @@ import { OrdersGrpcController } from './orders.grpc.controller';
         };
       },
     }),
-
     GrpcClientModule.registerAsync({
       packageName: PAYMENTS_PACKAGE_NAME,
       serviceNameAndToken: PAYMENTS_SERVICE_NAME,
