@@ -7,7 +7,8 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
- export const protobufPackage = "payments";
+
+export const protobufPackage = "payments";
 
 export const PaymentStatus = {
   canceled: "canceled",
@@ -35,34 +36,30 @@ export interface CreateIntentRequest {
   amountInCent: number;
 }
 
-export interface CreateResponse {
-  intentId: string;
-}
-
 export interface GetIntentRequest {
   intentId: string;
 }
 
-export interface GetIntentResponse {
+export interface IntentResponse {
   id: string;
-  clientSecret: string;
   amount: number;
-  status: PaymentStatus;
   currency: string;
+  clientSecret: string;
+  status: PaymentStatus;
 }
 
 export const PAYMENTS_PACKAGE_NAME = "payments";
 
 export interface PaymentsServiceClient {
-  createIntent(request: CreateIntentRequest): Observable<CreateResponse>;
+  createIntent(request: CreateIntentRequest): Observable<IntentResponse>;
 
-  getIntent(request: GetIntentRequest): Observable<GetIntentResponse>;
+  getIntent(request: GetIntentRequest): Observable<IntentResponse>;
 }
 
 export interface PaymentsServiceController {
-  createIntent(request: CreateIntentRequest): Promise<CreateResponse> | Observable<CreateResponse> | CreateResponse;
+  createIntent(request: CreateIntentRequest): Promise<IntentResponse> | Observable<IntentResponse> | IntentResponse;
 
-  getIntent(request: GetIntentRequest): Promise<GetIntentResponse> | Observable<GetIntentResponse> | GetIntentResponse;
+  getIntent(request: GetIntentRequest): Promise<IntentResponse> | Observable<IntentResponse> | IntentResponse;
 }
 
 export function PaymentsServiceControllerMethods() {

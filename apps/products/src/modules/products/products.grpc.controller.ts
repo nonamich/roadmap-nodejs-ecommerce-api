@@ -2,8 +2,6 @@ import { UseFilters } from '@nestjs/common';
 import { GrpcService } from '@nestjs/microservices';
 import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
 import {
-  ProductsByFilterResponse,
-  ProductsResponse,
   ProductsServiceController,
   ProductsServiceControllerMethods,
 } from '@repo/grpc/proto/products';
@@ -14,8 +12,9 @@ import {
   GetProductByIdRequestDto,
   GetProductsByFilterRequestDto,
   GetProductsByIdsRequestDto,
-} from './dto';
-import { ProductEntity } from './product.entity';
+} from './dto/requests';
+import { ProductsResponseDto } from './dto/responses';
+import { ProductEntity } from './entities/product.entity';
 import { ProductsService } from './products.services';
 
 @GrpcService()
@@ -38,13 +37,13 @@ export class ProductsGrpcController implements ProductsServiceController {
 
   async getFeaturedProducts(
     @GrpcPayload() dto: GetFeaturedProductsRequestDto,
-  ): Promise<ProductsResponse> {
+  ): Promise<ProductsResponseDto> {
     return this.service.getFeaturedProducts(dto);
   }
 
   async getProductsByFilter(
     @GrpcPayload() dto: GetProductsByFilterRequestDto,
-  ): Promise<ProductsByFilterResponse> {
+  ): Promise<ProductsResponseDto> {
     return this.service.getProductsByFilter(dto);
   }
 }

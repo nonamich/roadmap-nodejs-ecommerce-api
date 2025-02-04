@@ -1,3 +1,5 @@
+import { Prisma } from 'prisma-client';
+
 export const ORDER_SELECT = {
   id: true,
   status: true,
@@ -9,6 +11,7 @@ export const ORDER_SELECT = {
       productId: true,
       quantity: true,
       price: true,
+      orderId: true,
     },
   },
-} as const;
+} as const satisfies Prisma.OrderSelect;

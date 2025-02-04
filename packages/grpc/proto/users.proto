@@ -2,37 +2,10 @@ syntax = "proto3";
 
 package users;
 
-import "google/protobuf/empty.proto";
-
-message User {
-  int32 id = 1;
-  string name = 2;
-  string email = 3;
-}
-
 message CreateUserRequest {
   string name = 1;
   string email = 2;
   string password = 3;
-}
-
-message UpdateUserRequest {
-  int32 id = 1;
-  optional string name = 2;
-  optional string email = 3;
-  optional string password = 4;
-}
-
-message DeleteUserRequest {
-  int32 id = 1;
-}
-
-message GetUserByIdRequest {
-  int32 id = 1;
-}
-
-message GetUserByEmailRequest {
-  string email = 1;
 }
 
 message GetUserByCredentialsRequest {
@@ -40,17 +13,13 @@ message GetUserByCredentialsRequest {
   string password = 2;
 }
 
-message GetUsersRequest {
-  int32 page = 1;
-  int32 pageSize = 2;
+service UsersService {
+  rpc CreateUser(CreateUserRequest) returns (UserResponse);
+  rpc GetUserByCredentials(GetUserByCredentialsRequest) returns (UserResponse);
 }
 
-service UsersService {
-  rpc CreateUser(CreateUserRequest) returns (User);
-  rpc GetUserById(GetUserByIdRequest) returns (User);
-  rpc GetUserByEmail(GetUserByEmailRequest) returns (User);
-  rpc GetUserByCredentials(GetUserByCredentialsRequest) returns (User);
-  rpc UpdateUser(UpdateUserRequest) returns (User);
-  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
-  rpc GetUsers(GetUsersRequest) returns (stream User);
+message UserResponse {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
 }

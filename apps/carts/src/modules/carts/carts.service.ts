@@ -6,55 +6,51 @@ import {
   ProductsServiceClient,
 } from '@repo/grpc/proto/products';
 import { firstValueFrom } from 'rxjs';
-import { ORMService } from '~/modules/orm/orm.service';
+import { CartItemsRepository } from './cart-items.repository';
 import {
   AddToCartRequestDto,
   GetCartRequestDto,
   RemoveCartRequestDto,
   RemoveFromCartRequestDto,
-} from './dto';
-import { CartModel } from './model';
+} from './dto/requests';
+import { CartResponseDto } from './dto/responses';
+import { CartItemEntity } from './entities';
 
 @Injectable()
 export class CartsService {
   constructor(
     @Inject(PRODUCTS_SERVICE_NAME)
     private readonly productsService: ProductsServiceClient,
-    private readonly orm: ORMService,
+    private readonly cartItemsRepository: CartItemsRepository,
   ) {}
 
   async removeCart({ userId }: RemoveCartRequestDto): Promise<void> {
-    await this.orm.cartItem.deleteMany({
-      where: {
-        userId,
-      },
-    });
+    await this.cartItemsRepository.deleteMany({ userId });
   }
 
-  async getCart({ userId }: GetCartRequestDto): Promise<CartModel> {
-    const cartItems = await this.orm.cartItem.findMany({
-      select: {
-        quantity: true,
-        productId: true,
-        price: true,
-      },
+  getCartByItems(items: CartItemEntity[]): CartResponseDto {
+    return {
+      items: items,
+      totalPrice: this.calculateTotalPrice(items),
+      totalQuantity: this.calculateTotalQuantity(items),
+    };
+  }
+
+  async getCart({ userId }: GetCartRequestDto): Promise<CartResponseDto> {
+    const cartItems = await this.cartItemsRepository.findMany({
       where: {
         userId,
       },
     });
 
-    return {
-      items: cartItems,
-      totalPrice: this.calculateTotalPrice(cartItems),
-      totalQuantity: this.calculateTotalQuantity(cartItems),
-    };
+    return this.getCartByItems(cartItems);
   }
 
   async addToCart({
     productId,
     quantity,
     userId,
-  }: AddToCartRequestDto): Promise<CartModel> {
+  }: AddToCartRequestDto): Promise<CartResponseDto> {
     const product = await firstValueFrom(
       this.productsService.getProductById({ id: productId }),
     );
@@ -63,7 +59,7 @@ export class CartsService {
       throw new GrpcInvalidArgumentException('Quantity more than allowed');
     }
 
-    await this.orm.cartItem.upsert({
+    await this.cartItemsRepository.upsert({
       create: {
         price: product.price,
         userId,
@@ -87,13 +83,11 @@ export class CartsService {
   async removeFromCart({
     productId,
     userId,
-  }: RemoveFromCartRequestDto): Promise<CartModel> {
-    await this.orm.cartItem.delete({
-      where: {
-        productId_userId: {
-          productId,
-          userId,
-        },
+  }: RemoveFromCartRequestDto): Promise<CartResponseDto> {
+    await this.cartItemsRepository.delete({
+      productId_userId: {
+        productId,
+        userId,
       },
     });
 

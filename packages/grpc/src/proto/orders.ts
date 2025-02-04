@@ -8,7 +8,6 @@
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
-import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "orders";
 
@@ -19,21 +18,6 @@ export type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus];
 export namespace OrderStatus {
   export type WAITING_FOR_PAYMENT = typeof OrderStatus.WAITING_FOR_PAYMENT;
   export type COMPLETED = typeof OrderStatus.COMPLETED;
-}
-
-export interface OrderResponse {
-  id: number;
-  status: OrderStatus;
-  userId: number;
-  intentId: string;
-  createdAt: Date;
-  items: OrderItemResponse[];
-}
-
-export interface OrderItemResponse {
-  productId: number;
-  quantity: number;
-  price: number;
 }
 
 export interface CreateOrderRequest {
@@ -48,16 +32,27 @@ export interface GetOrdersRequest {
   userId: number;
 }
 
-export interface GetOrdersResponse {
+export interface GetOrderByIntentIdRequest {
+  intentId: string;
+}
+
+export interface OrdersResponse {
   orders: OrderResponse[];
 }
 
-export interface CompleteOrdersRequest {
-  intentId: string;
+export interface OrderItemResponse {
+  productId: number;
+  quantity: number;
+  price: number;
 }
 
-export interface GetOrderByIntentIdRequest {
+export interface OrderResponse {
+  id: number;
+  status: OrderStatus;
+  userId: number;
   intentId: string;
+  createdAt: Date;
+  items: OrderItemResponse[];
 }
 
 export const ORDERS_PACKAGE_NAME = "orders";
@@ -78,9 +73,7 @@ export interface OrdersServiceClient {
 
   getOrderByIntentId(request: GetOrderByIntentIdRequest): Observable<OrderResponse>;
 
-  getOrders(request: GetOrdersRequest): Observable<GetOrdersResponse>;
-
-  completeOrder(request: CompleteOrdersRequest): Observable<Empty>;
+  getOrders(request: GetOrdersRequest): Observable<OrdersResponse>;
 }
 
 export interface OrdersServiceController {
@@ -92,14 +85,12 @@ export interface OrdersServiceController {
     request: GetOrderByIntentIdRequest,
   ): Promise<OrderResponse> | Observable<OrderResponse> | OrderResponse;
 
-  getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> | Observable<GetOrdersResponse> | GetOrdersResponse;
-
-  completeOrder(request: CompleteOrdersRequest): void;
+  getOrders(request: GetOrdersRequest): Promise<OrdersResponse> | Observable<OrdersResponse> | OrdersResponse;
 }
 
 export function OrdersServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createOrder", "getOrder", "getOrderByIntentId", "getOrders", "completeOrder"];
+    const grpcMethods: string[] = ["createOrder", "getOrder", "getOrderByIntentId", "getOrders"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("OrdersService", method)(constructor.prototype[method], method, descriptor);

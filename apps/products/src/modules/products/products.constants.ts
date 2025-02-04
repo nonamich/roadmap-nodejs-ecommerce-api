@@ -1,3 +1,5 @@
+import { Prisma } from 'prisma-client';
+
 export const PRODUCT_SELECT = {
   id: true,
   amount: true,
@@ -21,4 +23,4 @@ export const PRODUCT_SELECT = {
       name: true,
     },
   },
-} as const;
+} as const satisfies Prisma.ProductSelect;

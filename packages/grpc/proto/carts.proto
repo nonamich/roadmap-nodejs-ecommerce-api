@@ -4,18 +4,6 @@ package carts;
 
 import "google/protobuf/empty.proto";
 
-message CartItemResponse {
-  int32 quantity = 1;
-  int32 productId = 2;
-  double price = 3;
-}
-
-message CartResponse {
-  repeated CartItemResponse items = 1;
-  int32 totalQuantity = 2;
-  double totalPrice = 3;
-}
-
 message GetCartRequest {
   int32 userId = 1;
 }
@@ -40,4 +28,16 @@ service CartsService {
   rpc GetCart(GetCartRequest) returns (CartResponse);
   rpc RemoveFromCart(RemoveFromCartRequest) returns (CartResponse);
   rpc RemoveCart(RemoveCartRequest) returns (google.protobuf.Empty);
+}
+
+message CartItemResponse {
+  int32 quantity = 1;
+  int32 productId = 2;
+  double price = 3;
+}
+
+message CartResponse {
+  repeated CartItemResponse items = 1;
+  int32 totalQuantity = 2;
+  double totalPrice = 3;
 }

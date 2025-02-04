@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from 'prisma-client';
 import { ORMService } from '~/modules/orm/orm.service';
-import { ProductEntity } from './product.entity';
+import { ProductEntity } from './entities/product.entity';
 import { PRODUCT_SELECT } from './products.constants';
 
 @Injectable()

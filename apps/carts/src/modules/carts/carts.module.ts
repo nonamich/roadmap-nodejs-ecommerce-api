@@ -5,8 +5,8 @@ import {
   PRODUCTS_PACKAGE_NAME,
   PRODUCTS_SERVICE_NAME,
 } from '@repo/grpc/proto/products';
+import { CartItemsRepository } from './cart-items.repository';
 import { CartsGrpcController } from './carts.grpc.controller';
-import { CartItemsRepository } from './carts.repository';
 import { CartsService } from './carts.service';
 
 @Module({

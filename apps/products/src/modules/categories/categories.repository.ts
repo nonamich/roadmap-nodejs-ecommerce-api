@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from 'prisma-client';
 import { ORMService } from '~/modules/orm/orm.service';
 import { CATEGORY_SELECT } from './categories.constants';
-import { CategoryEntity } from './category.entity';
+import { CategoryEntity } from './entities/category.entity';
 
 @Injectable()
 export class CategoriesRepository {

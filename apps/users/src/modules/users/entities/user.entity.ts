@@ -1,7 +1,8 @@
-import { User } from '@repo/grpc/proto/users';
+import { User } from 'prisma-client';
 
 export class UserEntity implements User {
-  id!: number;
   name!: string;
+  id!: number;
   email!: string;
+  password!: string;
 }

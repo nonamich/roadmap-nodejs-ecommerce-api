@@ -4,19 +4,17 @@ package products;
 
 import "google/protobuf/timestamp.proto";
 
-// Models
-
-message Category {
+message CategoryResponse {
   int32 id = 1;
   string name = 2;
 }
 
-message Brand {
+message BrandResponse {
   int32 id = 1;
   string name = 2;
 }
 
-message Product {
+message ProductResponse {
   int32 id = 1;
   int32 amount = 2;
   string image = 4;
@@ -25,11 +23,9 @@ message Product {
   string description = 7;
   optional double rating = 8;
   google.protobuf.Timestamp createdAt = 9;
-  Brand brand = 10;
-  Category category = 11;
+  BrandResponse brand = 10;
+  CategoryResponse category = 11;
 }
-
-// Requests
 
 message GetProductByIdRequest {
   int32 id = 1;
@@ -39,22 +35,27 @@ message GetProductsByIdsRequest {
   repeated int32 ids = 1;
 }
 
-message PaginationRequest {
+message GetProductsPaginationRequest {
   int32 page = 1;
   int32 limit = 2;
 }
 
 message GetFeaturedProductsRequest {
-  PaginationRequest pagination = 1;
+  GetProductsPaginationRequest pagination = 1;
 }
 
 message GetProductsByFilterRequest {
   optional int32 brandId = 1;
   optional int32 categoryId = 2;
-  PaginationRequest pagination = 3;
+  GetProductsPaginationRequest pagination = 3;
 }
 
-// Responses
+service ProductsService {
+  rpc GetProductById(GetProductByIdRequest) returns (ProductResponse);
+  rpc GetProductsByIds(GetProductsByIdsRequest) returns (stream ProductResponse);
+  rpc GetProductsByFilter(GetProductsByFilterRequest) returns (ProductsResponse);
+  rpc GetFeaturedProducts(GetFeaturedProductsRequest) returns (ProductsResponse);
+}
 
 message PaginationResponse {
   int32 page = 1;
@@ -63,20 +64,6 @@ message PaginationResponse {
 }
 
 message ProductsResponse {
-  repeated Product products = 1;
+  repeated ProductResponse products = 1;
   PaginationResponse pagination = 2;
-}
-
-message ProductsByFilterResponse {
-  repeated Product products = 1;
-  PaginationResponse pagination = 2;
-  optional Brand brand = 3;
-  optional Category category = 4;
-}
-
-service ProductsService {
-  rpc GetProductById(GetProductByIdRequest) returns (Product);
-  rpc GetProductsByIds(GetProductsByIdsRequest) returns (stream Product);
-  rpc GetProductsByFilter(GetProductsByFilterRequest) returns (ProductsByFilterResponse);
-  rpc GetFeaturedProducts(GetFeaturedProductsRequest) returns (ProductsResponse);
 }

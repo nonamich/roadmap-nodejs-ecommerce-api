@@ -5,23 +5,23 @@
 // source: products.proto
 
 /* eslint-disable */
-import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
-import { wrappers } from 'protobufjs';
-import { Observable } from 'rxjs';
+import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
+import { wrappers } from "protobufjs";
+import { Observable } from "rxjs";
 
-export const protobufPackage = 'products';
+export const protobufPackage = "products";
 
-export interface Category {
+export interface CategoryResponse {
   id: number;
   name: string;
 }
 
-export interface Brand {
+export interface BrandResponse {
   id: number;
   name: string;
 }
 
-export interface Product {
+export interface ProductResponse {
   id: number;
   amount: number;
   image: string;
@@ -30,8 +30,8 @@ export interface Product {
   description: string;
   rating?: number | null | undefined;
   createdAt: Date;
-  brand: Brand;
-  category: Category;
+  brand: BrandResponse;
+  category: CategoryResponse;
 }
 
 export interface GetProductByIdRequest {
@@ -42,19 +42,19 @@ export interface GetProductsByIdsRequest {
   ids: number[];
 }
 
-export interface PaginationRequest {
+export interface GetProductsPaginationRequest {
   page: number;
   limit: number;
 }
 
 export interface GetFeaturedProductsRequest {
-  pagination: PaginationRequest;
+  pagination: GetProductsPaginationRequest;
 }
 
 export interface GetProductsByFilterRequest {
   brandId?: number | null | undefined;
   categoryId?: number | null | undefined;
-  pagination: PaginationRequest;
+  pagination: GetProductsPaginationRequest;
 }
 
 export interface PaginationResponse {
@@ -64,25 +64,15 @@ export interface PaginationResponse {
 }
 
 export interface ProductsResponse {
-  products: Product[];
+  products: ProductResponse[];
   pagination: PaginationResponse;
 }
 
-export interface ProductsByFilterResponse {
-  products: Product[];
-  pagination: PaginationResponse;
-  brand?: Brand | null | undefined;
-  category?: Category | null | undefined;
-}
+export const PRODUCTS_PACKAGE_NAME = "products";
 
-export const PRODUCTS_PACKAGE_NAME = 'products';
-
-wrappers['.google.protobuf.Timestamp'] = {
+wrappers[".google.protobuf.Timestamp"] = {
   fromObject(value: Date) {
-    return {
-      seconds: value.getTime() / 1000,
-      nanos: (value.getTime() % 1000) * 1e6,
-    };
+    return { seconds: value.getTime() / 1000, nanos: (value.getTime() % 1000) * 1e6 };
   },
   toObject(message: { seconds: number; nanos: number }) {
     return new Date(message.seconds * 1000 + message.nanos / 1e6);
@@ -90,73 +80,44 @@ wrappers['.google.protobuf.Timestamp'] = {
 } as any;
 
 export interface ProductsServiceClient {
-  getProductById(request: GetProductByIdRequest): Observable<Product>;
+  getProductById(request: GetProductByIdRequest): Observable<ProductResponse>;
 
-  getProductsByIds(request: GetProductsByIdsRequest): Observable<Product>;
+  getProductsByIds(request: GetProductsByIdsRequest): Observable<ProductResponse>;
 
-  getProductsByFilter(
-    request: GetProductsByFilterRequest,
-  ): Observable<ProductsByFilterResponse>;
+  getProductsByFilter(request: GetProductsByFilterRequest): Observable<ProductsResponse>;
 
-  getFeaturedProducts(
-    request: GetFeaturedProductsRequest,
-  ): Observable<ProductsResponse>;
+  getFeaturedProducts(request: GetFeaturedProductsRequest): Observable<ProductsResponse>;
 }
 
 export interface ProductsServiceController {
   getProductById(
     request: GetProductByIdRequest,
-  ): Promise<Product> | Observable<Product> | Product;
+  ): Promise<ProductResponse> | Observable<ProductResponse> | ProductResponse;
 
-  getProductsByIds(request: GetProductsByIdsRequest): Observable<Product>;
+  getProductsByIds(request: GetProductsByIdsRequest): Observable<ProductResponse>;
 
   getProductsByFilter(
     request: GetProductsByFilterRequest,
-  ):
-    | Promise<ProductsByFilterResponse>
-    | Observable<ProductsByFilterResponse>
-    | ProductsByFilterResponse;
+  ): Promise<ProductsResponse> | Observable<ProductsResponse> | ProductsResponse;
 
   getFeaturedProducts(
     request: GetFeaturedProductsRequest,
-  ):
-    | Promise<ProductsResponse>
-    | Observable<ProductsResponse>
-    | ProductsResponse;
+  ): Promise<ProductsResponse> | Observable<ProductsResponse> | ProductsResponse;
 }
 
 export function ProductsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = [
-      'getProductById',
-      'getProductsByIds',
-      'getProductsByFilter',
-      'getFeaturedProducts',
-    ];
+    const grpcMethods: string[] = ["getProductById", "getProductsByIds", "getProductsByFilter", "getFeaturedProducts"];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(
-        constructor.prototype,
-        method,
-      );
-      GrpcMethod('ProductsService', method)(
-        constructor.prototype[method],
-        method,
-        descriptor,
-      );
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcMethod("ProductsService", method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(
-        constructor.prototype,
-        method,
-      );
-      GrpcStreamMethod('ProductsService', method)(
-        constructor.prototype[method],
-        method,
-        descriptor,
-      );
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcStreamMethod("ProductsService", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const PRODUCTS_SERVICE_NAME = 'ProductsService';
+export const PRODUCTS_SERVICE_NAME = "ProductsService";

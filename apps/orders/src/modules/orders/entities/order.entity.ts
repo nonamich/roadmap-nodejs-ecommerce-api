@@ -1,11 +1,11 @@
-import { OrderResponse, OrderStatus } from '@repo/grpc/proto/orders';
+import { $Enums, Order } from 'prisma-client';
 import { OrderItemEntity } from './order-item.entity';
 
-export class OrderEntity implements OrderResponse {
+export class OrderEntity implements Order {
   id!: number;
-  status!: OrderStatus;
   userId!: number;
   intentId!: string;
   createdAt!: Date;
+  status!: $Enums.OrderStatus;
   items!: OrderItemEntity[];
 }

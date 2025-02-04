@@ -1,27 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from 'prisma-client';
 import { ORMService } from '~/modules/orm/orm.service';
-import { UserPasswordEntity } from './entities';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity } from './entities';
 import { USER_SELECT } from './users.constants';
 
 @Injectable()
 export class UsersRepository {
   constructor(private readonly orm: ORMService) {}
-
-  async findUniqueOrThrowWithPassword(
-    where: Prisma.UserWhereUniqueInput,
-  ): Promise<UserPasswordEntity> {
-    const user = await this.orm.user.findUniqueOrThrow({
-      select: {
-        ...USER_SELECT,
-        password: true,
-      },
-      where,
-    });
-
-    return user;
-  }
 
   async findUniqueOrThrow(
     where: Prisma.UserWhereUniqueInput,

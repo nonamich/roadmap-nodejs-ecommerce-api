@@ -7,15 +7,8 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "users";
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-}
 
 export interface CreateUserRequest {
   name: string;
@@ -23,80 +16,36 @@ export interface CreateUserRequest {
   password: string;
 }
 
-export interface UpdateUserRequest {
-  id: number;
-  name?: string | null | undefined;
-  email?: string | null | undefined;
-  password?: string | null | undefined;
-}
-
-export interface DeleteUserRequest {
-  id: number;
-}
-
-export interface GetUserByIdRequest {
-  id: number;
-}
-
-export interface GetUserByEmailRequest {
-  email: string;
-}
-
 export interface GetUserByCredentialsRequest {
   email: string;
   password: string;
 }
 
-export interface GetUsersRequest {
-  page: number;
-  pageSize: number;
+export interface UserResponse {
+  id: number;
+  name: string;
+  email: string;
 }
 
 export const USERS_PACKAGE_NAME = "users";
 
 export interface UsersServiceClient {
-  createUser(request: CreateUserRequest): Observable<User>;
+  createUser(request: CreateUserRequest): Observable<UserResponse>;
 
-  getUserById(request: GetUserByIdRequest): Observable<User>;
-
-  getUserByEmail(request: GetUserByEmailRequest): Observable<User>;
-
-  getUserByCredentials(request: GetUserByCredentialsRequest): Observable<User>;
-
-  updateUser(request: UpdateUserRequest): Observable<User>;
-
-  deleteUser(request: DeleteUserRequest): Observable<Empty>;
-
-  getUsers(request: GetUsersRequest): Observable<User>;
+  getUserByCredentials(request: GetUserByCredentialsRequest): Observable<UserResponse>;
 }
 
 export interface UsersServiceController {
-  createUser(request: CreateUserRequest): Promise<User> | Observable<User> | User;
+  createUser(request: CreateUserRequest): Promise<UserResponse> | Observable<UserResponse> | UserResponse;
 
-  getUserById(request: GetUserByIdRequest): Promise<User> | Observable<User> | User;
-
-  getUserByEmail(request: GetUserByEmailRequest): Promise<User> | Observable<User> | User;
-
-  getUserByCredentials(request: GetUserByCredentialsRequest): Promise<User> | Observable<User> | User;
-
-  updateUser(request: UpdateUserRequest): Promise<User> | Observable<User> | User;
-
-  deleteUser(request: DeleteUserRequest): void;
-
-  getUsers(request: GetUsersRequest): Observable<User>;
+  getUserByCredentials(
+    request: GetUserByCredentialsRequest,
+  ): Promise<UserResponse> | Observable<UserResponse> | UserResponse;
 }
 
 export function UsersServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = [
-      "createUser",
-      "getUserById",
-      "getUserByEmail",
-      "getUserByCredentials",
-      "updateUser",
-      "deleteUser",
-      "getUsers",
-    ];
+    const grpcMethods: string[] = ["createUser", "getUserByCredentials"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("UsersService", method)(constructor.prototype[method], method, descriptor);

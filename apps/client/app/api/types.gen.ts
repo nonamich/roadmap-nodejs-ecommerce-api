@@ -204,7 +204,7 @@ export type CartsControllerRemoveFromCartResponse = CartResponseEntity;
 
 export type CartsControllerRemoveFromCartError = unknown;
 
-export type OrdersControllerGetOrdersResponse = Array<OrderResponseEntity>;
+export type OrdersControllerOrdersResponse = Array<OrderResponseEntity>;
 
 export type OrdersControllerGetOrdersError = unknown;
 
@@ -352,9 +352,9 @@ export const CartsControllerRemoveFromCartResponseTransformer: CartsControllerRe
     return data;
   };
 
-export type OrdersControllerGetOrdersResponseTransformer = (
+export type OrdersControllerOrdersResponseTransformer = (
   data: any,
-) => Promise<OrdersControllerGetOrdersResponse>;
+) => Promise<OrdersControllerOrdersResponse>;
 
 export type OrderResponseEntityModelResponseTransformer = (
   data: any,
@@ -368,7 +368,7 @@ export const OrderResponseEntityModelResponseTransformer: OrderResponseEntityMod
     return data;
   };
 
-export const OrdersControllerGetOrdersResponseTransformer: OrdersControllerGetOrdersResponseTransformer =
+export const OrdersControllerOrdersResponseTransformer: OrdersControllerOrdersResponseTransformer =
   async (data) => {
     if (Array.isArray(data)) {
       data.forEach(OrderResponseEntityModelResponseTransformer);

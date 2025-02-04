@@ -12,8 +12,8 @@ import {
   GetCartRequestDto,
   RemoveCartRequestDto,
   RemoveFromCartRequestDto,
-} from './dto';
-import { CartModel } from './model';
+} from './dto/requests';
+import { CartResponseDto } from './dto/responses/cart.response.dto';
 
 @GrpcService()
 @CartsServiceControllerMethods()
@@ -25,20 +25,22 @@ export class CartsGrpcController implements CartsServiceController {
     return this.service.removeCart(dto);
   }
 
-  async getCart(@GrpcPayload() dto: GetCartRequestDto): Promise<CartModel> {
+  async getCart(
+    @GrpcPayload() dto: GetCartRequestDto,
+  ): Promise<CartResponseDto> {
     return await this.service.getCart(dto);
   }
 
   async addToCart(
     @GrpcPayload()
     dto: AddToCartRequestDto,
-  ): Promise<CartModel> {
+  ): Promise<CartResponseDto> {
     return await this.service.addToCart(dto);
   }
 
   async removeFromCart(
     @GrpcPayload() dto: RemoveFromCartRequestDto,
-  ): Promise<CartModel> {
+  ): Promise<CartResponseDto> {
     return await this.service.removeFromCart(dto);
   }
 }

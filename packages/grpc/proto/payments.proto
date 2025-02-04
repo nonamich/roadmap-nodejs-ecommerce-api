@@ -16,23 +16,19 @@ message CreateIntentRequest {
   int32 amountInCent = 1;
 }
 
-message CreateResponse {
-  string intentId = 1;
-}
-
 message GetIntentRequest {
   string intentId = 1;
 }
 
-message GetIntentResponse {
-  string id = 1;
-  string clientSecret = 2;
-  int32 amount = 3;
-  PaymentStatus status = 4;
-  string currency = 5;
+service PaymentsService {
+  rpc CreateIntent(CreateIntentRequest) returns (IntentResponse);
+  rpc GetIntent(GetIntentRequest) returns (IntentResponse);
 }
 
-service PaymentsService {
-  rpc createIntent(CreateIntentRequest) returns (CreateResponse);
-  rpc getIntent(GetIntentRequest) returns (GetIntentResponse);
+message IntentResponse {
+  string id = 1;
+  int32 amount = 2;
+  string currency = 3;
+  string clientSecret = 4;
+  PaymentStatus status = 5;
 }

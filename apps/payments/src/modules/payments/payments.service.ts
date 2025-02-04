@@ -4,11 +4,11 @@ import {
   ORDERS_SERVICE_NAME,
   OrdersServiceClient,
 } from '@repo/grpc/proto/orders';
-import { firstValueFrom } from 'rxjs';
 import Stripe from 'stripe';
-import { CreateIntentRequestDto, GetIntentRequestDto } from './dto';
+import { CreateIntentRequestDto, GetIntentRequestDto } from './dto/requests';
+import { IntentResponseDto } from './dto/responses';
 import { StripeMethod } from './methods/stripe.method';
-import { IntentModel } from './models/intent.model';
+import { IntentModel } from './models';
 import { PAYMENTS_STRIPE_CURRENCY } from './payments.constants';
 
 @Injectable()
@@ -27,14 +27,14 @@ export class PaymentsService {
 
   async createIntent({
     amountInCent,
-  }: CreateIntentRequestDto): Promise<IntentModel> {
+  }: CreateIntentRequestDto): Promise<IntentResponseDto> {
     const intent = await this.stripe.paymentIntents.create({
       amount: amountInCent,
       currency: PAYMENTS_STRIPE_CURRENCY,
       payment_method_types: ['card'],
     });
 
-    return IntentModel.createFromIntent(intent);
+    return IntentModel.createResponseDtoFromIntent(intent);
   }
 
   async processWebhook(
@@ -63,16 +63,14 @@ export class PaymentsService {
       return;
     }
 
-    await firstValueFrom(
-      this.ordersService.completeOrder({
-        intentId: paymentIntent.id,
-      }),
-    );
+    // TODO: TODO
   }
 
-  async getIntent({ intentId }: GetIntentRequestDto): Promise<IntentModel> {
+  async getIntent({
+    intentId,
+  }: GetIntentRequestDto): Promise<IntentResponseDto> {
     const intent = await this.stripe.paymentIntents.retrieve(intentId);
 
-    return IntentModel.createFromIntent(intent);
+    return IntentModel.createResponseDtoFromIntent(intent);
   }
 }

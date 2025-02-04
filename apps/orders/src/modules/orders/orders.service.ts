@@ -5,15 +5,13 @@ import {
   PAYMENTS_SERVICE_NAME,
   PaymentsServiceClient,
 } from '@repo/grpc/proto/payments';
-import { OrderStatus } from 'prisma-client';
 import { firstValueFrom } from 'rxjs';
 import {
-  CompleteOrdersRequestDto,
   CreateOrderRequestDto,
   GetOrderByIntentIdRequestDto,
   GetOrderRequestDto,
   GetOrdersRequestDto,
-} from './dto';
+} from './dto/requests';
 import { OrderEntity } from './entities';
 import { OrdersRepository } from './orders.repository';
 
@@ -68,7 +66,7 @@ export class OrdersService {
 
     const createdOrder = await this.repository.create({
       userId,
-      intentId: intent.intentId,
+      intentId: intent.id,
       items: {
         createMany: {
           data: cart.items.map(({ quantity, price, productId }) => ({
@@ -85,16 +83,16 @@ export class OrdersService {
     return createdOrder;
   }
 
-  async completeOrder({ intentId }: CompleteOrdersRequestDto): Promise<void> {
-    await this.repository.update({
-      data: {
-        status: OrderStatus.COMPLETED,
-      },
-      where: {
-        intentId,
-      },
-    });
-  }
+  // async completeOrder({ intentId }: CompleteOrdersRequestDto): Promise<void> {
+  //   await this.repository.update({
+  //     data: {
+  //       status: OrderStatus.COMPLETED,
+  //     },
+  //     where: {
+  //       intentId,
+  //     },
+  //   });
+  // }
 
   priceToCent(price: number): number {
     return Math.ceil(price * 100);

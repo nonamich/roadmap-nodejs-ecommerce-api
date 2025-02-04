@@ -11,18 +11,6 @@ import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "carts";
 
-export interface CartItemResponse {
-  quantity: number;
-  productId: number;
-  price: number;
-}
-
-export interface CartResponse {
-  items: CartItemResponse[];
-  totalQuantity: number;
-  totalPrice: number;
-}
-
 export interface GetCartRequest {
   userId: number;
 }
@@ -40,6 +28,18 @@ export interface RemoveFromCartRequest {
 
 export interface RemoveCartRequest {
   userId: number;
+}
+
+export interface CartItemResponse {
+  quantity: number;
+  productId: number;
+  price: number;
+}
+
+export interface CartResponse {
+  items: CartItemResponse[];
+  totalQuantity: number;
+  totalPrice: number;
 }
 
 export const CARTS_PACKAGE_NAME = "carts";

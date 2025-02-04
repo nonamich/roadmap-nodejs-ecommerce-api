@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from 'prisma-client';
 import { ORMService } from '~/modules/orm/orm.service';
-import { BrandEntity } from './brand.entity';
 import { BRAND_SELECT } from './brands.constants';
+import { BrandEntity } from './entities/brand.entity';
 
 @Injectable()
 export class BrandsRepository {
