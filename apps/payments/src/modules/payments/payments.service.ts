@@ -1,15 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GrpcInternalException } from '@repo/grpc/nest';
-import { OrdersServiceClient } from '@repo/grpc/proto/orders';
+import {
+  ORDERS_SERVICE_NAME,
+  OrdersServiceClient,
+} from '@repo/grpc/proto/orders';
 import { firstValueFrom } from 'rxjs';
 import Stripe from 'stripe';
 import { CreateIntentRequestDto, GetIntentRequestDto } from './dto';
 import { StripeMethod } from './methods/stripe.method';
-import {
-  ORDERS_SERVICE_PROVIDER_TOKEN,
-  PAYMENTS_STRIPE_CURRENCY,
-} from './payments.constants';
+import { PAYMENTS_STRIPE_CURRENCY } from './payments.constants';
 
 @Injectable()
 export class PaymentsService {
@@ -19,7 +19,7 @@ export class PaymentsService {
     private readonly stripe: StripeMethod,
     config: ConfigService,
 
-    @Inject(ORDERS_SERVICE_PROVIDER_TOKEN)
+    @Inject(ORDERS_SERVICE_NAME)
     private readonly ordersService: OrdersServiceClient,
   ) {
     this.webhookWhsec = config.getOrThrow('STRIPE_WEBHOOK_WHSEC');

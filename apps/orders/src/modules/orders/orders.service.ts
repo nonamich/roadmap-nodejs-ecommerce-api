@@ -1,7 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { GrpcInvalidArgumentException } from '@repo/grpc/nest';
-import { CartsServiceClient } from '@repo/grpc/proto/carts';
-import { PaymentsServiceClient } from '@repo/grpc/proto/payments';
+import { CARTS_SERVICE_NAME, CartsServiceClient } from '@repo/grpc/proto/carts';
+import {
+  PAYMENTS_SERVICE_NAME,
+  PaymentsServiceClient,
+} from '@repo/grpc/proto/payments';
 import { OrderStatus } from 'prisma-client';
 import { firstValueFrom } from 'rxjs';
 import { ORMService } from '~/modules/orm/orm.service';
@@ -12,19 +15,15 @@ import {
   GetOrderRequestDto,
   GetOrdersRequestDto,
 } from './dto';
-import {
-  CARTS_SERVICE_PROVIDER_TOKEN,
-  ORDER_SELECT,
-  PAYMENTS_SERVICE_PROVIDER_TOKEN,
-} from './orders.constants';
+import { ORDER_SELECT } from './orders.constants';
 
 @Injectable()
 export class OrdersService {
   constructor(
-    @Inject(CARTS_SERVICE_PROVIDER_TOKEN)
+    @Inject(CARTS_SERVICE_NAME)
     private readonly cartsService: CartsServiceClient,
 
-    @Inject(PAYMENTS_SERVICE_PROVIDER_TOKEN)
+    @Inject(PAYMENTS_SERVICE_NAME)
     private readonly paymentsService: PaymentsServiceClient,
 
     private readonly orm: ORMService,
