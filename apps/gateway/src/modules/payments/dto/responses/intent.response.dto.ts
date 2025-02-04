@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { GetIntentResponse, PaymentStatus } from '@repo/grpc/proto/payments';
+import { IntentResponse, PaymentStatus } from '@repo/grpc/proto/payments';
 
-export class IntentEntity implements GetIntentResponse {
+export class IntentResponseDto implements IntentResponse {
   @ApiProperty()
   id!: string;
 

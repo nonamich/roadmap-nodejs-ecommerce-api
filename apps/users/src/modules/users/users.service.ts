@@ -1,5 +1,8 @@
+import { Inject } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { GrpcUnauthenticatedException } from '@repo/grpc/nest';
 import { UsersServiceController } from '@repo/grpc/proto/users';
+import { RABBITMQ_QUEUES } from '@repo/rabbitmq';
 import {
   CreateUserRequestDto,
   GetUserByCredentialsRequestDto,
@@ -12,6 +15,8 @@ export class UsersService implements UsersServiceController {
   constructor(
     private readonly repository: UsersRepository,
     private readonly passwordService: PasswordService,
+    @Inject(RABBITMQ_QUEUES.USERS)
+    private readonly clientProxy: ClientProxy,
   ) {}
 
   async createUser({
@@ -27,6 +32,8 @@ export class UsersService implements UsersServiceController {
       name,
       password: hashedPassword,
     });
+
+    this.clientProxy.emit({ cmd: 'created' }, user.id);
 
     return user;
   }

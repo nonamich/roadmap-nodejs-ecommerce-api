@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Category } from '@repo/grpc/proto/products';
+import { BrandResponse } from '@repo/grpc/proto/products';
 
-export class CategoryEntity implements Category {
+export class BrandResponseDto implements BrandResponse {
   @ApiProperty()
   id!: number;
   @ApiProperty()

@@ -9,11 +9,11 @@ import {
   UseFilters,
 } from '@nestjs/common';
 import type { Request } from 'express';
-import { StripeExceptionFilter } from './filters/stripe-exception.filter';
+import { StripeHttpExceptionFilter } from './filters/stripe-http-exception.filter';
 import { PaymentsService } from './payments.service';
 
 @Controller()
-@UseFilters(StripeExceptionFilter)
+@UseFilters(StripeHttpExceptionFilter)
 export class PaymentsWebhookController {
   constructor(private readonly service: PaymentsService) {}
 

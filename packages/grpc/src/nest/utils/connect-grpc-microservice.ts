@@ -13,21 +13,16 @@ export const connectGrpcMicroservice = (
   app: INestApplication,
   { url, packageName }: GrpcMicroserviceOptions,
 ): INestMicroservice => {
-  return app.connectMicroservice<GrpcOptions>(
-    {
-      transport: Transport.GRPC,
-      options: {
-        ...GRPC_MICROSERVICE_DEFAULT_OPTIONS,
-        url,
-        protoPath: UtilsGrpc.getProtoFilePath(packageName),
-        package: packageName,
-        onLoadPackageDefinition: (pkg, server) => {
-          new ReflectionService(pkg).addToServer(server);
-        },
+  return app.connectMicroservice<GrpcOptions>({
+    transport: Transport.GRPC,
+    options: {
+      ...GRPC_MICROSERVICE_DEFAULT_OPTIONS,
+      url,
+      protoPath: UtilsGrpc.getProtoFilePath(packageName),
+      package: packageName,
+      onLoadPackageDefinition: (pkg, server) => {
+        new ReflectionService(pkg).addToServer(server);
       },
     },
-    {
-      inheritAppConfig: true,
-    },
-  );
+  });
 };

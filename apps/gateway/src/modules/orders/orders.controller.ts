@@ -19,7 +19,7 @@ import {
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
 import { Auth, CurrentUser } from '~/modules/auth/decorators';
-import { OrderEntity, OrderProductsEntity } from './entities';
+import { OrderProductsResponseDto, OrderResponseDto } from './dto/responses';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -32,28 +32,26 @@ export class OrdersController {
     private readonly productsService: ProductsServiceClient,
   ) {}
 
-  @ApiOkResponse({ type: OrderEntity, isArray: true })
+  @ApiOkResponse({ type: OrderResponseDto, isArray: true })
   @Auth()
   @Get()
-  async getOrders(@CurrentUser() user: AuthorizedUser): Promise<OrderEntity[]> {
+  async getOrders(
+    @CurrentUser() user: AuthorizedUser,
+  ): Promise<OrderResponseDto[]> {
     const { orders } = await firstValueFrom(
       this.ordersService.getOrders({ userId: user.id }),
     );
 
-    if (!orders.length) {
-      return [];
-    }
-
     return orders;
   }
 
-  @ApiOkResponse({ type: OrderProductsEntity })
+  @ApiOkResponse({ type: OrderProductsResponseDto })
   @Auth()
   @Get('/:orderId')
   async getOrder(
     @Param('orderId', ParseIntPipe) orderId: number,
     @CurrentUser() user: AuthorizedUser,
-  ): Promise<OrderProductsEntity> {
+  ): Promise<OrderProductsResponseDto> {
     const order = await firstValueFrom(
       this.ordersService.getOrder({ orderId }),
     );
@@ -86,10 +84,12 @@ export class OrdersController {
     };
   }
 
-  @ApiOkResponse({ type: OrderEntity })
+  @ApiOkResponse({ type: OrderResponseDto })
   @Auth()
   @Post()
-  async addOrder(@CurrentUser() user: AuthorizedUser): Promise<OrderEntity> {
+  async addOrder(
+    @CurrentUser() user: AuthorizedUser,
+  ): Promise<OrderResponseDto> {
     return await firstValueFrom(
       this.ordersService.createOrder({ userId: user.id }),
     );

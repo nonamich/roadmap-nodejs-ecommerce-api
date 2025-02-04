@@ -9,7 +9,7 @@ import {
 import { BaseExceptionFilter } from '@nestjs/core';
 
 @Catch(Stripe.errors.StripeError)
-export class StripeExceptionFilter extends BaseExceptionFilter {
+export class StripeHttpExceptionFilter extends BaseExceptionFilter {
   catch(exception: Stripe.errors.StripeError, host: ArgumentsHost): void {
     super.catch(
       new HttpException(

@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CartItemResponse } from '@repo/grpc/proto/carts';
-import { ProductEntity } from '~/modules/products/entities';
+import { ProductResponseDto } from '~/modules/products/dto/responses';
 
-export class CartItemEntity implements CartItemResponse {
+export class CartItemResponseDto implements CartItemResponse {
   @ApiProperty()
   productId!: number;
 
@@ -12,6 +12,6 @@ export class CartItemEntity implements CartItemResponse {
   @ApiProperty()
   quantity!: number;
 
-  @ApiProperty({ type: ProductEntity })
-  product!: ProductEntity;
+  @ApiProperty({ type: ProductResponseDto })
+  product!: ProductResponseDto;
 }

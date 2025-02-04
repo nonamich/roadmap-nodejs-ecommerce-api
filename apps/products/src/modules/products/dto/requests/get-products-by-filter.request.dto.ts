@@ -12,10 +12,12 @@ export class GetProductsByFilterRequestDto
   implements GetProductsByFilterRequest
 {
   @IsInt()
+  @Type(() => Number)
   @IsOptional()
   categoryId?: number;
 
   @IsInt()
+  @Type(() => Number)
   @IsOptional()
   brandId?: number;
 

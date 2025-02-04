@@ -1,0 +1,7 @@
+export enum RABBITMQ_QUEUES {
+  ORDERS = 'ORDERS',
+  USERS = 'USERS',
+  PRODUCTS = 'PRODUCTS',
+  PAYMENTS = 'PAYMENTS',
+  CARTS = 'CARTS',
+}

@@ -1,9 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {
-  ORDERS_SERVICE_NAME,
-  OrdersServiceClient,
-} from '@repo/grpc/proto/orders';
 import Stripe from 'stripe';
 import { CreateIntentRequestDto, GetIntentRequestDto } from './dto/requests';
 import { IntentResponseDto } from './dto/responses';
@@ -18,9 +14,6 @@ export class PaymentsService {
   constructor(
     private readonly stripe: StripeMethod,
     config: ConfigService,
-
-    @Inject(ORDERS_SERVICE_NAME)
-    private readonly ordersService: OrdersServiceClient,
   ) {
     this.webhookWhsec = config.getOrThrow('STRIPE_WEBHOOK_WHSEC');
   }

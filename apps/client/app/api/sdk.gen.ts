@@ -33,8 +33,8 @@ import {
   type OrdersControllerGetOrderResponse,
   OrdersControllerGetOrderResponseTransformer,
   type OrdersControllerGetOrdersError,
-  type OrdersControllerOrdersResponse,
-  OrdersControllerOrdersResponseTransformer,
+  type OrdersControllerGetOrdersResponse,
+  OrdersControllerGetOrdersResponseTransformer,
   type PaymentsControllerGetIntentData,
   type PaymentsControllerGetIntentError,
   type PaymentsControllerGetIntentResponse,
@@ -200,13 +200,13 @@ export const ordersControllerGetOrders = <ThrowOnError extends boolean = false>(
   options?: OptionsLegacyParser<unknown, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
-    OrdersControllerOrdersResponse,
+    OrdersControllerGetOrdersResponse,
     OrdersControllerGetOrdersError,
     ThrowOnError
   >({
     ...options,
     url: '/orders',
-    responseTransformer: OrdersControllerOrdersResponseTransformer,
+    responseTransformer: OrdersControllerGetOrdersResponseTransformer,
   });
 };
 

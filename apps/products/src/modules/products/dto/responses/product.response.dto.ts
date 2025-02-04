@@ -9,7 +9,7 @@ export class ProductResponseDto implements ProductResponse {
   price!: number;
   title!: string;
   description!: string;
-  rating!: number | null | undefined;
+  rating?: number | null | undefined;
   createdAt!: Date;
   brand!: BrandResponseDto;
   category!: CategoryResponseDto;

@@ -17,7 +17,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
 import { Auth, CurrentUser } from '~/modules/auth/decorators';
-import { IntentEntity } from './entities';
+import { IntentResponseDto } from './dto/responses';
 
 @ApiTags('payments')
 @Controller('payments')
@@ -30,26 +30,30 @@ export class PaymentsController {
     private readonly paymentsService: PaymentsServiceClient,
   ) {}
 
-  @ApiOkResponse({ type: IntentEntity })
+  @ApiOkResponse({ type: IntentResponseDto })
   @Auth()
   @Get('/:intentId')
   async getIntent(
     @Param('intentId') intentId: string,
     @CurrentUser() user: AuthorizedUser,
-  ): Promise<IntentEntity> {
-    const [intent, order] = await Promise.all([
-      firstValueFrom(this.paymentsService.getIntent({ intentId })),
-      firstValueFrom(this.ordersService.getOrderByIntentId({ intentId })),
-    ]);
+  ): Promise<IntentResponseDto> {
+    const order = await firstValueFrom(
+      this.ordersService.getOrderByIntentId({ intentId }),
+    );
 
     if (order.userId !== user.id) {
       throw new ForbiddenException();
     }
 
+    const intent = await firstValueFrom(
+      this.paymentsService.getIntent({ intentId }),
+    );
+
     if (intent.status === 'succeeded' && order.status !== 'COMPLETED') {
-      await firstValueFrom(
-        this.ordersService.completeOrder({ intentId: intent.id }),
-      );
+      // TODO: TOTDO
+      // await firstValueFrom(
+      //   this.ordersService.completeOrder({ intentId: intent.id }),
+      // );
     }
 
     return intent;

@@ -10,8 +10,8 @@ import {
 } from '@repo/grpc/proto/products';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '../auth/auth.interface';
-import { AddToCartRequestDto } from './dto';
-import { CartEntity } from './entities';
+import { AddToCartRequestDto } from './dto/requests';
+import { CartResponseDto } from './dto/responses';
 
 @Injectable()
 export class CartsService {
@@ -23,7 +23,7 @@ export class CartsService {
     private readonly productsService: ProductsServiceClient,
   ) {}
 
-  async getCart(user: AuthorizedUser): Promise<CartEntity> {
+  async getCart(user: AuthorizedUser): Promise<CartResponseDto> {
     const cart = await firstValueFrom(
       this.cartsService.getCart({ userId: user.id }),
     );
@@ -35,7 +35,7 @@ export class CartsService {
     productId: number,
     { quantity }: AddToCartRequestDto,
     user: AuthorizedUser,
-  ): Promise<CartEntity> {
+  ): Promise<CartResponseDto> {
     const cart = await firstValueFrom(
       this.cartsService.addToCart({
         userId: user.id,
@@ -50,7 +50,7 @@ export class CartsService {
   async removeFromCart(
     productId: number,
     user: AuthorizedUser,
-  ): Promise<CartEntity> {
+  ): Promise<CartResponseDto> {
     const cart = await firstValueFrom(
       this.cartsService.removeFromCart({ userId: user.id, productId }),
     );
@@ -58,7 +58,7 @@ export class CartsService {
     return await this.getCartWithProducts(cart);
   }
 
-  async getCartWithProducts(cart: CartResponse): Promise<CartEntity> {
+  async getCartWithProducts(cart: CartResponse): Promise<CartResponseDto> {
     const products = cart.items.length
       ? await firstValueFrom(
           this.productsService

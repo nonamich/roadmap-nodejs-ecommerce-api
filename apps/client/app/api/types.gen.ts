@@ -4,81 +4,109 @@ export type AddToCartRequestDto = {
   quantity: number;
 };
 
-export type BrandDto = {
+export type AuthorizedUserEntity = {
+  id: number;
+  name: string;
+  email: string;
+};
+
+export type BrandResponseDto = {
   id: number;
   name: string;
 };
 
-export type CartItemResponseEntity = {
+export type CartItemResponseDto = {
   productId: number;
   price: number;
   quantity: number;
-  product: ProductResponseEntity;
+  product: ProductResponseDto;
 };
 
-export type CartResponseEntity = {
+export type CartResponseDto = {
   totalPrice: number;
   totalQuantity: number;
-  items: Array<CartItemResponseEntity>;
+  items: Array<CartItemResponseDto>;
 };
 
-export type CategoryDto = {
+export type CategoryResponseDto = {
   id: number;
   name: string;
 };
 
-export type GetIntentResponseEntity = {
-  amount: number;
-  status: string;
-  currency: string;
-  clientSecret: string;
-};
-
-export type OrderItemResponseEntity = {
-  productId: number;
-  quantity: number;
-  price: number;
-};
-
-export type OrderProductsItemResponseEntity = {
-  productId: number;
-  quantity: number;
-  price: number;
-  product: ProductResponseEntity;
-};
-
-export type OrderProductsResponseEntity = {
-  id: number;
-  userId: number;
-  createdAt: Date;
-  status: 'WAITING_FOR_PAYMENT' | 'COMPLETED';
-  intentId: string;
-  items: Array<OrderProductsItemResponseEntity>;
-};
-
-export type status = 'WAITING_FOR_PAYMENT' | 'COMPLETED';
-
-export type OrderResponseEntity = {
-  id: number;
-  userId: number;
-  createdAt: Date;
-  status: 'WAITING_FOR_PAYMENT' | 'COMPLETED';
-  intentId: string;
-  items: Array<OrderItemResponseEntity>;
-};
-
-export type PaginationRequestDto = {
+export type GetProductsPaginationRequestDto = {
   page: number;
   limit: number;
 };
 
-export type PaginationResponseEntity = {
+export type IntentResponseDto = {
+  id: string;
+  amount: number;
+  status:
+    | 'canceled'
+    | 'processing'
+    | 'requires_action'
+    | 'requires_capture'
+    | 'requires_confirmation'
+    | 'requires_payment_method'
+    | 'succeeded';
+  currency: string;
+  clientSecret: string;
+};
+
+export type status =
+  | 'canceled'
+  | 'processing'
+  | 'requires_action'
+  | 'requires_capture'
+  | 'requires_confirmation'
+  | 'requires_payment_method'
+  | 'succeeded';
+
+export type LoggedInEntity = {
+  user: AuthorizedUserEntity;
+  accessToken: string;
+};
+
+export type OrderItemResponseDto = {
+  productId: number;
+  quantity: number;
+  price: number;
+};
+
+export type OrderProductsItemResponseDto = {
+  productId: number;
+  quantity: number;
+  price: number;
+  product: ProductResponseDto;
+};
+
+export type OrderProductsResponseDto = {
+  id: number;
+  userId: number;
+  createdAt: Date;
+  status: 'WAITING_FOR_PAYMENT' | 'COMPLETED';
+  intentId: string;
+  items: Array<OrderProductsItemResponseDto>;
+};
+
+export type status2 = 'WAITING_FOR_PAYMENT' | 'COMPLETED';
+
+export type OrderResponseDto = {
+  id: number;
+  userId: number;
+  createdAt: Date;
+  status: 'WAITING_FOR_PAYMENT' | 'COMPLETED';
+  intentId: string;
+  items: Array<OrderItemResponseDto>;
+};
+
+export type PaginationResponseDto = {
   page: number;
   limit: number;
   totalCount: number;
 };
 
-export type ProductResponseEntity = {
+export type ProductResponseDto = {
   id: number;
   amount: number;
   image: string;
@@ -87,20 +115,13 @@ export type ProductResponseEntity = {
   description: string;
   rating?: number | null;
   createdAt: Date;
-  brand: BrandDto;
-  category: CategoryDto;
+  brand: BrandResponseDto;
+  category: CategoryResponseDto;
 };
 
-export type ProductsByFilterResponseEntity = {
-  products: Array<ProductResponseEntity>;
-  pagination: PaginationResponseEntity;
-  brand: BrandDto;
-  category: CategoryDto;
-};
-
-export type ProductsResponseEntity = {
-  products: Array<ProductResponseEntity>;
-  pagination: PaginationResponseEntity;
+export type ProductsResponseDto = {
+  products: Array<ProductResponseDto>;
+  pagination: PaginationResponseDto;
 };
 
 export type RequestSigninDto = {
@@ -114,22 +135,11 @@ export type RequestSignupDto = {
   password: string;
 };
 
-export type ResponseAuthorizedUserDto = {
-  id: number;
-  name: string;
-  email: string;
-};
-
-export type ResponseLoggedInDto = {
-  user: ResponseAuthorizedUserDto;
-  accessToken: string;
-};
-
 export type AuthControllerSignupData = {
   body: RequestSignupDto;
 };
 
-export type AuthControllerSignupResponse = ResponseLoggedInDto;
+export type AuthControllerSignupResponse = LoggedInEntity;
 
 export type AuthControllerSignupError = unknown;
 
@@ -137,22 +147,21 @@ export type AuthControllerSigninData = {
   body: RequestSigninDto;
 };
 
-export type AuthControllerSigninResponse = ResponseLoggedInDto;
+export type AuthControllerSigninResponse = LoggedInEntity;
 
 export type AuthControllerSigninError = unknown;
 
-export type AuthControllerMeResponse = ResponseAuthorizedUserDto;
+export type AuthControllerMeResponse = AuthorizedUserEntity;
 
 export type AuthControllerMeError = unknown;
 
 export type ProductsControllerGetFeaturedProductsData = {
   query: {
-    pagination: PaginationRequestDto;
+    pagination: GetProductsPaginationRequestDto;
   };
 };
 
-export type ProductsControllerGetFeaturedProductsResponse =
-  ProductsResponseEntity;
+export type ProductsControllerGetFeaturedProductsResponse = ProductsResponseDto;
 
 export type ProductsControllerGetFeaturedProductsError = unknown;
 
@@ -162,7 +171,7 @@ export type ProductsControllerGetProductByIdData = {
   };
 };
 
-export type ProductsControllerGetProductByIdResponse = ProductResponseEntity;
+export type ProductsControllerGetProductByIdResponse = ProductResponseDto;
 
 export type ProductsControllerGetProductByIdError = unknown;
 
@@ -170,16 +179,15 @@ export type ProductsControllerGetProductsByFilterData = {
   query: {
     brandId?: number;
     categoryId?: number;
-    pagination: PaginationRequestDto;
+    pagination: GetProductsPaginationRequestDto;
   };
 };
 
-export type ProductsControllerGetProductsByFilterResponse =
-  ProductsByFilterResponseEntity;
+export type ProductsControllerGetProductsByFilterResponse = ProductsResponseDto;
 
 export type ProductsControllerGetProductsByFilterError = unknown;
 
-export type CartsControllerGetCartResponse = CartResponseEntity;
+export type CartsControllerGetCartResponse = CartResponseDto;
 
 export type CartsControllerGetCartError = unknown;
 
@@ -190,7 +198,7 @@ export type CartsControllerAddToCartData = {
   };
 };
 
-export type CartsControllerAddToCartResponse = CartResponseEntity;
+export type CartsControllerAddToCartResponse = CartResponseDto;
 
 export type CartsControllerAddToCartError = unknown;
 
@@ -200,15 +208,15 @@ export type CartsControllerRemoveFromCartData = {
   };
 };
 
-export type CartsControllerRemoveFromCartResponse = CartResponseEntity;
+export type CartsControllerRemoveFromCartResponse = CartResponseDto;
 
 export type CartsControllerRemoveFromCartError = unknown;
 
-export type OrdersControllerOrdersResponse = Array<OrderResponseEntity>;
+export type OrdersControllerGetOrdersResponse = Array<OrderResponseDto>;
 
 export type OrdersControllerGetOrdersError = unknown;
 
-export type OrdersControllerAddOrderResponse = OrderResponseEntity;
+export type OrdersControllerAddOrderResponse = OrderResponseDto;
 
 export type OrdersControllerAddOrderError = unknown;
 
@@ -218,7 +226,7 @@ export type OrdersControllerGetOrderData = {
   };
 };
 
-export type OrdersControllerGetOrderResponse = OrderProductsResponseEntity;
+export type OrdersControllerGetOrderResponse = OrderProductsResponseDto;
 
 export type OrdersControllerGetOrderError = unknown;
 
@@ -228,7 +236,7 @@ export type PaymentsControllerGetIntentData = {
   };
 };
 
-export type PaymentsControllerGetIntentResponse = GetIntentResponseEntity;
+export type PaymentsControllerGetIntentResponse = IntentResponseDto;
 
 export type PaymentsControllerGetIntentError = unknown;
 
@@ -236,15 +244,15 @@ export type ProductsControllerGetFeaturedProductsResponseTransformer = (
   data: any,
 ) => Promise<ProductsControllerGetFeaturedProductsResponse>;
 
-export type ProductsResponseEntityModelResponseTransformer = (
+export type ProductsResponseDtoModelResponseTransformer = (
   data: any,
-) => ProductsResponseEntity;
+) => ProductsResponseDto;
 
-export type ProductResponseEntityModelResponseTransformer = (
+export type ProductResponseDtoModelResponseTransformer = (
   data: any,
-) => ProductResponseEntity;
+) => ProductResponseDto;
 
-export const ProductResponseEntityModelResponseTransformer: ProductResponseEntityModelResponseTransformer =
+export const ProductResponseDtoModelResponseTransformer: ProductResponseDtoModelResponseTransformer =
   (data) => {
     if (data?.createdAt) {
       data.createdAt = new Date(data.createdAt);
@@ -252,17 +260,17 @@ export const ProductResponseEntityModelResponseTransformer: ProductResponseEntit
     return data;
   };
 
-export const ProductsResponseEntityModelResponseTransformer: ProductsResponseEntityModelResponseTransformer =
+export const ProductsResponseDtoModelResponseTransformer: ProductsResponseDtoModelResponseTransformer =
   (data) => {
     if (Array.isArray(data?.products)) {
-      data.products.forEach(ProductResponseEntityModelResponseTransformer);
+      data.products.forEach(ProductResponseDtoModelResponseTransformer);
     }
     return data;
   };
 
 export const ProductsControllerGetFeaturedProductsResponseTransformer: ProductsControllerGetFeaturedProductsResponseTransformer =
   async (data) => {
-    ProductsResponseEntityModelResponseTransformer(data);
+    ProductsResponseDtoModelResponseTransformer(data);
     return data;
   };
 
@@ -272,7 +280,7 @@ export type ProductsControllerGetProductByIdResponseTransformer = (
 
 export const ProductsControllerGetProductByIdResponseTransformer: ProductsControllerGetProductByIdResponseTransformer =
   async (data) => {
-    ProductResponseEntityModelResponseTransformer(data);
+    ProductResponseDtoModelResponseTransformer(data);
     return data;
   };
 
@@ -280,21 +288,9 @@ export type ProductsControllerGetProductsByFilterResponseTransformer = (
   data: any,
 ) => Promise<ProductsControllerGetProductsByFilterResponse>;
 
-export type ProductsByFilterResponseEntityModelResponseTransformer = (
-  data: any,
-) => ProductsByFilterResponseEntity;
-
-export const ProductsByFilterResponseEntityModelResponseTransformer: ProductsByFilterResponseEntityModelResponseTransformer =
-  (data) => {
-    if (Array.isArray(data?.products)) {
-      data.products.forEach(ProductResponseEntityModelResponseTransformer);
-    }
-    return data;
-  };
-
 export const ProductsControllerGetProductsByFilterResponseTransformer: ProductsControllerGetProductsByFilterResponseTransformer =
   async (data) => {
-    ProductsByFilterResponseEntityModelResponseTransformer(data);
+    ProductsResponseDtoModelResponseTransformer(data);
     return data;
   };
 
@@ -302,33 +298,33 @@ export type CartsControllerGetCartResponseTransformer = (
   data: any,
 ) => Promise<CartsControllerGetCartResponse>;
 
-export type CartResponseEntityModelResponseTransformer = (
+export type CartResponseDtoModelResponseTransformer = (
   data: any,
-) => CartResponseEntity;
+) => CartResponseDto;
 
-export type CartItemResponseEntityModelResponseTransformer = (
+export type CartItemResponseDtoModelResponseTransformer = (
   data: any,
-) => CartItemResponseEntity;
+) => CartItemResponseDto;
 
-export const CartItemResponseEntityModelResponseTransformer: CartItemResponseEntityModelResponseTransformer =
+export const CartItemResponseDtoModelResponseTransformer: CartItemResponseDtoModelResponseTransformer =
   (data) => {
     if (data?.product) {
-      ProductResponseEntityModelResponseTransformer(data.product);
+      ProductResponseDtoModelResponseTransformer(data.product);
     }
     return data;
   };
 
-export const CartResponseEntityModelResponseTransformer: CartResponseEntityModelResponseTransformer =
+export const CartResponseDtoModelResponseTransformer: CartResponseDtoModelResponseTransformer =
   (data) => {
     if (Array.isArray(data?.items)) {
-      data.items.forEach(CartItemResponseEntityModelResponseTransformer);
+      data.items.forEach(CartItemResponseDtoModelResponseTransformer);
     }
     return data;
   };
 
 export const CartsControllerGetCartResponseTransformer: CartsControllerGetCartResponseTransformer =
   async (data) => {
-    CartResponseEntityModelResponseTransformer(data);
+    CartResponseDtoModelResponseTransformer(data);
     return data;
   };
 
@@ -338,7 +334,7 @@ export type CartsControllerAddToCartResponseTransformer = (
 
 export const CartsControllerAddToCartResponseTransformer: CartsControllerAddToCartResponseTransformer =
   async (data) => {
-    CartResponseEntityModelResponseTransformer(data);
+    CartResponseDtoModelResponseTransformer(data);
     return data;
   };
 
@@ -348,19 +344,19 @@ export type CartsControllerRemoveFromCartResponseTransformer = (
 
 export const CartsControllerRemoveFromCartResponseTransformer: CartsControllerRemoveFromCartResponseTransformer =
   async (data) => {
-    CartResponseEntityModelResponseTransformer(data);
+    CartResponseDtoModelResponseTransformer(data);
     return data;
   };
 
-export type OrdersControllerOrdersResponseTransformer = (
+export type OrdersControllerGetOrdersResponseTransformer = (
   data: any,
-) => Promise<OrdersControllerOrdersResponse>;
+) => Promise<OrdersControllerGetOrdersResponse>;
 
-export type OrderResponseEntityModelResponseTransformer = (
+export type OrderResponseDtoModelResponseTransformer = (
   data: any,
-) => OrderResponseEntity;
+) => OrderResponseDto;
 
-export const OrderResponseEntityModelResponseTransformer: OrderResponseEntityModelResponseTransformer =
+export const OrderResponseDtoModelResponseTransformer: OrderResponseDtoModelResponseTransformer =
   (data) => {
     if (data?.createdAt) {
       data.createdAt = new Date(data.createdAt);
@@ -368,10 +364,10 @@ export const OrderResponseEntityModelResponseTransformer: OrderResponseEntityMod
     return data;
   };
 
-export const OrdersControllerOrdersResponseTransformer: OrdersControllerOrdersResponseTransformer =
+export const OrdersControllerGetOrdersResponseTransformer: OrdersControllerGetOrdersResponseTransformer =
   async (data) => {
     if (Array.isArray(data)) {
-      data.forEach(OrderResponseEntityModelResponseTransformer);
+      data.forEach(OrderResponseDtoModelResponseTransformer);
     }
     return data;
   };
@@ -382,7 +378,7 @@ export type OrdersControllerAddOrderResponseTransformer = (
 
 export const OrdersControllerAddOrderResponseTransformer: OrdersControllerAddOrderResponseTransformer =
   async (data) => {
-    OrderResponseEntityModelResponseTransformer(data);
+    OrderResponseDtoModelResponseTransformer(data);
     return data;
   };
 
@@ -390,37 +386,35 @@ export type OrdersControllerGetOrderResponseTransformer = (
   data: any,
 ) => Promise<OrdersControllerGetOrderResponse>;
 
-export type OrderProductsResponseEntityModelResponseTransformer = (
+export type OrderProductsResponseDtoModelResponseTransformer = (
   data: any,
-) => OrderProductsResponseEntity;
+) => OrderProductsResponseDto;
 
-export type OrderProductsItemResponseEntityModelResponseTransformer = (
+export type OrderProductsItemResponseDtoModelResponseTransformer = (
   data: any,
-) => OrderProductsItemResponseEntity;
+) => OrderProductsItemResponseDto;
 
-export const OrderProductsItemResponseEntityModelResponseTransformer: OrderProductsItemResponseEntityModelResponseTransformer =
+export const OrderProductsItemResponseDtoModelResponseTransformer: OrderProductsItemResponseDtoModelResponseTransformer =
   (data) => {
     if (data?.product) {
-      ProductResponseEntityModelResponseTransformer(data.product);
+      ProductResponseDtoModelResponseTransformer(data.product);
     }
     return data;
   };
 
-export const OrderProductsResponseEntityModelResponseTransformer: OrderProductsResponseEntityModelResponseTransformer =
+export const OrderProductsResponseDtoModelResponseTransformer: OrderProductsResponseDtoModelResponseTransformer =
   (data) => {
     if (data?.createdAt) {
       data.createdAt = new Date(data.createdAt);
     }
     if (Array.isArray(data?.items)) {
-      data.items.forEach(
-        OrderProductsItemResponseEntityModelResponseTransformer,
-      );
+      data.items.forEach(OrderProductsItemResponseDtoModelResponseTransformer);
     }
     return data;
   };
 
 export const OrdersControllerGetOrderResponseTransformer: OrdersControllerGetOrderResponseTransformer =
   async (data) => {
-    OrderProductsResponseEntityModelResponseTransformer(data);
+    OrderProductsResponseDtoModelResponseTransformer(data);
     return data;
   };
