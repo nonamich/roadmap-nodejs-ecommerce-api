@@ -27,12 +27,7 @@ export class OrdersGrpcController implements OrderServiceController {
     const orders = await this.service.getOrders(dto);
 
     return {
-      orders: orders.map((order) => {
-        return {
-          ...order,
-          status: 'WAITING_FOR_PAYMENT' as const,
-        };
-      }),
+      orders,
     };
   }
 

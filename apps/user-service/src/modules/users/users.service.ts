@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { BrokerService } from '@repo/broker';
 import { GrpcUnauthenticatedException } from '@repo/grpc/nest';
-import { UserServiceController } from '@repo/grpc/pb/user';
 import {
   CreateUserRequestDto,
   GetUserByCredentialsRequestDto,
+  GetUserByIdRequestDto,
 } from './dto/requests';
+import { UserResponseDto } from './dto/responses';
 import { UserEntity } from './entities';
 import { PasswordService } from './password.service';
 import { UsersRepository } from './users.repository';
 
 @Injectable()
-export class UserService implements UserServiceController {
+export class UserService {
   constructor(
     private readonly repository: UsersRepository,
     private readonly passwordService: PasswordService,
@@ -57,5 +58,9 @@ export class UserService implements UserServiceController {
     }
 
     return user;
+  }
+
+  async getUserById({ id }: GetUserByIdRequestDto): Promise<UserResponseDto> {
+    return await this.repository.findUniqueOrThrow({ id });
   }
 }

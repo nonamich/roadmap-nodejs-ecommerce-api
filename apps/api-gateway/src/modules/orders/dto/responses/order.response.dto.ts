@@ -20,4 +20,7 @@ export class OrderResponseDto implements OrderResponse {
 
   @ApiProperty({ type: OrderItemResponseDto, isArray: true })
   items!: OrderItemResponseDto[];
+
+  @ApiProperty()
+  totalPrice!: number;
 }

@@ -21,6 +21,10 @@ export interface GetUserByCredentialsRequest {
   password: string;
 }
 
+export interface GetUserByIdRequest {
+  id: string;
+}
+
 export interface UserResponse {
   id: string;
   name: string;
@@ -33,6 +37,8 @@ export interface UserServiceClient {
   createUser(request: CreateUserRequest): Observable<UserResponse>;
 
   getUserByCredentials(request: GetUserByCredentialsRequest): Observable<UserResponse>;
+
+  getUserById(request: GetUserByIdRequest): Observable<UserResponse>;
 }
 
 export interface UserServiceController {
@@ -41,11 +47,13 @@ export interface UserServiceController {
   getUserByCredentials(
     request: GetUserByCredentialsRequest,
   ): Promise<UserResponse> | Observable<UserResponse> | UserResponse;
+
+  getUserById(request: GetUserByIdRequest): Promise<UserResponse> | Observable<UserResponse> | UserResponse;
 }
 
 export function UserServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createUser", "getUserByCredentials"];
+    const grpcMethods: string[] = ["createUser", "getUserByCredentials", "getUserById"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("UserService", method)(constructor.prototype[method], method, descriptor);

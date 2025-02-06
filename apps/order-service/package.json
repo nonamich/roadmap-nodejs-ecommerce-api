@@ -24,6 +24,7 @@
     "@repo/broker": "workspace:*",
     "@repo/carts-service": "workspace:*",
     "@repo/grpc": "workspace:*",
+    "@repo/notification-service": "workspace:*",
     "@repo/product-service": "workspace:*",
     "@repo/user-service": "workspace:*",
     "class-transformer": "^0.5.1",

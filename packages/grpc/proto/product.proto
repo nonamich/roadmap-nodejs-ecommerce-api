@@ -38,6 +38,14 @@ message GetProductBySlugRequest {
   string slug = 1;
 }
 
+message GetCategoryBySlugRequest {
+  string slug = 1;
+}
+
+message GetBrandBySlugRequest {
+  string slug = 1;
+}
+
 message GetProductsByIdsRequest {
   repeated string ids = 1;
 }
@@ -63,6 +71,8 @@ service ProductService {
   rpc GetProductsByIds(GetProductsByIdsRequest) returns (stream ProductResponse);
   rpc GetProductsByFilter(GetProductsByFilterRequest) returns (ProductsResponse);
   rpc GetFeaturedProducts(GetFeaturedProductsRequest) returns (ProductsResponse);
+  rpc GetCategoryBySlug(GetCategoryBySlugRequest) returns (CategoryResponse);
+  rpc GetBrandBySlug(GetBrandBySlugRequest) returns (BrandResponse);
 }
 
 message PaginationResponse {

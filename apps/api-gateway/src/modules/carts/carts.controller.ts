@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
 import { Auth, CurrentUser } from '~/modules/auth/decorators';
@@ -30,7 +22,7 @@ export class CartsController {
   @Auth()
   @Post('/product/:productId')
   async addToCart(
-    @Param('productId', ParseIntPipe) productId: number,
+    @Param('productId') productId: string,
     @Body() dto: AddToCartRequestDto,
     @CurrentUser() user: AuthorizedUser,
   ): Promise<CartResponseDto> {
@@ -41,7 +33,7 @@ export class CartsController {
   @Auth()
   @Delete('/product/:productId')
   async removeFromCart(
-    @Param('productId', ParseIntPipe) productId: number,
+    @Param('productId') productId: string,
     @CurrentUser() user: AuthorizedUser,
   ): Promise<CartResponseDto> {
     return await this.service.removeFromCart(productId, user);

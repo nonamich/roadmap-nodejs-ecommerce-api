@@ -8,13 +8,20 @@ import {
 import { Observable } from 'rxjs';
 import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import {
+  GetBrandBySlugRequestDto,
+  GetCategoryBySlugRequestDto,
   GetFeaturedProductsRequestDto,
   GetProductByIdRequestDto,
   GetProductBySlugRequestDto,
   GetProductsByFilterRequestDto,
   GetProductsByIdsRequestDto,
 } from './dto/requests';
-import { ProductResponseDto, ProductsResponseDto } from './dto/responses';
+import {
+  BrandResponseDto,
+  CategoryResponseDto,
+  ProductResponseDto,
+  ProductsResponseDto,
+} from './dto/responses';
 import { ProductService } from './products.services';
 
 @GrpcService()
@@ -51,5 +58,17 @@ export class ProductsGrpcController implements ProductServiceController {
     dto: GetProductBySlugRequestDto,
   ): Promise<ProductResponseDto> {
     return await this.service.getProductBySlug(dto);
+  }
+
+  async getBrandBySlug(
+    dto: GetBrandBySlugRequestDto,
+  ): Promise<BrandResponseDto> {
+    return await this.service.getBrandBySlug(dto);
+  }
+
+  async getCategoryBySlug(
+    dto: GetCategoryBySlugRequestDto,
+  ): Promise<CategoryResponseDto> {
+    return await this.service.getCategoryBySlug(dto);
   }
 }

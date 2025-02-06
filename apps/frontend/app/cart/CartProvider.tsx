@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState, type FC, type PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router';
-import { cartsControllerGetCart, type CartResponseEntity } from '~/api';
+import { cartsControllerGetCart, type CartResponseDto } from '~/api';
 import {
   cartsControllerAddToCartMutation,
   cartsControllerRemoveFromCartMutation,
@@ -13,7 +13,7 @@ import type { CartContextValue } from './cart.types';
 export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [cart, setCart] = useState<CartResponseEntity>({
+  const [cart, setCart] = useState<CartResponseDto>({
     totalPrice: 0,
     totalQuantity: 0,
     items: [],

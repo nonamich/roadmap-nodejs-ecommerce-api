@@ -1,10 +1,10 @@
 import type { FC } from 'react';
 import { Link } from 'react-router';
-import type { OrderProductsResponseEntity } from '~/api';
+import type { OrderProductsResponseDto } from '~/api';
 import { Price } from './Price';
 
 type Props = {
-  order: OrderProductsResponseEntity;
+  order: OrderProductsResponseDto;
 };
 
 export const OrderDetails: FC<Props> = ({ order }) => {

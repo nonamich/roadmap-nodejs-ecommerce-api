@@ -1,9 +1,9 @@
 import type { FC } from 'react';
-import type { ProductsResponseEntity } from '~/api';
+import type { ProductsResponseDto } from '~/api';
 import { Pagination } from './Pagination';
 import { ProductItem } from './ProductItem';
 
-type Props = ProductsResponseEntity;
+type Props = ProductsResponseDto;
 
 export const ProductCollection: FC<Props> = ({ products, pagination }) => {
   return (

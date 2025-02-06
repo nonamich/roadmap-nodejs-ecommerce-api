@@ -2,7 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { GrpcNotFoundException } from '@repo/grpc/nest';
 import { GetProductBySlugRequest } from '@repo/grpc/pb/product';
 import { from, mergeAll, Observable } from 'rxjs';
+import { BrandsRepository } from '../brands/brands.repository';
+import { BrandEntity } from '../brands/entities';
+import { CategoriesRepository } from '../categories/categories.repository';
+import { CategoryEntity } from '../categories/entities';
 import {
+  GetBrandBySlugRequestDto,
+  GetCategoryBySlugRequestDto,
   GetFeaturedProductsRequestDto,
   GetProductByIdRequestDto,
   GetProductsByFilterRequestDto,
@@ -14,7 +20,11 @@ import { ProductsRepository } from './products.repository';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly productsRepository: ProductsRepository) {}
+  constructor(
+    private readonly productsRepository: ProductsRepository,
+    private readonly categoriesRepository: CategoriesRepository,
+    private readonly brandsRepository: BrandsRepository,
+  ) {}
 
   async getProductById({
     id,
@@ -88,7 +98,7 @@ export class ProductService {
     ]);
 
     if (!products.length || !totalCount) {
-      throw new GrpcNotFoundException('Product Not Found');
+      throw new GrpcNotFoundException('Products Not Found');
     }
 
     return {
@@ -117,6 +127,22 @@ export class ProductService {
     slug,
   }: GetProductBySlugRequest): Promise<ProductEntity> {
     return await this.productsRepository.findUniqueOrThrow({
+      slug,
+    });
+  }
+
+  async getBrandBySlug({
+    slug,
+  }: GetBrandBySlugRequestDto): Promise<BrandEntity> {
+    return await this.brandsRepository.findUniqueOrThrow({
+      slug,
+    });
+  }
+
+  async getCategoryBySlug({
+    slug,
+  }: GetCategoryBySlugRequestDto): Promise<CategoryEntity> {
+    return await this.categoriesRepository.findUniqueOrThrow({
       slug,
     });
   }

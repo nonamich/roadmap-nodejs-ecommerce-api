@@ -7,10 +7,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import {
-  ORDER_SERVICE_NAME,
-  OrderServiceClient,
-} from '@repo/grpc/pb/order';
+import { ORDER_SERVICE_NAME, OrderServiceClient } from '@repo/grpc/pb/order';
 import {
   PAYMENT_SERVICE_NAME,
   PaymentServiceClient,
@@ -52,6 +49,24 @@ export class OrdersController {
     return orders;
   }
 
+  @ApiOkResponse({ type: OrderIntentResponseDto })
+  @Auth()
+  @Get('/:orderId/intent')
+  async getOrderIntent(
+    @Param('orderId') orderId: string,
+    @CurrentUser() user: AuthorizedUser,
+  ): Promise<OrderIntentResponseDto> {
+    const order = await this.getOrder(orderId, user);
+    const intent = await firstValueFrom(
+      this.paymentService.getIntent({ intentId: (await order).intentId }),
+    );
+
+    return {
+      ...order,
+      intent,
+    };
+  }
+
   @ApiOkResponse({ type: OrderProductsResponseDto })
   @Auth()
   @Get('/:orderId')
@@ -59,9 +74,7 @@ export class OrdersController {
     @Param('orderId') orderId: string,
     @CurrentUser() user: AuthorizedUser,
   ): Promise<OrderProductsResponseDto> {
-    const order = await firstValueFrom(
-      this.orderService.getOrder({ orderId }),
-    );
+    const order = await firstValueFrom(this.orderService.getOrder({ orderId }));
 
     if (order.userId !== user.id) {
       throw new HttpException('Not found', 404);
@@ -88,24 +101,6 @@ export class OrdersController {
           product,
         };
       }),
-    };
-  }
-
-  @ApiOkResponse({ type: OrderIntentResponseDto })
-  @Auth()
-  @Get('/:orderId/intent')
-  async getOrderIntent(
-    @Param('orderId') orderId: string,
-    @CurrentUser() user: AuthorizedUser,
-  ): Promise<OrderIntentResponseDto> {
-    const order = await this.getOrder(orderId, user);
-    const intent = await firstValueFrom(
-      this.paymentService.getIntent({ intentId: (await order).intentId }),
-    );
-
-    return {
-      ...order,
-      intent,
     };
   }
 

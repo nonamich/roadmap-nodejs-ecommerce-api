@@ -45,6 +45,14 @@ export interface GetProductBySlugRequest {
   slug: string;
 }
 
+export interface GetCategoryBySlugRequest {
+  slug: string;
+}
+
+export interface GetBrandBySlugRequest {
+  slug: string;
+}
+
 export interface GetProductsByIdsRequest {
   ids: string[];
 }
@@ -96,6 +104,10 @@ export interface ProductServiceClient {
   getProductsByFilter(request: GetProductsByFilterRequest): Observable<ProductsResponse>;
 
   getFeaturedProducts(request: GetFeaturedProductsRequest): Observable<ProductsResponse>;
+
+  getCategoryBySlug(request: GetCategoryBySlugRequest): Observable<CategoryResponse>;
+
+  getBrandBySlug(request: GetBrandBySlugRequest): Observable<BrandResponse>;
 }
 
 export interface ProductServiceController {
@@ -116,6 +128,12 @@ export interface ProductServiceController {
   getFeaturedProducts(
     request: GetFeaturedProductsRequest,
   ): Promise<ProductsResponse> | Observable<ProductsResponse> | ProductsResponse;
+
+  getCategoryBySlug(
+    request: GetCategoryBySlugRequest,
+  ): Promise<CategoryResponse> | Observable<CategoryResponse> | CategoryResponse;
+
+  getBrandBySlug(request: GetBrandBySlugRequest): Promise<BrandResponse> | Observable<BrandResponse> | BrandResponse;
 }
 
 export function ProductServiceControllerMethods() {
@@ -126,6 +144,8 @@ export function ProductServiceControllerMethods() {
       "getProductsByIds",
       "getProductsByFilter",
       "getFeaturedProducts",
+      "getCategoryBySlug",
+      "getBrandBySlug",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);

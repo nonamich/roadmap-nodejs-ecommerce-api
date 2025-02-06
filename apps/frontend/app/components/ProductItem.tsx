@@ -1,15 +1,19 @@
 import type { FC } from 'react';
 import { Link } from 'react-router';
-import type { ProductResponseEntity } from '~/api';
+import type { ProductResponseDto } from '~/api';
 import { Price } from './Price';
 
 type Props = {
-  product: ProductResponseEntity;
+  product: ProductResponseDto;
 };
 
 export const ProductItem: FC<Props> = ({ product }) => {
   return (
-    <Link to={`/product/${product.id}`} viewTransition className="group block">
+    <Link
+      to={`/product/${product.slug}`}
+      viewTransition
+      className="group block"
+    >
       <div className="overflow-hidden">
         <img
           src={product.image}

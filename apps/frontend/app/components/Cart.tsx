@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 import type { FC } from 'react';
-import { Else, If, Then } from 'react-if';
 import { useNavigate } from 'react-router';
 import { ordersControllerAddOrderMutation } from '~/api/@tanstack/react-query.gen';
 import { useCart } from '~/cart/hooks';
@@ -26,10 +25,7 @@ export const Cart: FC = () => {
     <section>
       <header>
         <h1 className="text-xl font-bold text-gray-200 sm:text-3xl">
-          <If condition={cart.items.length}>
-            <Then>Your Cart</Then>
-            <Else>Your Cart Is Empty</Else>
-          </If>
+          {cart.items.length ? <>Your Cart</> : <>Your Cart Is Empty</>}
         </h1>
       </header>
       {!!cart.items.length && (

@@ -53,6 +53,7 @@ export interface OrderResponse {
   intentId: string;
   createdAt: Date;
   items: OrderItemResponse[];
+  totalPrice: number;
 }
 
 export const ORDER_PACKAGE_NAME = "order";

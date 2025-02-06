@@ -19,7 +19,9 @@ export async function clientLoader({
     throw createError('Not Found', 404);
   }
 
-  const { data } = await productsControllerGetProductsByFilter({
+  const {
+    data: { brand, ...data },
+  } = await productsControllerGetProductsByFilter({
     throwOnError: true,
     query: {
       pagination: {
@@ -30,11 +32,11 @@ export async function clientLoader({
     },
   });
 
-  if (!data.brand) {
+  if (!brand) {
     throw createError('Not Found', 404);
   }
 
-  return data;
+  return { ...data, brand };
 }
 
 export default function Brand() {

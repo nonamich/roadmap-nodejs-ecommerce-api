@@ -49,4 +49,5 @@ message OrderResponse {
   string intentId = 6;
   google.protobuf.Timestamp createdAt = 7;
   repeated OrderItemResponse items = 8;
+  int32 totalPrice = 9;
 }

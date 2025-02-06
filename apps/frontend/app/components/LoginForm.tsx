@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { useState, type FC, type SyntheticEvent } from 'react';
-import { Else, If, Then } from 'react-if';
 import { Link, useLocation, useNavigate } from 'react-router';
 import type { RequestSignupDto } from '~/api';
 import { useAuth } from '~/auth/hooks';
@@ -65,25 +64,23 @@ export const LoginForm: FC<Props> = ({ isRegister = false }) => {
         );
       })}
       <form onSubmit={onSubmit} className="mt-4 space-y-4">
-        <If condition={isRegister}>
-          <Then>
-            <div>
-              <label htmlFor="name" className="sr-only">
-                Name
-              </label>
+        {isRegister && (
+          <div>
+            <label htmlFor="name" className="sr-only">
+              Name
+            </label>
 
-              <div className="relative">
-                <input
-                  name="name"
-                  type="text"
-                  className="w-full rounded-lg border-gray-800 bg-slate-900 p-4 pe-12 text-sm shadow-sm"
-                  required
-                  placeholder="Enter name"
-                />
-              </div>
+            <div className="relative">
+              <input
+                name="name"
+                type="text"
+                className="w-full rounded-lg border-gray-800 bg-slate-900 p-4 pe-12 text-sm shadow-sm"
+                required
+                placeholder="Enter name"
+              />
             </div>
-          </Then>
-        </If>
+          </div>
+        )}
         <div>
           <label htmlFor="email" className="sr-only">
             Email
@@ -155,35 +152,33 @@ export const LoginForm: FC<Props> = ({ isRegister = false }) => {
         </div>
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-500">
-            <If condition={isRegister}>
-              <Then>
+            {isRegister ? (
+              <>
+                {' '}
                 Already have account?{' '}
                 <Link className="underline" to="/signin" viewTransition>
                   Sign in
                 </Link>
-              </Then>
-              <Else>
+              </>
+            ) : (
+              <>
                 No account?{' '}
                 <Link className="underline" to="/signup" viewTransition>
                   Sign up
                 </Link>
-              </Else>
-            </If>
+              </>
+            )}
           </p>
           <Button
             type="submit"
             disabled={loading}
             className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
           >
-            <If condition={loading}>
-              <Then>Loading...</Then>
-              <Else>
-                <If condition={isRegister}>
-                  <Then>Sign up</Then>
-                  <Else>Sign in</Else>
-                </If>
-              </Else>
-            </If>
+            {loading ? (
+              <>Loading...</>
+            ) : (
+              <>{isRegister ? <>Sign up</> : <>Sign in</>}</>
+            )}
           </Button>
         </div>
       </form>

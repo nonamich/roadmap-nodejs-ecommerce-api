@@ -4,58 +4,59 @@ import {
   createClient,
   createConfig,
   type OptionsLegacyParser,
-} from '@hey-api/client-fetch';
+} from "@hey-api/client-fetch";
 import {
-  type AuthControllerMeError,
-  type AuthControllerMeResponse,
-  type AuthControllerSigninData,
-  type AuthControllerSigninError,
-  type AuthControllerSigninResponse,
   type AuthControllerSignupData,
   type AuthControllerSignupError,
   type AuthControllerSignupResponse,
-  type CartsControllerAddToCartData,
-  type CartsControllerAddToCartError,
-  type CartsControllerAddToCartResponse,
-  CartsControllerAddToCartResponseTransformer,
-  type CartsControllerGetCartError,
-  type CartsControllerGetCartResponse,
-  CartsControllerGetCartResponseTransformer,
-  type CartsControllerRemoveFromCartData,
-  type CartsControllerRemoveFromCartError,
-  type CartsControllerRemoveFromCartResponse,
-  CartsControllerRemoveFromCartResponseTransformer,
-  type OrdersControllerAddOrderError,
-  type OrdersControllerAddOrderResponse,
-  OrdersControllerAddOrderResponseTransformer,
-  type OrdersControllerGetOrderData,
-  type OrdersControllerGetOrderError,
-  type OrdersControllerGetOrderResponse,
-  OrdersControllerGetOrderResponseTransformer,
-  type OrdersControllerGetOrdersError,
-  type OrdersControllerGetOrdersResponse,
-  OrdersControllerGetOrdersResponseTransformer,
-  type PaymentsControllerGetIntentData,
-  type PaymentsControllerGetIntentError,
-  type PaymentsControllerGetIntentResponse,
+  type AuthControllerSigninData,
+  type AuthControllerSigninError,
+  type AuthControllerSigninResponse,
+  type AuthControllerMeError,
+  type AuthControllerMeResponse,
   type ProductsControllerGetFeaturedProductsData,
   type ProductsControllerGetFeaturedProductsError,
   type ProductsControllerGetFeaturedProductsResponse,
-  ProductsControllerGetFeaturedProductsResponseTransformer,
-  type ProductsControllerGetProductByIdData,
-  type ProductsControllerGetProductByIdError,
-  type ProductsControllerGetProductByIdResponse,
-  ProductsControllerGetProductByIdResponseTransformer,
+  type ProductsControllerGetProductBySlugData,
+  type ProductsControllerGetProductBySlugError,
+  type ProductsControllerGetProductBySlugResponse,
   type ProductsControllerGetProductsByFilterData,
   type ProductsControllerGetProductsByFilterError,
   type ProductsControllerGetProductsByFilterResponse,
+  type CartsControllerGetCartError,
+  type CartsControllerGetCartResponse,
+  type CartsControllerAddToCartData,
+  type CartsControllerAddToCartError,
+  type CartsControllerAddToCartResponse,
+  type CartsControllerRemoveFromCartData,
+  type CartsControllerRemoveFromCartError,
+  type CartsControllerRemoveFromCartResponse,
+  type OrdersControllerGetOrdersError,
+  type OrdersControllerGetOrdersResponse,
+  type OrdersControllerAddOrderError,
+  type OrdersControllerAddOrderResponse,
+  type OrdersControllerGetOrderData,
+  type OrdersControllerGetOrderError,
+  type OrdersControllerGetOrderResponse,
+  type OrdersControllerGetOrderIntentData,
+  type OrdersControllerGetOrderIntentError,
+  type OrdersControllerGetOrderIntentResponse,
+  ProductsControllerGetFeaturedProductsResponseTransformer,
+  ProductsControllerGetProductBySlugResponseTransformer,
   ProductsControllerGetProductsByFilterResponseTransformer,
-} from './types.gen';
+  CartsControllerGetCartResponseTransformer,
+  CartsControllerAddToCartResponseTransformer,
+  CartsControllerRemoveFromCartResponseTransformer,
+  OrdersControllerGetOrdersResponseTransformer,
+  OrdersControllerAddOrderResponseTransformer,
+  OrdersControllerGetOrderResponseTransformer,
+  OrdersControllerGetOrderIntentResponseTransformer,
+} from "./types.gen";
 
 export const client = createClient(createConfig());
 
 export const authControllerSignup = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<AuthControllerSignupData, ThrowOnError>,
+  options: OptionsLegacyParser<AuthControllerSignupData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
     AuthControllerSignupResponse,
@@ -63,12 +64,12 @@ export const authControllerSignup = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/auth/signup',
+    url: "/auth/signup",
   });
 };
 
 export const authControllerSignin = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<AuthControllerSigninData, ThrowOnError>,
+  options: OptionsLegacyParser<AuthControllerSigninData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
     AuthControllerSigninResponse,
@@ -76,12 +77,12 @@ export const authControllerSignin = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/auth/signin',
+    url: "/auth/signin",
   });
 };
 
 export const authControllerMe = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     AuthControllerMeResponse,
@@ -89,17 +90,17 @@ export const authControllerMe = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/auth/me',
+    url: "/auth/me",
   });
 };
 
 export const productsControllerGetFeaturedProducts = <
-  ThrowOnError extends boolean = false,
+  ThrowOnError extends boolean = false
 >(
   options: OptionsLegacyParser<
     ProductsControllerGetFeaturedProductsData,
     ThrowOnError
-  >,
+  >
 ) => {
   return (options?.client ?? client).get<
     ProductsControllerGetFeaturedProductsResponse,
@@ -107,38 +108,38 @@ export const productsControllerGetFeaturedProducts = <
     ThrowOnError
   >({
     ...options,
-    url: '/products/featured',
+    url: "/products/featured",
     responseTransformer:
       ProductsControllerGetFeaturedProductsResponseTransformer,
   });
 };
 
-export const productsControllerGetProductById = <
-  ThrowOnError extends boolean = false,
+export const productsControllerGetProductBySlug = <
+  ThrowOnError extends boolean = false
 >(
   options: OptionsLegacyParser<
-    ProductsControllerGetProductByIdData,
+    ProductsControllerGetProductBySlugData,
     ThrowOnError
-  >,
+  >
 ) => {
   return (options?.client ?? client).get<
-    ProductsControllerGetProductByIdResponse,
-    ProductsControllerGetProductByIdError,
+    ProductsControllerGetProductBySlugResponse,
+    ProductsControllerGetProductBySlugError,
     ThrowOnError
   >({
     ...options,
-    url: '/products/{id}',
-    responseTransformer: ProductsControllerGetProductByIdResponseTransformer,
+    url: "/products/{slug}",
+    responseTransformer: ProductsControllerGetProductBySlugResponseTransformer,
   });
 };
 
 export const productsControllerGetProductsByFilter = <
-  ThrowOnError extends boolean = false,
+  ThrowOnError extends boolean = false
 >(
   options: OptionsLegacyParser<
     ProductsControllerGetProductsByFilterData,
     ThrowOnError
-  >,
+  >
 ) => {
   return (options?.client ?? client).get<
     ProductsControllerGetProductsByFilterResponse,
@@ -146,14 +147,14 @@ export const productsControllerGetProductsByFilter = <
     ThrowOnError
   >({
     ...options,
-    url: '/products',
+    url: "/products",
     responseTransformer:
       ProductsControllerGetProductsByFilterResponseTransformer,
   });
 };
 
 export const cartsControllerGetCart = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     CartsControllerGetCartResponse,
@@ -161,13 +162,13 @@ export const cartsControllerGetCart = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/cart',
+    url: "/cart",
     responseTransformer: CartsControllerGetCartResponseTransformer,
   });
 };
 
 export const cartsControllerAddToCart = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<CartsControllerAddToCartData, ThrowOnError>,
+  options: OptionsLegacyParser<CartsControllerAddToCartData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
     CartsControllerAddToCartResponse,
@@ -175,15 +176,15 @@ export const cartsControllerAddToCart = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/cart/product/{productId}',
+    url: "/cart/product/{productId}",
     responseTransformer: CartsControllerAddToCartResponseTransformer,
   });
 };
 
 export const cartsControllerRemoveFromCart = <
-  ThrowOnError extends boolean = false,
+  ThrowOnError extends boolean = false
 >(
-  options: OptionsLegacyParser<CartsControllerRemoveFromCartData, ThrowOnError>,
+  options: OptionsLegacyParser<CartsControllerRemoveFromCartData, ThrowOnError>
 ) => {
   return (options?.client ?? client).delete<
     CartsControllerRemoveFromCartResponse,
@@ -191,13 +192,13 @@ export const cartsControllerRemoveFromCart = <
     ThrowOnError
   >({
     ...options,
-    url: '/cart/product/{productId}',
+    url: "/cart/product/{productId}",
     responseTransformer: CartsControllerRemoveFromCartResponseTransformer,
   });
 };
 
 export const ordersControllerGetOrders = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     OrdersControllerGetOrdersResponse,
@@ -205,13 +206,13 @@ export const ordersControllerGetOrders = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/orders',
+    url: "/orders",
     responseTransformer: OrdersControllerGetOrdersResponseTransformer,
   });
 };
 
 export const ordersControllerAddOrder = <ThrowOnError extends boolean = false>(
-  options?: OptionsLegacyParser<unknown, ThrowOnError>,
+  options?: OptionsLegacyParser<unknown, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
     OrdersControllerAddOrderResponse,
@@ -219,13 +220,13 @@ export const ordersControllerAddOrder = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/orders',
+    url: "/orders",
     responseTransformer: OrdersControllerAddOrderResponseTransformer,
   });
 };
 
 export const ordersControllerGetOrder = <ThrowOnError extends boolean = false>(
-  options: OptionsLegacyParser<OrdersControllerGetOrderData, ThrowOnError>,
+  options: OptionsLegacyParser<OrdersControllerGetOrderData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
     OrdersControllerGetOrderResponse,
@@ -233,22 +234,23 @@ export const ordersControllerGetOrder = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
-    url: '/orders/{orderId}',
+    url: "/orders/{orderId}",
     responseTransformer: OrdersControllerGetOrderResponseTransformer,
   });
 };
 
-export const paymentsControllerGetIntent = <
-  ThrowOnError extends boolean = false,
+export const ordersControllerGetOrderIntent = <
+  ThrowOnError extends boolean = false
 >(
-  options: OptionsLegacyParser<PaymentsControllerGetIntentData, ThrowOnError>,
+  options: OptionsLegacyParser<OrdersControllerGetOrderIntentData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    PaymentsControllerGetIntentResponse,
-    PaymentsControllerGetIntentError,
+    OrdersControllerGetOrderIntentResponse,
+    OrdersControllerGetOrderIntentError,
     ThrowOnError
   >({
     ...options,
-    url: '/payments/{intentId}',
+    url: "/orders/{orderId}/intent",
+    responseTransformer: OrdersControllerGetOrderIntentResponseTransformer,
   });
 };

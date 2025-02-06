@@ -14,6 +14,9 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@repo/notification-service": "workspace:*",
+    "@repo/shared": "workspace:*",
+    "@repo/grpc": "workspace:*",
     "@grpc/grpc-js": "^1.12.5",
     "@grpc/proto-loader": "^0.7.13",
     "@nestjs/common": "^11.0.6",
@@ -21,11 +24,9 @@
     "@nestjs/core": "^11.0.6",
     "@nestjs/microservices": "^11.0.6",
     "@prisma/client": "^6.3.0",
-    "@repo/grpc": "workspace:*",
     "argon2": "^0.41.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
-    "@repo/shared": "workspace:*",
     "dotenv": "^16.4.7",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"

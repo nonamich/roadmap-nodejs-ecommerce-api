@@ -1,2 +1,2 @@
-export * from './authorized-user.entity';
-export * from './logged-in.entity';
+export * from './authorized-user.response.dto';
+export * from './logged-in.response.dto';

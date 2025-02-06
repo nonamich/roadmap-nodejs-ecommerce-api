@@ -9,6 +9,7 @@ import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import {
   CreateUserRequestDto,
   GetUserByCredentialsRequestDto,
+  GetUserByIdRequestDto,
 } from './dto/requests';
 import { UserResponseDto } from './dto/responses';
 import { UserService } from './users.service';
@@ -31,5 +32,12 @@ export class UsersGrpcController implements UserServiceController {
     dto: GetUserByCredentialsRequestDto,
   ): Promise<UserResponseDto> {
     return this.service.getUserByCredentials(dto);
+  }
+
+  async getUserById(
+    @GrpcPayload()
+    dto: GetUserByIdRequestDto,
+  ): Promise<UserResponseDto> {
+    return this.service.getUserById(dto);
   }
 }

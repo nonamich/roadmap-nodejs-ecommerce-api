@@ -6,7 +6,9 @@
     "build": "tsc",
     "dev": "tsc -w",
     "lint": "eslint \"src/**/*.ts\" --fix",
-    "prebuild": "rm -rf dist"
+    "clean-dist": "rm -rf dist",
+    "protoc": "make protoc",
+    "prebuild": "pnpm clean-dist && pnpm protoc"
   },
   "exports": {
     "./utils": "./dist/utils.js",

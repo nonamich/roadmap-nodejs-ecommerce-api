@@ -1,4 +1,5 @@
 import {
+  OrderCompletedEventDto,
   OrderCreatedEventDto,
   PaymentSucceededEventDto,
   UserRegisteredEventDto,
@@ -6,6 +7,7 @@ import {
 
 export type BrokerEventsMap = {
   'order.created': OrderCreatedEventDto;
+  'order.completed': OrderCompletedEventDto;
   'payment.succeeded': PaymentSucceededEventDto;
   'user.registered': UserRegisteredEventDto;
 };

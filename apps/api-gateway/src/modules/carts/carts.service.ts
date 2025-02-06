@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
-  CartResponse,
   CART_SERVICE_NAME,
+  CartResponse,
   CartServiceClient,
 } from '@repo/grpc/pb/cart';
 import {
@@ -32,7 +32,7 @@ export class CartService {
   }
 
   async addToCart(
-    productId: number,
+    productId: string,
     { quantity }: AddToCartRequestDto,
     user: AuthorizedUser,
   ): Promise<CartResponseDto> {
@@ -48,7 +48,7 @@ export class CartService {
   }
 
   async removeFromCart(
-    productId: number,
+    productId: string,
     user: AuthorizedUser,
   ): Promise<CartResponseDto> {
     const cart = await firstValueFrom(

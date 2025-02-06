@@ -5,7 +5,7 @@ import { USER_SERVICE_NAME, UserServiceClient } from '@repo/grpc/pb/user';
 import { firstValueFrom } from 'rxjs';
 import { AuthorizedUser } from './auth.interface';
 import { RequestSigninDto, RequestSignupDto } from './dto/requests';
-import { LoggedInEntity } from './entities';
+import { LoggedInResponseDto } from './dto/responses';
 
 @Injectable()
 export class AuthService {
@@ -15,13 +15,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(data: RequestSignupDto): Promise<LoggedInEntity> {
+  async signup(data: RequestSignupDto): Promise<LoggedInResponseDto> {
     const { email } = await firstValueFrom(this.userService.createUser(data));
 
     return await this.signin({ email, password: data.password });
   }
 
-  async signin(data: RequestSigninDto): Promise<LoggedInEntity> {
+  async signin(data: RequestSigninDto): Promise<LoggedInResponseDto> {
     const user = await firstValueFrom(
       this.userService.getUserByCredentials(data),
     );

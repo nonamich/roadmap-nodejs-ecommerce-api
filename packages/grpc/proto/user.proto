@@ -13,9 +13,14 @@ message GetUserByCredentialsRequest {
   string password = 2;
 }
 
+message GetUserByIdRequest {
+  string id = 1;
+}
+
 service UserService {
   rpc CreateUser(CreateUserRequest) returns (UserResponse);
   rpc GetUserByCredentials(GetUserByCredentialsRequest) returns (UserResponse);
+  rpc GetUserById(GetUserByIdRequest) returns (UserResponse);
 }
 
 message UserResponse {

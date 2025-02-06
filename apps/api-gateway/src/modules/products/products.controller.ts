@@ -4,13 +4,17 @@ import {
   PRODUCT_SERVICE_NAME,
   ProductServiceClient,
 } from '@repo/grpc/pb/product';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import {
   GetFeaturedProductsRequestDto,
   GetProductBySlugRequestDto,
   GetProductsByFilterRequestDto,
 } from './dto/requests';
-import { ProductResponseDto, ProductsResponseDto } from './dto/responses';
+import {
+  ProductResponseDto,
+  ProductsByFilterResponseDto,
+  ProductsResponseDto,
+} from './dto/responses';
 
 @ApiTags('products')
 @Controller('products')
@@ -30,17 +34,38 @@ export class ProductsController {
 
   @ApiOkResponse({ type: ProductResponseDto })
   @Get('/:slug')
-  getProductById(
+  getProductBySlug(
     @Param() request: GetProductBySlugRequestDto,
   ): Observable<ProductResponseDto> {
     return this.productService.getProductBySlug(request);
   }
 
-  @ApiOkResponse({ type: ProductsResponseDto })
+  @ApiOkResponse({ type: ProductsByFilterResponseDto })
   @Get('/')
-  getProductsByFilter(
+  async getProductsByFilter(
     @Query() request: GetProductsByFilterRequestDto,
-  ): Observable<ProductsResponseDto> {
-    return this.productService.getProductsByFilter(request);
+  ): Promise<ProductsByFilterResponseDto> {
+    const [productsResponse, categoryResponse, brandResponse] =
+      await Promise.all([
+        firstValueFrom(this.productService.getProductsByFilter(request)),
+        request.categorySlug
+          ? firstValueFrom(
+              this.productService.getCategoryBySlug({
+                slug: request.categorySlug,
+              }),
+            ).catch(() => undefined)
+          : undefined,
+        request.brandSlug
+          ? firstValueFrom(
+              this.productService.getBrandBySlug({ slug: request.brandSlug }),
+            ).catch(() => undefined)
+          : undefined,
+      ]);
+
+    return {
+      ...productsResponse,
+      category: categoryResponse,
+      brand: brandResponse,
+    };
   }
 }

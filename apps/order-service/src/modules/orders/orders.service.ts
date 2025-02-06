@@ -15,6 +15,7 @@ import {
   GetOrderRequestDto,
   GetOrdersRequestDto,
 } from './dto/requests';
+import { OrderResponseDto } from './dto/responses';
 import { OrderEntity } from './entities';
 import { OrdersRepository } from './orders.repository';
 
@@ -31,32 +32,46 @@ export class OrderService {
     private readonly brokerService: BrokerService,
   ) {}
 
-  async getOrders({ userId }: GetOrdersRequestDto): Promise<OrderEntity[]> {
-    return await this.repository.findMany({
-      where: {
-        userId,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+  async getOrders({
+    userId,
+  }: GetOrdersRequestDto): Promise<OrderResponseDto[]> {
+    const orders = this.createResponseDto(
+      await this.repository.findMany({
+        where: {
+          userId,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+    );
+
+    return orders;
   }
 
-  async getOrder({ orderId }: GetOrderRequestDto): Promise<OrderEntity> {
-    return await this.repository.findUniqueOrThrow({
-      id: orderId,
-    });
+  async getOrder({ orderId }: GetOrderRequestDto): Promise<OrderResponseDto> {
+    const order = this.createResponseDto(
+      await this.repository.findUniqueOrThrow({
+        id: orderId,
+      }),
+    );
+
+    return order;
   }
 
   async getOrderByIntentId({
     intentId,
-  }: GetOrderByIntentIdRequestDto): Promise<OrderEntity> {
-    return await this.repository.findUniqueOrThrow({
-      intentId,
-    });
+  }: GetOrderByIntentIdRequestDto): Promise<OrderResponseDto> {
+    return this.createResponseDto(
+      await this.repository.findUniqueOrThrow({
+        intentId,
+      }),
+    );
   }
 
-  async createOrder({ userId }: CreateOrderRequestDto): Promise<OrderEntity> {
+  async createOrder({
+    userId,
+  }: CreateOrderRequestDto): Promise<OrderResponseDto> {
     const cart = await firstValueFrom(this.cartService.getCart({ userId }));
     const intent = await firstValueFrom(
       this.paymentService.createIntent({
@@ -68,44 +83,84 @@ export class OrderService {
       throw new GrpcInvalidArgumentException('your cart is empty');
     }
 
-    const createdOrder = await this.repository.create({
-      userId,
-      intentId: intent.id,
-      items: {
-        createMany: {
-          data: cart.items.map(({ quantity, price, productId }) => ({
-            price,
-            productId,
-            quantity,
-          })),
+    const order = this.createResponseDto(
+      await this.repository.create({
+        userId,
+        intentId: intent.id,
+        items: {
+          createMany: {
+            data: cart.items.map(({ quantity, price, productId }) => ({
+              price,
+              productId,
+              quantity,
+            })),
+          },
         },
-      },
-    });
+      }),
+    );
 
-    this.brokerService.emit('order.created', {
-      orderId: createdOrder.id,
-      userId,
-      products: createdOrder.items.map(({ productId, quantity }) => ({
-        productId,
-        quantity,
-      })),
-    });
+    this.emitCreated(order);
 
-    return createdOrder;
+    return order;
   }
 
   async completeOrder({ intentId }: CompleteOrdersRequestDto): Promise<void> {
-    await this.repository.update({
-      data: {
-        status: OrderStatus.COMPLETED,
-      },
-      where: {
-        intentId,
-      },
-    });
+    const order = this.createResponseDto(
+      await this.repository.update({
+        data: {
+          status: OrderStatus.COMPLETED,
+        },
+        where: {
+          intentId,
+        },
+      }),
+    );
+
+    this.emitCompleted(order);
   }
 
   priceToCent(price: number): number {
     return Math.ceil(price * 100);
+  }
+
+  emitCompleted(order: OrderResponseDto): void {
+    this.brokerService.emit('order.completed', {
+      orderId: order.id,
+      userId: order.userId,
+      createdAt: order.createdAt,
+      totalPrice: order.totalPrice,
+    });
+  }
+
+  emitCreated(order: OrderResponseDto): void {
+    this.brokerService.emit('order.created', {
+      orderId: order.id,
+      userId: order.userId,
+      products: order.items.map(({ productId, quantity }) => ({
+        productId,
+        quantity,
+      })),
+    });
+  }
+
+  createResponseDto(order: OrderEntity): OrderResponseDto;
+  createResponseDto(orders: OrderEntity[]): OrderResponseDto[];
+  createResponseDto(
+    input: OrderEntity | OrderEntity[],
+  ): OrderResponseDto | OrderResponseDto[] {
+    if (Array.isArray(input)) {
+      return input.map((entity) => this.createResponseDto(entity));
+    }
+
+    return {
+      ...input,
+      totalPrice: this.getTotalPrice(input),
+    };
+  }
+
+  getTotalPrice(order: OrderEntity): number {
+    return order.items.reduce((acc, item) => {
+      return acc + item.price * item.quantity;
+    }, 0);
   }
 }

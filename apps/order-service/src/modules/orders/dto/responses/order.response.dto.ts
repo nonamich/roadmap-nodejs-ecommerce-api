@@ -8,4 +8,5 @@ export class OrderResponseDto implements OrderResponse {
   createdAt!: Date;
   items!: OrderItemResponseDto[];
   userId!: string;
+  totalPrice!: number;
 }

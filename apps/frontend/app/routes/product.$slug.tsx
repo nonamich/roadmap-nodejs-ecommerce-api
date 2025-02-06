@@ -1,14 +1,22 @@
 import { useState } from 'react';
-import { useLoaderData, type ClientLoaderFunctionArgs } from 'react-router';
-import { productsControllerGetProductById } from '~/api';
+import {
+  data as createError,
+  useLoaderData,
+  type ClientLoaderFunctionArgs,
+} from 'react-router';
+import { productsControllerGetProductBySlug } from '~/api';
 import { useCart } from '~/cart/hooks';
 import { Breadcrumbs, Price, QuantityInput } from '~/components';
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
-  const { data } = await productsControllerGetProductById({
+  if (!params.slug) {
+    throw createError('Not Found', 404);
+  }
+
+  const { data } = await productsControllerGetProductBySlug({
     throwOnError: true,
     path: {
-      id: Number(params.id),
+      slug: params.slug,
     },
   });
 
