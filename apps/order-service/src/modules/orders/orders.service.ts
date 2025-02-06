@@ -83,6 +83,7 @@ export class OrdersService {
     });
 
     this.brokerService.emit('order.created', {
+      orderId: createdOrder.id,
       userId,
       products: createdOrder.items.map(({ productId, quantity }) => ({
         productId,

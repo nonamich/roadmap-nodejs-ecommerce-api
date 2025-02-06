@@ -11,6 +11,9 @@ export class OrderItemsCreatedEventDto {
 
 export class OrderCreatedEventDto {
   @IsInt()
+  orderId!: number;
+
+  @IsInt()
   userId!: number;
 
   @Type(() => OrderItemsCreatedEventDto)
