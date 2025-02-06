@@ -32,6 +32,7 @@
     "dotenv": "^16.4.7",
     "protobufjs": "^7.2.5",
     "reflect-metadata": "^0.2.2",
+    "@repo/shared": "workspace:*",
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
@@ -41,7 +42,6 @@
     "@nestjs/testing": "^11.0.6",
     "@repo/broker": "workspace:*",
     "@repo/configs": "workspace:*",
-    "@repo/shared": "workspace:^",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.11",
     "@swc/jest": "^0.2.37",

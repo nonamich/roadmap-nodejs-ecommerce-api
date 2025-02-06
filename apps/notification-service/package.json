@@ -1,5 +1,5 @@
 {
-  "name": "@repo/order-service",
+  "name": "@repo/notification-service",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -10,22 +10,14 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:e2e": "jest --config ./test/jest.config.mjs",
-    "postinstall": "prisma generate"
+    "test:e2e": "jest --config ./test/jest.config.mjs"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.12.5",
-    "@grpc/proto-loader": "^0.7.13",
+    "@repo/broker": "workspace:*",
     "@nestjs/common": "^11.0.6",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.6",
     "@nestjs/microservices": "^11.0.6",
-    "@prisma/client": "^6.3.0",
-    "@repo/broker": "workspace:*",
-    "@repo/carts-service": "workspace:*",
-    "@repo/grpc": "workspace:*",
-    "@repo/product-service": "workspace:*",
-    "@repo/user-service": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "reflect-metadata": "^0.2.2",
@@ -33,7 +25,6 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@grpc/reflection": "^1.0.4",
     "@nestjs/cli": "^11.0.2",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.6",
@@ -46,7 +37,6 @@
     "@types/node": "^22.13.1",
     "@types/supertest": "^6.0.2",
     "jest": "^29.7.0",
-    "prisma": "^6.3.0",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
     "tsconfig-paths": "^4.2.0",

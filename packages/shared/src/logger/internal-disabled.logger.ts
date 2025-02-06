@@ -8,7 +8,6 @@ export class InternalDisabledLogger extends ConsoleLogger {
     'NestFactory',
   ];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   log(message: any, ...optionalParams: any[]): void {
     const context = this.getContextFromLog([message, ...optionalParams]);
 

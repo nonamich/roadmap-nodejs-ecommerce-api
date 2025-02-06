@@ -5,12 +5,11 @@ import { BrokerMicroserviceModuleOptions } from './types/broker.types';
 
 type ConfigModuleOptions = {
   useFactory: (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ...args: any[]
   ) =>
     | Promise<BrokerMicroserviceModuleOptions>
     | BrokerMicroserviceModuleOptions;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   inject?: any[];
 };
 

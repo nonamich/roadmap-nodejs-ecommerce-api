@@ -17,10 +17,9 @@ export interface ConfigModuleOptions {
   serviceNameAndToken: string;
 
   useFactory: (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ...args: any[]
   ) => Promise<GrpcOptionsCustom> | GrpcOptionsCustom;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   inject?: any[];
 }
 
