@@ -22,7 +22,7 @@ export interface GetUserByCredentialsRequest {
 }
 
 export interface UserResponse {
-  id: number;
+  id: string;
   name: string;
   email: string;
 }

@@ -10,15 +10,15 @@ enum OrderStatus {
 }
 
 message CreateOrderRequest {
-  int32 userId = 1;
+  string userId = 1;
 }
 
 message GetOrderRequest {
-  int32 orderId = 1;
+  string orderId = 1;
 }
 
 message GetOrdersRequest {
-  int32 userId = 1;
+  string userId = 1;
 }
 
 message GetOrderByIntentIdRequest {
@@ -37,15 +37,15 @@ message OrdersResponse {
 }
 
 message OrderItemResponse {
-  int32 productId = 1;
+  string productId = 1;
   int32 quantity = 2;
   double price = 3;
 }
 
 message OrderResponse {
-  int32 id = 1;
+  string id = 1;
   OrderStatus status = 4;
-  int32 userId = 5;
+  string userId = 5;
   string intentId = 6;
   google.protobuf.Timestamp createdAt = 7;
   repeated OrderItemResponse items = 8;

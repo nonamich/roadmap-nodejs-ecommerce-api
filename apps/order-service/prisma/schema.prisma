@@ -14,8 +14,8 @@ enum OrderStatus {
 }
 
 model Order {
-  id        Int         @id @default(autoincrement())
-  userId    Int
+  id        String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String
   intentId  String      @unique()
   createdAt DateTime    @default(now())
   status    OrderStatus @default(WAITING_FOR_PAYMENT)
@@ -23,11 +23,11 @@ model Order {
 }
 
 model OrderItem {
-  orderId   Int
-  productId Int
+  orderId   String @db.Uuid
+  productId String
   quantity  Int
   price     Float
-  order     Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order     Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@unique([orderId, productId])
 }

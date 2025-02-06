@@ -5,34 +5,41 @@ package products;
 import "google/protobuf/timestamp.proto";
 
 message CategoryResponse {
-  int32 id = 1;
-  string name = 2;
+  string id = 1;
+  string slug = 2;
+  string name = 3;
 }
 
 message BrandResponse {
-  int32 id = 1;
-  string name = 2;
+  string id = 1;
+  string slug = 2;
+  string name = 3;
 }
 
 message ProductResponse {
-  int32 id = 1;
+  string id = 1;
   int32 amount = 2;
   string image = 4;
   double price = 5;
   string title = 6;
-  string description = 7;
-  optional double rating = 8;
-  google.protobuf.Timestamp createdAt = 9;
-  BrandResponse brand = 10;
-  CategoryResponse category = 11;
+  string slug = 7;
+  string description = 8;
+  optional double rating = 9;
+  google.protobuf.Timestamp createdAt = 10;
+  BrandResponse brand = 11;
+  CategoryResponse category = 12;
 }
 
 message GetProductByIdRequest {
-  int32 id = 1;
+  string id = 1;
+}
+
+message GetProductBySlugRequest {
+  string slug = 1;
 }
 
 message GetProductsByIdsRequest {
-  repeated int32 ids = 1;
+  repeated string ids = 1;
 }
 
 message GetProductsPaginationRequest {
@@ -45,12 +52,13 @@ message GetFeaturedProductsRequest {
 }
 
 message GetProductsByFilterRequest {
-  optional int32 brandId = 1;
-  optional int32 categoryId = 2;
+  optional string brandSlug = 1;
+  optional string categorySlug = 2;
   GetProductsPaginationRequest pagination = 3;
 }
 
 service ProductsService {
+  rpc GetProductBySlug(GetProductBySlugRequest) returns (ProductResponse);
   rpc GetProductById(GetProductByIdRequest) returns (ProductResponse);
   rpc GetProductsByIds(GetProductsByIdsRequest) returns (stream ProductResponse);
   rpc GetProductsByFilter(GetProductsByFilterRequest) returns (ProductsResponse);

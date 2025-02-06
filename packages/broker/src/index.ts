@@ -1,4 +1,5 @@
 export * from './broker.constants';
+export * from './broker.events-map';
 export * from './broker.helpers';
 export * from './broker.module';
 export * from './broker.service';

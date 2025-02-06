@@ -19,7 +19,7 @@ import { OrdersController } from './orders.controller';
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {
-          url: config.getOrThrow('GRPC_SERVER_URL_ORDERS'),
+          url: config.getOrThrow('GRPC_SERVICE_URL_ORDER'),
         };
       },
     }),

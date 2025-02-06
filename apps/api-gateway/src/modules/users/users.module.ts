@@ -12,7 +12,7 @@ import { USERS_PACKAGE_NAME, USERS_SERVICE_NAME } from '@repo/grpc/proto/users';
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {
-          url: config.getOrThrow('GRPC_SERVER_URL_USERS'),
+          url: config.getOrThrow('GRPC_SERVICE_URL_USER'),
         };
       },
     }),

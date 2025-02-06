@@ -14,7 +14,7 @@ async function bootstrap(): Promise<void> {
   const config = app.get(ConfigService);
 
   connectGrpcMicroservice(app, {
-    url: config.getOrThrow('GRPC_SERVER_URL_USERS'),
+    url: config.getOrThrow('GRPC_SERVICE_URL_USER'),
     packageName: USERS_PACKAGE_NAME,
   });
 

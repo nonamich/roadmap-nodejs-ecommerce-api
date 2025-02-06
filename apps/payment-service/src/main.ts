@@ -16,7 +16,7 @@ async function bootstrap(): Promise<void> {
   const config = app.get(ConfigService);
 
   connectGrpcMicroservice(app, {
-    url: config.getOrThrow('GRPC_SERVER_URL_PAYMENTS'),
+    url: config.getOrThrow('GRPC_SERVICE_URL_PAYMENT'),
     packageName: PAYMENTS_PACKAGE_NAME,
   });
 

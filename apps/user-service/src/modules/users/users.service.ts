@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { BrokerService } from '@repo/broker';
 import { GrpcUnauthenticatedException } from '@repo/grpc/nest';
 import { UsersServiceController } from '@repo/grpc/proto/users';
 import {
@@ -14,6 +15,7 @@ export class UsersService implements UsersServiceController {
   constructor(
     private readonly repository: UsersRepository,
     private readonly passwordService: PasswordService,
+    private readonly brokerService: BrokerService,
   ) {}
 
   async createUser({
@@ -28,6 +30,12 @@ export class UsersService implements UsersServiceController {
       email,
       name,
       password: hashedPassword,
+    });
+
+    this.brokerService.emit('user.registered', {
+      id: user.id,
+      email: user.email,
+      name: user.name,
     });
 
     return user;

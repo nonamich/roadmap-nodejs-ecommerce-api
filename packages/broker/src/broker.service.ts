@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientMqtt } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { BROKER_OPTIONS_TOKEN } from './broker.constants';
-import { BrokerEventsMap } from './types/broker.events-map';
+import { BrokerEventsMap } from './broker.events-map';
 import { BrokerMicroserviceModuleOptions } from './types/broker.types';
 
 @Injectable()

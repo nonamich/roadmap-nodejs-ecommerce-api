@@ -1,6 +1,7 @@
 import { CategoryResponse } from '@repo/grpc/proto/products';
 
 export class CategoryResponseDto implements CategoryResponse {
-  id!: number;
+  id!: string;
   name!: string;
+  slug!: string;
 }

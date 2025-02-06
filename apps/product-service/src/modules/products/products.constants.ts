@@ -1,4 +1,6 @@
 import { Prisma } from 'prisma-client';
+import { BRAND_SELECT } from '../brands/brands.constants';
+import { CATEGORY_SELECT } from '../categories/categories.constants';
 
 export const PRODUCT_SELECT = {
   id: true,
@@ -11,16 +13,11 @@ export const PRODUCT_SELECT = {
   price: true,
   rating: true,
   title: true,
+  slug: true,
   brand: {
-    select: {
-      id: true,
-      name: true,
-    },
+    select: BRAND_SELECT,
   },
   category: {
-    select: {
-      id: true,
-      name: true,
-    },
+    select: CATEGORY_SELECT,
   },
 } as const satisfies Prisma.ProductSelect;

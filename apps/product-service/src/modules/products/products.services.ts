@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { GrpcNotFoundException } from '@repo/grpc/nest';
+import { GetProductBySlugRequest } from '@repo/grpc/proto/products';
 import { from, mergeAll, Observable } from 'rxjs';
 import {
   GetFeaturedProductsRequestDto,
@@ -66,16 +67,20 @@ export class ProductsService {
 
   async getProductsByFilter({
     pagination,
-    brandId,
-    categoryId,
+    brandSlug,
+    categorySlug,
   }: GetProductsByFilterRequestDto): Promise<ProductsResponseDto> {
     const where = {
-      brandId,
-      categoryId,
+      brand: {
+        slug: brandSlug,
+      },
+      category: {
+        slug: categorySlug,
+      },
     };
     const [products, totalCount] = await Promise.all([
       this.productsRepository.findMany({
-        where: where,
+        where,
         take: pagination.limit,
         skip: Math.floor(pagination.limit * pagination.page - pagination.limit),
       }),
@@ -95,7 +100,7 @@ export class ProductsService {
     };
   }
 
-  async decrementalAmount(productId: number, quantity: number): Promise<void> {
+  async decrementalAmount(productId: string, quantity: number): Promise<void> {
     await this.productsRepository.update({
       data: {
         amount: {
@@ -105,6 +110,14 @@ export class ProductsService {
       where: {
         id: productId,
       },
+    });
+  }
+
+  async getProductBySlug({
+    slug,
+  }: GetProductBySlugRequest): Promise<ProductEntity> {
+    return await this.productsRepository.findUniqueOrThrow({
+      slug,
     });
   }
 }

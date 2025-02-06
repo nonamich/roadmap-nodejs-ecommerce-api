@@ -1,9 +1,9 @@
 import { GetProductsByFilterRequest } from '@repo/grpc/proto/products';
 import { Type } from 'class-transformer';
 import {
-  IsInt,
   IsNotEmptyObject,
   IsOptional,
+  IsString,
   ValidateNested,
 } from 'class-validator';
 import { GetProductsPaginationRequestDto } from './get-products-pagination.request.dto';
@@ -11,15 +11,13 @@ import { GetProductsPaginationRequestDto } from './get-products-pagination.reque
 export class GetProductsByFilterRequestDto
   implements GetProductsByFilterRequest
 {
-  @IsInt()
-  @Type(() => Number)
+  @IsString()
   @IsOptional()
-  categoryId?: number;
+  categorySlug?: string;
 
-  @IsInt()
-  @Type(() => Number)
+  @IsString()
   @IsOptional()
-  brandId?: number;
+  brandSlug?: string;
 
   @IsNotEmptyObject()
   @ValidateNested()

@@ -9,10 +9,10 @@ datasource db {
 }
 
 model Product {
-  id              Int              @id @default(autoincrement())
+  id              String           @id @default(uuid())
   amount          Int
-  brandId         Int
-  categoryId      Int
+  brandId         String
+  categoryId      String
   createdAt       DateTime         @default(now())
   image           String
   description     String
@@ -22,26 +22,28 @@ model Product {
   category        Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   brand           Brand            @relation(fields: [brandId], references: [id], onDelete: Cascade)
   featuredProduct FeaturedProduct?
+  slug            String           @unique
 
-  @@index([price])
-  @@index([rating])
   @@index([brandId])
   @@index([categoryId])
+  @@index([brandId, categoryId])
 }
 
 model FeaturedProduct {
-  productId Int     @unique
+  productId String  @unique
   Product   Product @relation(fields: [productId], references: [id])
 }
 
 model Category {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
+  id       String    @id @default(nanoid())
+  name     String
+  slug     String    @unique
   products Product[]
 }
 
 model Brand {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
+  id       String    @id @default(nanoid())
+  name     String
+  slug     String    @unique
   products Product[]
 }

@@ -12,27 +12,27 @@ import { Empty } from "./google/protobuf/empty";
 export const protobufPackage = "carts";
 
 export interface GetCartRequest {
-  userId: number;
+  userId: string;
 }
 
 export interface AddToCartRequest {
-  productId: number;
+  productId: string;
   quantity: number;
-  userId: number;
+  userId: string;
 }
 
 export interface RemoveFromCartRequest {
-  userId: number;
-  productId: number;
+  userId: string;
+  productId: string;
 }
 
 export interface RemoveCartRequest {
-  userId: number;
+  userId: string;
 }
 
 export interface CartItemResponse {
   quantity: number;
-  productId: number;
+  productId: string;
   price: number;
 }
 

@@ -3,8 +3,8 @@ CREATE TYPE "OrderStatus" AS ENUM ('WAITING_FOR_PAYMENT', 'COMPLETED');
 
 -- CreateTable
 CREATE TABLE "Order" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "userId" TEXT NOT NULL,
     "intentId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "status" "OrderStatus" NOT NULL DEFAULT 'WAITING_FOR_PAYMENT',
@@ -14,8 +14,8 @@ CREATE TABLE "Order" (
 
 -- CreateTable
 CREATE TABLE "OrderItem" (
-    "orderId" INTEGER NOT NULL,
-    "productId" INTEGER NOT NULL,
+    "orderId" UUID NOT NULL,
+    "productId" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "price" DOUBLE PRECISION NOT NULL
 );

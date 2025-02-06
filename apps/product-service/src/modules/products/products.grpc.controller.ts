@@ -10,11 +10,11 @@ import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import {
   GetFeaturedProductsRequestDto,
   GetProductByIdRequestDto,
+  GetProductBySlugRequestDto,
   GetProductsByFilterRequestDto,
   GetProductsByIdsRequestDto,
 } from './dto/requests';
-import { ProductsResponseDto } from './dto/responses';
-import { ProductEntity } from './entities/product.entity';
+import { ProductResponseDto, ProductsResponseDto } from './dto/responses';
 import { ProductsService } from './products.services';
 
 @GrpcService()
@@ -25,13 +25,13 @@ export class ProductsGrpcController implements ProductsServiceController {
 
   async getProductById(
     @GrpcPayload() dto: GetProductByIdRequestDto,
-  ): Promise<ProductEntity> {
+  ): Promise<ProductResponseDto> {
     return await this.service.getProductById(dto);
   }
 
   getProductsByIds(
     @GrpcPayload() dto: GetProductsByIdsRequestDto,
-  ): Observable<ProductEntity> {
+  ): Observable<ProductResponseDto> {
     return this.service.getProductsByIds(dto);
   }
 
@@ -45,5 +45,11 @@ export class ProductsGrpcController implements ProductsServiceController {
     @GrpcPayload() dto: GetProductsByFilterRequestDto,
   ): Promise<ProductsResponseDto> {
     return this.service.getProductsByFilter(dto);
+  }
+
+  async getProductBySlug(
+    dto: GetProductBySlugRequestDto,
+  ): Promise<ProductResponseDto> {
+    return await this.service.getProductBySlug(dto);
   }
 }

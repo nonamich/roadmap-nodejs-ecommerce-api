@@ -19,7 +19,7 @@ async function bootstrap(): Promise<void> {
   });
 
   connectGrpcMicroservice(app, {
-    url: config.getOrThrow('GRPC_SERVER_URL_ORDERS'),
+    url: config.getOrThrow('GRPC_SERVICE_URL_ORDER'),
     packageName: ORDERS_PACKAGE_NAME,
   });
 

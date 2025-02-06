@@ -17,7 +17,7 @@ import { ProductsController } from './products.controller';
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {
-          url: config.getOrThrow('GRPC_SERVER_URL_PRODUCTS'),
+          url: config.getOrThrow('GRPC_SERVICE_URL_PRODUCT'),
         };
       },
     }),

@@ -9,8 +9,8 @@ datasource db {
 }
 
 model CartItem {
-  productId Int
-  userId    Int
+  productId String
+  userId    String
   quantity  Int
   price     Float
 

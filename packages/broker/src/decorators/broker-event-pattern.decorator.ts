@@ -1,5 +1,5 @@
 import { EventPattern, Transport } from '@nestjs/microservices';
-import { BrokerEventsMap } from '../types';
+import { BrokerEventsMap } from '../broker.events-map';
 
 export function BrokerEventPattern(
   pattern: keyof BrokerEventsMap,

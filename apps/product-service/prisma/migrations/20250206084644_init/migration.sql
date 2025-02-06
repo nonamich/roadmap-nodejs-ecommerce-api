@@ -1,45 +1,45 @@
 -- CreateTable
 CREATE TABLE "Product" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "amount" INTEGER NOT NULL,
-    "brandId" INTEGER NOT NULL,
-    "categoryId" INTEGER NOT NULL,
+    "brandId" TEXT NOT NULL,
+    "categoryId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "image" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "rating" DOUBLE PRECISION,
     "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "FeaturedProduct" (
-    "productId" INTEGER NOT NULL
+    "productId" TEXT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "Category" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
 
     CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Brand" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
 
     CONSTRAINT "Brand_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE INDEX "Product_price_idx" ON "Product"("price");
-
--- CreateIndex
-CREATE INDEX "Product_rating_idx" ON "Product"("rating");
+CREATE UNIQUE INDEX "Product_slug_key" ON "Product"("slug");
 
 -- CreateIndex
 CREATE INDEX "Product_brandId_idx" ON "Product"("brandId");
@@ -48,13 +48,16 @@ CREATE INDEX "Product_brandId_idx" ON "Product"("brandId");
 CREATE INDEX "Product_categoryId_idx" ON "Product"("categoryId");
 
 -- CreateIndex
+CREATE INDEX "Product_brandId_categoryId_idx" ON "Product"("brandId", "categoryId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "FeaturedProduct_productId_key" ON "FeaturedProduct"("productId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Category_name_key" ON "Category"("name");
+CREATE UNIQUE INDEX "Category_slug_key" ON "Category"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Brand_name_key" ON "Brand"("name");
+CREATE UNIQUE INDEX "Brand_slug_key" ON "Brand"("slug");
 
 -- AddForeignKey
 ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;

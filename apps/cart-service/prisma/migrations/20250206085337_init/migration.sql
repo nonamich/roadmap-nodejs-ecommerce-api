@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "CartItem" (
-    "productId" INTEGER NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "productId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "price" DOUBLE PRECISION NOT NULL
 );

@@ -12,21 +12,24 @@ import { Observable } from "rxjs";
 export const protobufPackage = "products";
 
 export interface CategoryResponse {
-  id: number;
+  id: string;
+  slug: string;
   name: string;
 }
 
 export interface BrandResponse {
-  id: number;
+  id: string;
+  slug: string;
   name: string;
 }
 
 export interface ProductResponse {
-  id: number;
+  id: string;
   amount: number;
   image: string;
   price: number;
   title: string;
+  slug: string;
   description: string;
   rating?: number | null | undefined;
   createdAt: Date;
@@ -35,11 +38,15 @@ export interface ProductResponse {
 }
 
 export interface GetProductByIdRequest {
-  id: number;
+  id: string;
+}
+
+export interface GetProductBySlugRequest {
+  slug: string;
 }
 
 export interface GetProductsByIdsRequest {
-  ids: number[];
+  ids: string[];
 }
 
 export interface GetProductsPaginationRequest {
@@ -52,8 +59,8 @@ export interface GetFeaturedProductsRequest {
 }
 
 export interface GetProductsByFilterRequest {
-  brandId?: number | null | undefined;
-  categoryId?: number | null | undefined;
+  brandSlug?: string | null | undefined;
+  categorySlug?: string | null | undefined;
   pagination: GetProductsPaginationRequest;
 }
 
@@ -80,6 +87,8 @@ wrappers[".google.protobuf.Timestamp"] = {
 } as any;
 
 export interface ProductsServiceClient {
+  getProductBySlug(request: GetProductBySlugRequest): Observable<ProductResponse>;
+
   getProductById(request: GetProductByIdRequest): Observable<ProductResponse>;
 
   getProductsByIds(request: GetProductsByIdsRequest): Observable<ProductResponse>;
@@ -90,6 +99,10 @@ export interface ProductsServiceClient {
 }
 
 export interface ProductsServiceController {
+  getProductBySlug(
+    request: GetProductBySlugRequest,
+  ): Promise<ProductResponse> | Observable<ProductResponse> | ProductResponse;
+
   getProductById(
     request: GetProductByIdRequest,
   ): Promise<ProductResponse> | Observable<ProductResponse> | ProductResponse;
@@ -107,7 +120,13 @@ export interface ProductsServiceController {
 
 export function ProductsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["getProductById", "getProductsByIds", "getProductsByFilter", "getFeaturedProducts"];
+    const grpcMethods: string[] = [
+      "getProductBySlug",
+      "getProductById",
+      "getProductsByIds",
+      "getProductsByFilter",
+      "getFeaturedProducts",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("ProductsService", method)(constructor.prototype[method], method, descriptor);

@@ -3,7 +3,7 @@ import { IsInt, ValidateNested } from 'class-validator';
 
 export class OrderItemsCreatedEventDto {
   @IsInt()
-  productId!: number;
+  productId!: string;
 
   @IsInt()
   quantity!: number;
@@ -11,10 +11,10 @@ export class OrderItemsCreatedEventDto {
 
 export class OrderCreatedEventDto {
   @IsInt()
-  orderId!: number;
+  orderId!: string;
 
   @IsInt()
-  userId!: number;
+  userId!: string;
 
   @Type(() => OrderItemsCreatedEventDto)
   @ValidateNested()

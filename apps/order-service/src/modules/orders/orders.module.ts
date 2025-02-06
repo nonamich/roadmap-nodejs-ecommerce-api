@@ -22,7 +22,7 @@ import { OrdersService } from './orders.service';
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {
-          url: config.getOrThrow('GRPC_SERVER_URL_CARTS'),
+          url: config.getOrThrow('GRPC_SERVICE_URL_CART'),
         };
       },
     }),
@@ -32,7 +32,7 @@ import { OrdersService } from './orders.service';
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {
-          url: config.getOrThrow('GRPC_SERVER_URL_PAYMENTS'),
+          url: config.getOrThrow('GRPC_SERVICE_URL_PAYMENT'),
         };
       },
     }),

@@ -3,10 +3,11 @@ import { BrandEntity } from '~/modules/brands/entities';
 import { CategoryEntity } from '~/modules/categories/entities';
 
 export class ProductEntity implements Product {
-  id!: number;
+  id!: string;
   amount!: number;
-  brandId!: number;
-  categoryId!: number;
+  slug!: string;
+  brandId!: string;
+  categoryId!: string;
   createdAt!: Date;
   image!: string;
   description!: string;

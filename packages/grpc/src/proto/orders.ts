@@ -21,15 +21,15 @@ export namespace OrderStatus {
 }
 
 export interface CreateOrderRequest {
-  userId: number;
+  userId: string;
 }
 
 export interface GetOrderRequest {
-  orderId: number;
+  orderId: string;
 }
 
 export interface GetOrdersRequest {
-  userId: number;
+  userId: string;
 }
 
 export interface GetOrderByIntentIdRequest {
@@ -41,15 +41,15 @@ export interface OrdersResponse {
 }
 
 export interface OrderItemResponse {
-  productId: number;
+  productId: string;
   quantity: number;
   price: number;
 }
 
 export interface OrderResponse {
-  id: number;
+  id: string;
   status: OrderStatus;
-  userId: number;
+  userId: string;
   intentId: string;
   createdAt: Date;
   items: OrderItemResponse[];

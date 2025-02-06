@@ -1,6 +1,7 @@
 import { Brand } from 'prisma-client';
 
 export class BrandEntity implements Brand {
-  id!: number;
+  id!: string;
   name!: string;
+  slug!: string;
 }

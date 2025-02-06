@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { PrismaClient } from 'prisma-client';
+import { Prisma, PrismaClient } from 'prisma-client';
 
 const prisma = new PrismaClient();
 
@@ -14,29 +14,42 @@ async function main(): Promise<void> {
   const categories = await prisma.category.createManyAndReturn({
     data: faker.helpers
       .uniqueArray(faker.commerce.department, 20)
-      .map((name) => ({ name })),
+      .map((name) => ({
+        name,
+        slug: faker.helpers.slugify(name).toLowerCase(),
+      })),
   });
   const brands = await prisma.brand.createManyAndReturn({
-    data: faker.helpers
-      .uniqueArray(faker.company.name, 30)
-      .map((name) => ({ name })),
+    data: faker.helpers.uniqueArray(faker.company.name, 30).map((name) => ({
+      name,
+      slug: faker.helpers.slugify(name).toLowerCase(),
+    })),
   });
 
-  const productsData = faker.helpers.multiple(
+  const productsData = faker.helpers.multiple<Prisma.ProductCreateManyInput>(
     () => {
+      const title = faker.commerce.productName();
+      const category = faker.helpers.arrayElement(categories);
+      const brand = faker.helpers.arrayElement(brands);
+      const randomString = faker.string.alpha({ length: { min: 5, max: 10 } });
+      const slug = faker.helpers
+        .slugify(`${title}-${randomString}`)
+        .toLowerCase();
+
       return {
         amount: faker.number.int({
           max: 100,
           min: 0,
         }),
-        categoryId: faker.helpers.arrayElement(categories).id,
-        brandId: faker.helpers.arrayElement(brands).id,
+        categoryId: category.id,
+        brandId: brand.id,
         price: faker.number.float({
           max: 3000,
           min: 10,
           fractionDigits: 3,
         }),
-        title: faker.commerce.productName(),
+        title,
+        slug,
         description: `${faker.commerce.productDescription()}\n${faker.lorem.paragraph({ min: 2, max: 6 })}`,
         rating: faker.number.float({ min: 0, max: 1 }),
         image: faker.image.urlPicsumPhotos({
