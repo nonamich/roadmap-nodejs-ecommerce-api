@@ -1,4 +1,4 @@
-import { GetIntentRequest } from '@repo/grpc/proto/payments';
+import { GetIntentRequest } from '@repo/grpc/pb/payment';
 import { IsString } from 'class-validator';
 
 export class GetIntentRequestDto implements GetIntentRequest {

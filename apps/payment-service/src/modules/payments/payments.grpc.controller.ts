@@ -2,19 +2,19 @@ import { UseFilters } from '@nestjs/common';
 import { GrpcService } from '@nestjs/microservices';
 import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
 import {
-  PaymentsServiceController,
-  PaymentsServiceControllerMethods,
-} from '@repo/grpc/proto/payments';
+  PaymentServiceController,
+  PaymentServiceControllerMethods,
+} from '@repo/grpc/pb/payment';
 import { CreateIntentRequestDto, GetIntentRequestDto } from './dto/requests';
 import { IntentResponseDto } from './dto/responses';
 import { StripeGrpcExceptionFilter } from './filters/stripe-grpc-exception.filter';
-import { PaymentsService } from './payments.service';
+import { PaymentService } from './payments.service';
 
 @GrpcService()
-@PaymentsServiceControllerMethods()
+@PaymentServiceControllerMethods()
 @UseFilters(GrpcToGrpcExceptionFilter, StripeGrpcExceptionFilter)
-export class PaymentsGrpcController implements PaymentsServiceController {
-  constructor(private readonly service: PaymentsService) {}
+export class PaymentsGrpcController implements PaymentServiceController {
+  constructor(private readonly service: PaymentService) {}
 
   async createIntent(
     @GrpcPayload() dto: CreateIntentRequestDto,

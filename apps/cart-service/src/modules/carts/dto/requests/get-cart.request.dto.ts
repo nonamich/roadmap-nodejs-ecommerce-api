@@ -1,7 +1,7 @@
-import { GetCartRequest } from '@repo/grpc/proto/carts';
-import { IsInt } from 'class-validator';
+import { GetCartRequest } from '@repo/grpc/pb/cart';
+import { IsString } from 'class-validator';
 
 export class GetCartRequestDto implements GetCartRequest {
-  @IsInt()
-  userId!: number;
+  @IsString()
+  userId!: string;
 }

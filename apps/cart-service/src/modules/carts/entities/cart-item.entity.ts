@@ -1,8 +1,8 @@
 import { CartItem } from 'prisma-client';
 
 export class CartItemEntity implements CartItem {
-  productId!: number;
+  productId!: string;
   quantity!: number;
   price!: number;
-  userId!: number;
+  userId!: string;
 }

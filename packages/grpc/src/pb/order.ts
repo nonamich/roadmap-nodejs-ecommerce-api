@@ -2,14 +2,14 @@
 // versions:
 //   protoc-gen-ts_proto  v1.0.0
 //   protoc               v3.21.12
-// source: orders.proto
+// source: order.proto
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
 
-export const protobufPackage = "orders";
+export const protobufPackage = "order";
 
 export const OrderStatus = { WAITING_FOR_PAYMENT: "WAITING_FOR_PAYMENT", COMPLETED: "COMPLETED" } as const;
 
@@ -55,7 +55,7 @@ export interface OrderResponse {
   items: OrderItemResponse[];
 }
 
-export const ORDERS_PACKAGE_NAME = "orders";
+export const ORDER_PACKAGE_NAME = "order";
 
 wrappers[".google.protobuf.Timestamp"] = {
   fromObject(value: Date) {
@@ -66,7 +66,7 @@ wrappers[".google.protobuf.Timestamp"] = {
   },
 } as any;
 
-export interface OrdersServiceClient {
+export interface OrderServiceClient {
   createOrder(request: CreateOrderRequest): Observable<OrderResponse>;
 
   getOrder(request: GetOrderRequest): Observable<OrderResponse>;
@@ -76,7 +76,7 @@ export interface OrdersServiceClient {
   getOrders(request: GetOrdersRequest): Observable<OrdersResponse>;
 }
 
-export interface OrdersServiceController {
+export interface OrderServiceController {
   createOrder(request: CreateOrderRequest): Promise<OrderResponse> | Observable<OrderResponse> | OrderResponse;
 
   getOrder(request: GetOrderRequest): Promise<OrderResponse> | Observable<OrderResponse> | OrderResponse;
@@ -88,19 +88,19 @@ export interface OrdersServiceController {
   getOrders(request: GetOrdersRequest): Promise<OrdersResponse> | Observable<OrdersResponse> | OrdersResponse;
 }
 
-export function OrdersServiceControllerMethods() {
+export function OrderServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = ["createOrder", "getOrder", "getOrderByIntentId", "getOrders"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("OrdersService", method)(constructor.prototype[method], method, descriptor);
+      GrpcMethod("OrderService", method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("OrdersService", method)(constructor.prototype[method], method, descriptor);
+      GrpcStreamMethod("OrderService", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const ORDERS_SERVICE_NAME = "OrdersService";
+export const ORDER_SERVICE_NAME = "OrderService";

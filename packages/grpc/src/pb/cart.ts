@@ -2,14 +2,14 @@
 // versions:
 //   protoc-gen-ts_proto  v1.0.0
 //   protoc               v3.21.12
-// source: carts.proto
+// source: cart.proto
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 import { Empty } from "./google/protobuf/empty";
 
-export const protobufPackage = "carts";
+export const protobufPackage = "cart";
 
 export interface GetCartRequest {
   userId: string;
@@ -42,9 +42,9 @@ export interface CartResponse {
   totalPrice: number;
 }
 
-export const CARTS_PACKAGE_NAME = "carts";
+export const CART_PACKAGE_NAME = "cart";
 
-export interface CartsServiceClient {
+export interface CartServiceClient {
   addToCart(request: AddToCartRequest): Observable<CartResponse>;
 
   getCart(request: GetCartRequest): Observable<CartResponse>;
@@ -54,7 +54,7 @@ export interface CartsServiceClient {
   removeCart(request: RemoveCartRequest): Observable<Empty>;
 }
 
-export interface CartsServiceController {
+export interface CartServiceController {
   addToCart(request: AddToCartRequest): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
 
   getCart(request: GetCartRequest): Promise<CartResponse> | Observable<CartResponse> | CartResponse;
@@ -64,19 +64,19 @@ export interface CartsServiceController {
   removeCart(request: RemoveCartRequest): void;
 }
 
-export function CartsServiceControllerMethods() {
+export function CartServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = ["addToCart", "getCart", "removeFromCart", "removeCart"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("CartsService", method)(constructor.prototype[method], method, descriptor);
+      GrpcMethod("CartService", method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("CartsService", method)(constructor.prototype[method], method, descriptor);
+      GrpcStreamMethod("CartService", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const CARTS_SERVICE_NAME = "CartsService";
+export const CART_SERVICE_NAME = "CartService";

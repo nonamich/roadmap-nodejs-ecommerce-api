@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GrpcClientModule } from '@repo/grpc/nest';
-import { USERS_PACKAGE_NAME, USERS_SERVICE_NAME } from '@repo/grpc/proto/users';
+import { USER_PACKAGE_NAME, USER_SERVICE_NAME } from '@repo/grpc/pb/user';
 
 @Module({
   exports: [GrpcClientModule],
   imports: [
     GrpcClientModule.registerAsync({
-      packageName: USERS_PACKAGE_NAME,
-      serviceNameAndToken: USERS_SERVICE_NAME,
+      packageName: USER_PACKAGE_NAME,
+      serviceNameAndToken: USER_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {

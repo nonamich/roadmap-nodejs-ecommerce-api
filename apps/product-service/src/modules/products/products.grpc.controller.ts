@@ -2,9 +2,9 @@ import { UseFilters } from '@nestjs/common';
 import { GrpcService } from '@nestjs/microservices';
 import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
 import {
-  ProductsServiceController,
-  ProductsServiceControllerMethods,
-} from '@repo/grpc/proto/products';
+  ProductServiceController,
+  ProductServiceControllerMethods,
+} from '@repo/grpc/pb/product';
 import { Observable } from 'rxjs';
 import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import {
@@ -15,13 +15,13 @@ import {
   GetProductsByIdsRequestDto,
 } from './dto/requests';
 import { ProductResponseDto, ProductsResponseDto } from './dto/responses';
-import { ProductsService } from './products.services';
+import { ProductService } from './products.services';
 
 @GrpcService()
-@ProductsServiceControllerMethods()
+@ProductServiceControllerMethods()
 @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-export class ProductsGrpcController implements ProductsServiceController {
-  constructor(private readonly service: ProductsService) {}
+export class ProductsGrpcController implements ProductServiceController {
+  constructor(private readonly service: ProductService) {}
 
   async getProductById(
     @GrpcPayload() dto: GetProductByIdRequestDto,

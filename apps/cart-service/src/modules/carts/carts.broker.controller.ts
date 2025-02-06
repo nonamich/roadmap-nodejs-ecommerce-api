@@ -4,11 +4,11 @@ import {
   BrokerPayload,
   OrderCreatedEventDto,
 } from '@repo/broker';
-import { CartsService } from './carts.service';
+import { CartService } from './carts.service';
 
 @Controller()
 export class CartsBrokerController {
-  constructor(private readonly service: CartsService) {}
+  constructor(private readonly service: CartService) {}
 
   @BrokerEventPattern('order.created')
   async onOrderCreated(

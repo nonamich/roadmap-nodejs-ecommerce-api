@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GrpcClientModule } from '@repo/grpc/nest';
 import {
-  ORDERS_PACKAGE_NAME,
-  ORDERS_SERVICE_NAME,
-} from '@repo/grpc/proto/orders';
+  ORDER_PACKAGE_NAME,
+  ORDER_SERVICE_NAME,
+} from '@repo/grpc/pb/order';
 import { ProductsModule } from '~/modules/products/products.module';
 import { OrdersController } from './orders.controller';
 
@@ -14,8 +14,8 @@ import { OrdersController } from './orders.controller';
   imports: [
     ProductsModule,
     GrpcClientModule.registerAsync({
-      packageName: ORDERS_PACKAGE_NAME,
-      serviceNameAndToken: ORDERS_SERVICE_NAME,
+      packageName: ORDER_PACKAGE_NAME,
+      serviceNameAndToken: ORDER_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {

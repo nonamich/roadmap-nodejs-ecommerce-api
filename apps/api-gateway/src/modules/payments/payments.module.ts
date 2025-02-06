@@ -2,16 +2,16 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GrpcClientModule } from '@repo/grpc/nest';
 import {
-  PAYMENTS_PACKAGE_NAME,
-  PAYMENTS_SERVICE_NAME,
-} from '@repo/grpc/proto/payments';
+  PAYMENT_PACKAGE_NAME,
+  PAYMENT_SERVICE_NAME,
+} from '@repo/grpc/pb/payment';
 
 @Module({
   exports: [GrpcClientModule],
   imports: [
     GrpcClientModule.registerAsync({
-      packageName: PAYMENTS_PACKAGE_NAME,
-      serviceNameAndToken: PAYMENTS_SERVICE_NAME,
+      packageName: PAYMENT_PACKAGE_NAME,
+      serviceNameAndToken: PAYMENT_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {

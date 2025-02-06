@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package users;
+package user;
 
 message CreateUserRequest {
   string name = 1;
@@ -13,7 +13,7 @@ message GetUserByCredentialsRequest {
   string password = 2;
 }
 
-service UsersService {
+service UserService {
   rpc CreateUser(CreateUserRequest) returns (UserResponse);
   rpc GetUserByCredentials(GetUserByCredentialsRequest) returns (UserResponse);
 }

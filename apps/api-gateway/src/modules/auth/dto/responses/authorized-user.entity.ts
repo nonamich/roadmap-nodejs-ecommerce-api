@@ -1,6 +1,6 @@
 import { PickType } from '@nestjs/swagger';
 
-import { BaseAuthDto } from '../dto';
+import { BaseAuthDto } from '../requests';
 
 export class AuthorizedUserEntity extends PickType(BaseAuthDto, [
   'id',

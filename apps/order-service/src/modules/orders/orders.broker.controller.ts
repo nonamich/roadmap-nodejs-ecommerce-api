@@ -4,16 +4,16 @@ import {
   BrokerPayload,
   PaymentSucceededEventDto,
 } from '@repo/broker';
-import { OrdersService } from './orders.service';
+import { OrderService } from './orders.service';
 
 @Controller()
 export class OrdersBrokerController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(private readonly orderService: OrderService) {}
 
   @BrokerEventPattern('payment.succeeded')
   async onSucceededIntentPayment(
     @BrokerPayload() { intentId }: PaymentSucceededEventDto,
   ): Promise<void> {
-    await this.ordersService.completeOrder({ intentId });
+    await this.orderService.completeOrder({ intentId });
   }
 }

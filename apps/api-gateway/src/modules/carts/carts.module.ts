@@ -1,20 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GrpcClientModule } from '@repo/grpc/nest';
-import { CARTS_PACKAGE_NAME, CARTS_SERVICE_NAME } from '@repo/grpc/proto/carts';
+import { CART_PACKAGE_NAME, CART_SERVICE_NAME } from '@repo/grpc/pb/cart';
 import { ProductsModule } from '../products/products.module';
 import { CartsController } from './carts.controller';
-import { CartsService } from './carts.service';
+import { CartService } from './carts.service';
 
 @Module({
   controllers: [CartsController],
   exports: [GrpcClientModule],
-  providers: [CartsService],
+  providers: [CartService],
   imports: [
     ProductsModule,
     GrpcClientModule.registerAsync({
-      packageName: CARTS_PACKAGE_NAME,
-      serviceNameAndToken: CARTS_SERVICE_NAME,
+      packageName: CART_PACKAGE_NAME,
+      serviceNameAndToken: CART_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { GrpcNotFoundException } from '@repo/grpc/nest';
-import { GetProductBySlugRequest } from '@repo/grpc/proto/products';
+import { GetProductBySlugRequest } from '@repo/grpc/pb/product';
 import { from, mergeAll, Observable } from 'rxjs';
 import {
   GetFeaturedProductsRequestDto,
@@ -13,7 +13,7 @@ import { ProductEntity } from './entities/product.entity';
 import { ProductsRepository } from './products.repository';
 
 @Injectable()
-export class ProductsService {
+export class ProductService {
   constructor(private readonly productsRepository: ProductsRepository) {}
 
   async getProductById({

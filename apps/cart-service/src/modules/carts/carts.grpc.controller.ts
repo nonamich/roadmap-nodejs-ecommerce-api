@@ -2,11 +2,11 @@ import { UseFilters } from '@nestjs/common';
 import { GrpcService } from '@nestjs/microservices';
 import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
 import {
-  CartsServiceController,
-  CartsServiceControllerMethods,
-} from '@repo/grpc/proto/carts';
+  CartServiceController,
+  CartServiceControllerMethods,
+} from '@repo/grpc/pb/cart';
 import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
-import { CartsService } from './carts.service';
+import { CartService } from './carts.service';
 import {
   AddToCartRequestDto,
   GetCartRequestDto,
@@ -16,10 +16,10 @@ import {
 import { CartResponseDto } from './dto/responses/cart.response.dto';
 
 @GrpcService()
-@CartsServiceControllerMethods()
+@CartServiceControllerMethods()
 @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-export class CartsGrpcController implements CartsServiceController {
-  constructor(private readonly service: CartsService) {}
+export class CartsGrpcController implements CartServiceController {
+  constructor(private readonly service: CartService) {}
 
   async removeCart(@GrpcPayload() dto: RemoveCartRequestDto): Promise<void> {
     return this.service.removeCart(dto);

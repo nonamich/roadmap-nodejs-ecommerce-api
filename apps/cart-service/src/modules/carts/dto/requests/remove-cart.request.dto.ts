@@ -1,10 +1,10 @@
-import { RemoveFromCartRequest } from '@repo/grpc/proto/carts';
-import { IsInt } from 'class-validator';
+import { RemoveFromCartRequest } from '@repo/grpc/pb/cart';
+import { IsString } from 'class-validator';
 
 export class RemoveFromCartRequestDto implements RemoveFromCartRequest {
-  @IsInt()
-  userId!: number;
+  @IsString()
+  userId!: string;
 
-  @IsInt()
-  productId!: number;
+  @IsString()
+  productId!: string;
 }

@@ -1,11 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { connectBrokerMicroservice } from '@repo/broker';
-import {
-  connectGrpcMicroservice,
-  InternalDisabledLogger,
-} from '@repo/grpc/nest';
-import { ORDERS_PACKAGE_NAME } from '@repo/grpc/proto/orders';
+import { connectGrpcMicroservice } from '@repo/grpc/nest';
+import { ORDER_PACKAGE_NAME } from '@repo/grpc/pb/order';
+import { InternalDisabledLogger } from '@repo/shared';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
@@ -20,7 +18,7 @@ async function bootstrap(): Promise<void> {
 
   connectGrpcMicroservice(app, {
     url: config.getOrThrow('GRPC_SERVICE_URL_ORDER'),
-    packageName: ORDERS_PACKAGE_NAME,
+    packageName: ORDER_PACKAGE_NAME,
   });
 
   await app.startAllMicroservices();

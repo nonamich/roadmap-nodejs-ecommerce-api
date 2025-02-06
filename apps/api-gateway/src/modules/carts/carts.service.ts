@@ -1,31 +1,31 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   CartResponse,
-  CARTS_SERVICE_NAME,
-  CartsServiceClient,
-} from '@repo/grpc/proto/carts';
+  CART_SERVICE_NAME,
+  CartServiceClient,
+} from '@repo/grpc/pb/cart';
 import {
-  PRODUCTS_SERVICE_NAME,
-  ProductsServiceClient,
-} from '@repo/grpc/proto/products';
+  PRODUCT_SERVICE_NAME,
+  ProductServiceClient,
+} from '@repo/grpc/pb/product';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '../auth/auth.interface';
 import { AddToCartRequestDto } from './dto/requests';
 import { CartResponseDto } from './dto/responses';
 
 @Injectable()
-export class CartsService {
+export class CartService {
   constructor(
-    @Inject(CARTS_SERVICE_NAME)
-    private readonly cartsService: CartsServiceClient,
+    @Inject(CART_SERVICE_NAME)
+    private readonly cartService: CartServiceClient,
 
-    @Inject(PRODUCTS_SERVICE_NAME)
-    private readonly productsService: ProductsServiceClient,
+    @Inject(PRODUCT_SERVICE_NAME)
+    private readonly productService: ProductServiceClient,
   ) {}
 
   async getCart(user: AuthorizedUser): Promise<CartResponseDto> {
     const cart = await firstValueFrom(
-      this.cartsService.getCart({ userId: user.id }),
+      this.cartService.getCart({ userId: user.id }),
     );
 
     return await this.getCartWithProducts(cart);
@@ -37,7 +37,7 @@ export class CartsService {
     user: AuthorizedUser,
   ): Promise<CartResponseDto> {
     const cart = await firstValueFrom(
-      this.cartsService.addToCart({
+      this.cartService.addToCart({
         userId: user.id,
         productId,
         quantity,
@@ -52,7 +52,7 @@ export class CartsService {
     user: AuthorizedUser,
   ): Promise<CartResponseDto> {
     const cart = await firstValueFrom(
-      this.cartsService.removeFromCart({ userId: user.id, productId }),
+      this.cartService.removeFromCart({ userId: user.id, productId }),
     );
 
     return await this.getCartWithProducts(cart);
@@ -61,7 +61,7 @@ export class CartsService {
   async getCartWithProducts(cart: CartResponse): Promise<CartResponseDto> {
     const products = cart.items.length
       ? await firstValueFrom(
-          this.productsService
+          this.productService
             .getProductsByIds({
               ids: cart.items.map((item) => item.productId),
             })

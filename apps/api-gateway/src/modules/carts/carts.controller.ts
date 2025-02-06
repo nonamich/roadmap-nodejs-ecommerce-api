@@ -10,14 +10,14 @@ import {
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
 import { Auth, CurrentUser } from '~/modules/auth/decorators';
-import { CartsService } from './carts.service';
+import { CartService } from './carts.service';
 import { AddToCartRequestDto } from './dto/requests';
 import { CartResponseDto } from './dto/responses';
 
 @ApiTags('cart')
 @Controller('cart')
 export class CartsController {
-  constructor(private readonly service: CartsService) {}
+  constructor(private readonly service: CartService) {}
 
   @ApiOkResponse({ type: CartResponseDto })
   @Auth()

@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BrokerService } from '@repo/broker';
 import { GrpcInvalidArgumentException } from '@repo/grpc/nest';
-import { CARTS_SERVICE_NAME, CartsServiceClient } from '@repo/grpc/proto/carts';
-import { OrderStatus } from '@repo/grpc/proto/orders';
+import { CART_SERVICE_NAME, CartServiceClient } from '@repo/grpc/pb/cart';
+import { OrderStatus } from '@repo/grpc/pb/order';
 import {
-  PAYMENTS_SERVICE_NAME,
-  PaymentsServiceClient,
-} from '@repo/grpc/proto/payments';
+  PAYMENT_SERVICE_NAME,
+  PaymentServiceClient,
+} from '@repo/grpc/pb/payment';
 import { firstValueFrom } from 'rxjs';
 import {
   CompleteOrdersRequestDto,
@@ -19,13 +19,13 @@ import { OrderEntity } from './entities';
 import { OrdersRepository } from './orders.repository';
 
 @Injectable()
-export class OrdersService {
+export class OrderService {
   constructor(
-    @Inject(CARTS_SERVICE_NAME)
-    private readonly cartsService: CartsServiceClient,
+    @Inject(CART_SERVICE_NAME)
+    private readonly cartService: CartServiceClient,
 
-    @Inject(PAYMENTS_SERVICE_NAME)
-    private readonly paymentsService: PaymentsServiceClient,
+    @Inject(PAYMENT_SERVICE_NAME)
+    private readonly paymentService: PaymentServiceClient,
 
     private readonly repository: OrdersRepository,
     private readonly brokerService: BrokerService,
@@ -57,9 +57,9 @@ export class OrdersService {
   }
 
   async createOrder({ userId }: CreateOrderRequestDto): Promise<OrderEntity> {
-    const cart = await firstValueFrom(this.cartsService.getCart({ userId }));
+    const cart = await firstValueFrom(this.cartService.getCart({ userId }));
     const intent = await firstValueFrom(
-      this.paymentsService.createIntent({
+      this.paymentService.createIntent({
         amountInCent: this.priceToCent(cart.totalPrice),
       }),
     );

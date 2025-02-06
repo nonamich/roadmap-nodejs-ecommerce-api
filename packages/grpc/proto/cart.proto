@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package carts;
+package cart;
 
 import "google/protobuf/empty.proto";
 
@@ -23,7 +23,7 @@ message RemoveCartRequest {
   string userId = 1;
 }
 
-service CartsService {
+service CartService {
   rpc AddToCart(AddToCartRequest) returns (CartResponse);
   rpc GetCart(GetCartRequest) returns (CartResponse);
   rpc RemoveFromCart(RemoveFromCartRequest) returns (CartResponse);

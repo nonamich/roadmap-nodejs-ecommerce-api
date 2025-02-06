@@ -4,11 +4,11 @@ import { CategoriesModule } from '../categories/categories.module';
 import { ProductsBrokerController } from './products.broker.controller';
 import { ProductsGrpcController } from './products.grpc.controller';
 import { ProductsRepository } from './products.repository';
-import { ProductsService } from './products.services';
+import { ProductService } from './products.services';
 
 @Module({
   imports: [BrandsModule, CategoriesModule],
-  providers: [ProductsRepository, ProductsService],
+  providers: [ProductsRepository, ProductService],
   controllers: [ProductsGrpcController, ProductsBrokerController],
 })
 export class ProductsModule {}

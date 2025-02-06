@@ -8,17 +8,17 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
-  ORDERS_SERVICE_NAME,
-  OrdersServiceClient,
-} from '@repo/grpc/proto/orders';
+  ORDER_SERVICE_NAME,
+  OrderServiceClient,
+} from '@repo/grpc/pb/order';
 import {
-  PAYMENTS_SERVICE_NAME,
-  PaymentsServiceClient,
-} from '@repo/grpc/proto/payments';
+  PAYMENT_SERVICE_NAME,
+  PaymentServiceClient,
+} from '@repo/grpc/pb/payment';
 import {
-  PRODUCTS_SERVICE_NAME,
-  ProductsServiceClient,
-} from '@repo/grpc/proto/products';
+  PRODUCT_SERVICE_NAME,
+  ProductServiceClient,
+} from '@repo/grpc/pb/product';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
 import { Auth, CurrentUser } from '~/modules/auth/decorators';
@@ -29,14 +29,14 @@ import { OrderIntentResponseDto } from './dto/responses/order-intent.response.dt
 @Controller('orders')
 export class OrdersController {
   constructor(
-    @Inject(ORDERS_SERVICE_NAME)
-    private readonly ordersService: OrdersServiceClient,
+    @Inject(ORDER_SERVICE_NAME)
+    private readonly orderService: OrderServiceClient,
 
-    @Inject(PRODUCTS_SERVICE_NAME)
-    private readonly productsService: ProductsServiceClient,
+    @Inject(PRODUCT_SERVICE_NAME)
+    private readonly productService: ProductServiceClient,
 
-    @Inject(PAYMENTS_SERVICE_NAME)
-    private readonly paymentsService: PaymentsServiceClient,
+    @Inject(PAYMENT_SERVICE_NAME)
+    private readonly paymentService: PaymentServiceClient,
   ) {}
 
   @ApiOkResponse({ type: OrderResponseDto, isArray: true })
@@ -46,7 +46,7 @@ export class OrdersController {
     @CurrentUser() user: AuthorizedUser,
   ): Promise<OrderResponseDto[]> {
     const { orders } = await firstValueFrom(
-      this.ordersService.getOrders({ userId: user.id }),
+      this.orderService.getOrders({ userId: user.id }),
     );
 
     return orders;
@@ -60,7 +60,7 @@ export class OrdersController {
     @CurrentUser() user: AuthorizedUser,
   ): Promise<OrderProductsResponseDto> {
     const order = await firstValueFrom(
-      this.ordersService.getOrder({ orderId }),
+      this.orderService.getOrder({ orderId }),
     );
 
     if (order.userId !== user.id) {
@@ -69,7 +69,7 @@ export class OrdersController {
 
     const productsIds = order.items.map(({ productId: id }) => id);
     const products = await firstValueFrom(
-      this.productsService
+      this.productService
         .getProductsByIds({
           ids: productsIds,
         })
@@ -100,7 +100,7 @@ export class OrdersController {
   ): Promise<OrderIntentResponseDto> {
     const order = await this.getOrder(orderId, user);
     const intent = await firstValueFrom(
-      this.paymentsService.getIntent({ intentId: (await order).intentId }),
+      this.paymentService.getIntent({ intentId: (await order).intentId }),
     );
 
     return {
@@ -116,7 +116,7 @@ export class OrdersController {
     @CurrentUser() user: AuthorizedUser,
   ): Promise<OrderResponseDto> {
     return await firstValueFrom(
-      this.ordersService.createOrder({ userId: user.id }),
+      this.orderService.createOrder({ userId: user.id }),
     );
   }
 }

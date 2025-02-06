@@ -1,11 +1,11 @@
-import { OrderResponse, OrderStatus } from '@repo/grpc/proto/orders';
+import { OrderResponse, OrderStatus } from '@repo/grpc/pb/order';
 import { OrderItemResponseDto } from './orders-item.response.dto';
 
 export class OrderResponseDto implements OrderResponse {
-  id!: number;
+  id!: string;
   status!: OrderStatus;
   intentId!: string;
   createdAt!: Date;
   items!: OrderItemResponseDto[];
-  userId!: number;
+  userId!: string;
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BrokerService } from '@repo/broker';
 import { GrpcUnauthenticatedException } from '@repo/grpc/nest';
-import { UsersServiceController } from '@repo/grpc/proto/users';
+import { UserServiceController } from '@repo/grpc/pb/user';
 import {
   CreateUserRequestDto,
   GetUserByCredentialsRequestDto,
@@ -11,7 +11,7 @@ import { PasswordService } from './password.service';
 import { UsersRepository } from './users.repository';
 
 @Injectable()
-export class UsersService implements UsersServiceController {
+export class UserService implements UserServiceController {
   constructor(
     private readonly repository: UsersRepository,
     private readonly passwordService: PasswordService,

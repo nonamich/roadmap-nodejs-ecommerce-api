@@ -2,13 +2,13 @@
 // versions:
 //   protoc-gen-ts_proto  v1.0.0
 //   protoc               v3.21.12
-// source: payments.proto
+// source: payment.proto
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
-export const protobufPackage = "payments";
+export const protobufPackage = "payment";
 
 export const PaymentStatus = {
   canceled: "canceled",
@@ -48,33 +48,33 @@ export interface IntentResponse {
   status: PaymentStatus;
 }
 
-export const PAYMENTS_PACKAGE_NAME = "payments";
+export const PAYMENT_PACKAGE_NAME = "payment";
 
-export interface PaymentsServiceClient {
+export interface PaymentServiceClient {
   createIntent(request: CreateIntentRequest): Observable<IntentResponse>;
 
   getIntent(request: GetIntentRequest): Observable<IntentResponse>;
 }
 
-export interface PaymentsServiceController {
+export interface PaymentServiceController {
   createIntent(request: CreateIntentRequest): Promise<IntentResponse> | Observable<IntentResponse> | IntentResponse;
 
   getIntent(request: GetIntentRequest): Promise<IntentResponse> | Observable<IntentResponse> | IntentResponse;
 }
 
-export function PaymentsServiceControllerMethods() {
+export function PaymentServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = ["createIntent", "getIntent"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("PaymentsService", method)(constructor.prototype[method], method, descriptor);
+      GrpcMethod("PaymentService", method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("PaymentsService", method)(constructor.prototype[method], method, descriptor);
+      GrpcStreamMethod("PaymentService", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const PAYMENTS_SERVICE_NAME = "PaymentsService";
+export const PAYMENT_SERVICE_NAME = "PaymentService";

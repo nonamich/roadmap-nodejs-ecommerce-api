@@ -1,4 +1,4 @@
-import { CategoryResponse } from '@repo/grpc/proto/products';
+import { CategoryResponse } from '@repo/grpc/pb/product';
 
 export class CategoryResponseDto implements CategoryResponse {
   id!: string;

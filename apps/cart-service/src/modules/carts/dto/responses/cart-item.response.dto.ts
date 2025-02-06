@@ -1,7 +1,7 @@
-import { CartItemResponse } from '@repo/grpc/proto/carts';
+import { CartItemResponse } from '@repo/grpc/pb/cart';
 
 export class CartItemResponseDto implements CartItemResponse {
   quantity!: number;
-  productId!: number;
+  productId!: string;
   price!: number;
 }

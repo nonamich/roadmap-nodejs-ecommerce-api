@@ -1,9 +1,9 @@
 import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
-  PRODUCTS_SERVICE_NAME,
-  ProductsServiceClient,
-} from '@repo/grpc/proto/products';
+  PRODUCT_SERVICE_NAME,
+  ProductServiceClient,
+} from '@repo/grpc/pb/product';
 import { Observable } from 'rxjs';
 import {
   GetFeaturedProductsRequestDto,
@@ -16,8 +16,8 @@ import { ProductResponseDto, ProductsResponseDto } from './dto/responses';
 @Controller('products')
 export class ProductsController {
   constructor(
-    @Inject(PRODUCTS_SERVICE_NAME)
-    private readonly productsService: ProductsServiceClient,
+    @Inject(PRODUCT_SERVICE_NAME)
+    private readonly productService: ProductServiceClient,
   ) {}
 
   @ApiOkResponse({ type: ProductsResponseDto })
@@ -25,7 +25,7 @@ export class ProductsController {
   getFeaturedProducts(
     @Query() request: GetFeaturedProductsRequestDto,
   ): Observable<ProductsResponseDto> {
-    return this.productsService.getFeaturedProducts(request);
+    return this.productService.getFeaturedProducts(request);
   }
 
   @ApiOkResponse({ type: ProductResponseDto })
@@ -33,7 +33,7 @@ export class ProductsController {
   getProductById(
     @Param() request: GetProductBySlugRequestDto,
   ): Observable<ProductResponseDto> {
-    return this.productsService.getProductBySlug(request);
+    return this.productService.getProductBySlug(request);
   }
 
   @ApiOkResponse({ type: ProductsResponseDto })
@@ -41,6 +41,6 @@ export class ProductsController {
   getProductsByFilter(
     @Query() request: GetProductsByFilterRequestDto,
   ): Observable<ProductsResponseDto> {
-    return this.productsService.getProductsByFilter(request);
+    return this.productService.getProductsByFilter(request);
   }
 }

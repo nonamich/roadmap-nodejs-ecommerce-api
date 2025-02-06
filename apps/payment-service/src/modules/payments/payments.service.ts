@@ -9,7 +9,7 @@ import { IntentModel } from './models';
 import { PAYMENTS_STRIPE_CURRENCY } from './payments.constants';
 
 @Injectable()
-export class PaymentsService {
+export class PaymentService {
   readonly webhookWhsec: string;
 
   constructor(

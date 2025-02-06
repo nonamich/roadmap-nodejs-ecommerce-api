@@ -4,11 +4,11 @@ import { BrokerModule } from '@repo/broker';
 import { PasswordService } from './password.service';
 import { UsersGrpcController } from './users.grpc.controller';
 import { UsersRepository } from './users.repository';
-import { UsersService } from './users.service';
+import { UserService } from './users.service';
 
 @Module({
   controllers: [UsersGrpcController],
-  providers: [PasswordService, UsersRepository, UsersService],
+  providers: [PasswordService, UsersRepository, UserService],
   imports: [
     BrokerModule.registerAsync({
       inject: [ConfigService],

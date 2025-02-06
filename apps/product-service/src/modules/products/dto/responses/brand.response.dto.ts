@@ -1,4 +1,4 @@
-import { BrandResponse } from '@repo/grpc/proto/products';
+import { BrandResponse } from '@repo/grpc/pb/product';
 
 export class BrandResponseDto implements BrandResponse {
   id!: string;

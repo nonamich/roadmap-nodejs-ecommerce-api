@@ -1,11 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import {
-  connectGrpcMicroservice,
-  InternalDisabledLogger,
-} from '@repo/grpc/nest';
-import { PAYMENTS_PACKAGE_NAME } from '@repo/grpc/proto/payments';
+import { connectGrpcMicroservice } from '@repo/grpc/nest';
+import { PAYMENT_PACKAGE_NAME } from '@repo/grpc/pb/payment';
+import { InternalDisabledLogger } from '@repo/shared';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
@@ -17,7 +15,7 @@ async function bootstrap(): Promise<void> {
 
   connectGrpcMicroservice(app, {
     url: config.getOrThrow('GRPC_SERVICE_URL_PAYMENT'),
-    packageName: PAYMENTS_PACKAGE_NAME,
+    packageName: PAYMENT_PACKAGE_NAME,
   });
 
   await app.startAllMicroservices();

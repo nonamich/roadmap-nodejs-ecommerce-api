@@ -1,8 +1,8 @@
 import { OrderItem } from 'prisma-client';
 
 export class OrderItemEntity implements OrderItem {
-  orderId!: number;
-  productId!: number;
+  orderId!: string;
+  productId!: string;
   quantity!: number;
   price!: number;
 }

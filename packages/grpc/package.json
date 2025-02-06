@@ -11,7 +11,7 @@
   "exports": {
     "./utils": "./dist/utils.js",
     "./nest": "./dist/nest/index.js",
-    "./proto/*": "./dist/proto/*.js"
+    "./pb/*": "./dist/pb/*.js"
   },
   "devDependencies": {
     "@grpc/grpc-js": "^1.12.5",

@@ -1,4 +1,4 @@
-import { GetUserByCredentialsRequest } from '@repo/grpc/proto/users';
+import { GetUserByCredentialsRequest } from '@repo/grpc/pb/user';
 import { IsEmail, IsString } from 'class-validator';
 
 export class GetUserByCredentialsRequestDto

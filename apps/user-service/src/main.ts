@@ -1,10 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import {
-  connectGrpcMicroservice,
-  InternalDisabledLogger,
-} from '@repo/grpc/nest';
-import { USERS_PACKAGE_NAME } from '@repo/grpc/proto/users';
+import { connectGrpcMicroservice } from '@repo/grpc/nest';
+import { USER_PACKAGE_NAME } from '@repo/grpc/pb/user';
+import { InternalDisabledLogger } from '@repo/shared';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
@@ -15,7 +13,7 @@ async function bootstrap(): Promise<void> {
 
   connectGrpcMicroservice(app, {
     url: config.getOrThrow('GRPC_SERVICE_URL_USER'),
-    packageName: USERS_PACKAGE_NAME,
+    packageName: USER_PACKAGE_NAME,
   });
 
   await app.startAllMicroservices();

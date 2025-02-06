@@ -2,23 +2,23 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { BrokerModule } from '@repo/broker';
 import { GrpcClientModule } from '@repo/grpc/nest';
-import { CARTS_PACKAGE_NAME, CARTS_SERVICE_NAME } from '@repo/grpc/proto/carts';
+import { CART_PACKAGE_NAME, CART_SERVICE_NAME } from '@repo/grpc/pb/cart';
 import {
-  PAYMENTS_PACKAGE_NAME,
-  PAYMENTS_SERVICE_NAME,
-} from '@repo/grpc/proto/payments';
+  PAYMENT_PACKAGE_NAME,
+  PAYMENT_SERVICE_NAME,
+} from '@repo/grpc/pb/payment';
 import { OrdersBrokerController } from './orders.broker.controller';
 import { OrdersGrpcController } from './orders.grpc.controller';
 import { OrdersRepository } from './orders.repository';
-import { OrdersService } from './orders.service';
+import { OrderService } from './orders.service';
 
 @Module({
   controllers: [OrdersGrpcController, OrdersBrokerController],
-  providers: [OrdersRepository, OrdersService],
+  providers: [OrdersRepository, OrderService],
   imports: [
     GrpcClientModule.registerAsync({
-      packageName: CARTS_PACKAGE_NAME,
-      serviceNameAndToken: CARTS_SERVICE_NAME,
+      packageName: CART_PACKAGE_NAME,
+      serviceNameAndToken: CART_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {
@@ -27,8 +27,8 @@ import { OrdersService } from './orders.service';
       },
     }),
     GrpcClientModule.registerAsync({
-      packageName: PAYMENTS_PACKAGE_NAME,
-      serviceNameAndToken: PAYMENTS_SERVICE_NAME,
+      packageName: PAYMENT_PACKAGE_NAME,
+      serviceNameAndToken: PAYMENT_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {

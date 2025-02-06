@@ -1,9 +1,9 @@
-import { AddToCartRequest } from '@repo/grpc/proto/carts';
+import { AddToCartRequest } from '@repo/grpc/pb/cart';
 import { IsInt, IsString, Min } from 'class-validator';
 
 export class AddToCartRequestDto implements AddToCartRequest {
-  @IsInt()
-  productId!: number;
+  @IsString()
+  productId!: string;
 
   @IsString()
   userId!: string;

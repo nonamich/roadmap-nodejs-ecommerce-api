@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package payments;
+package payment;
 
 enum PaymentStatus {
   canceled = 0;
@@ -20,7 +20,7 @@ message GetIntentRequest {
   string intentId = 1;
 }
 
-service PaymentsService {
+service PaymentService {
   rpc CreateIntent(CreateIntentRequest) returns (IntentResponse);
   rpc GetIntent(GetIntentRequest) returns (IntentResponse);
 }

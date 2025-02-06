@@ -5,8 +5,8 @@ import { AuthorizedUser } from './auth.interface';
 import { AuthService } from './auth.service';
 import { Auth } from './decorators/auth.decorator';
 import { CurrentUser } from './decorators/authorized-user.decorator';
-import { RequestSigninDto, RequestSignupDto } from './dto';
-import { AuthorizedUserEntity, LoggedInEntity } from './entities';
+import { RequestSigninDto, RequestSignupDto } from './dto/requests';
+import { AuthorizedUserEntity, LoggedInEntity } from './dto/responses';
 
 @Controller('auth')
 @ApiTags('auth')

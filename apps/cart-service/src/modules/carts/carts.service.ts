@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { GrpcInvalidArgumentException } from '@repo/grpc/nest';
-import { CartItemResponse } from '@repo/grpc/proto/carts';
+import { CartItemResponse } from '@repo/grpc/pb/cart';
 import {
-  PRODUCTS_SERVICE_NAME,
-  ProductsServiceClient,
-} from '@repo/grpc/proto/products';
+  PRODUCT_SERVICE_NAME,
+  ProductServiceClient,
+} from '@repo/grpc/pb/product';
 import { firstValueFrom } from 'rxjs';
 import { CartItemsRepository } from './cart-items.repository';
 import {
@@ -17,10 +17,10 @@ import { CartResponseDto } from './dto/responses';
 import { CartItemEntity } from './entities';
 
 @Injectable()
-export class CartsService {
+export class CartService {
   constructor(
-    @Inject(PRODUCTS_SERVICE_NAME)
-    private readonly productsService: ProductsServiceClient,
+    @Inject(PRODUCT_SERVICE_NAME)
+    private readonly productService: ProductServiceClient,
     private readonly cartItemsRepository: CartItemsRepository,
   ) {}
 
@@ -52,7 +52,7 @@ export class CartsService {
     userId,
   }: AddToCartRequestDto): Promise<CartResponseDto> {
     const product = await firstValueFrom(
-      this.productsService.getProductById({ id: productId }),
+      this.productService.getProductById({ id: productId }),
     );
 
     if (product.amount < quantity) {

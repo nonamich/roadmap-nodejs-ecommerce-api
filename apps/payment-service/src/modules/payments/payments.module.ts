@@ -4,12 +4,12 @@ import { BrokerModule } from '@repo/broker';
 import { StripeMethod } from './methods/stripe.method';
 import {} from './payments.constants';
 import { PaymentsGrpcController } from './payments.grpc.controller';
-import { PaymentsService } from './payments.service';
+import { PaymentService } from './payments.service';
 import { PaymentsWebhookController } from './payments.webhook.controller';
 
 @Module({
   controllers: [PaymentsGrpcController, PaymentsWebhookController],
-  providers: [StripeMethod, PaymentsService],
+  providers: [StripeMethod, PaymentService],
   imports: [
     BrokerModule.registerAsync({
       inject: [ConfigService],

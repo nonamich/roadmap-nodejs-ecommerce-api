@@ -2,22 +2,22 @@ import { UseFilters } from '@nestjs/common';
 import { GrpcService } from '@nestjs/microservices';
 import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
 import {
-  UsersServiceController,
-  UsersServiceControllerMethods,
-} from '@repo/grpc/proto/users';
+  UserServiceController,
+  UserServiceControllerMethods,
+} from '@repo/grpc/pb/user';
 import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import {
   CreateUserRequestDto,
   GetUserByCredentialsRequestDto,
 } from './dto/requests';
 import { UserResponseDto } from './dto/responses';
-import { UsersService } from './users.service';
+import { UserService } from './users.service';
 
 @GrpcService()
-@UsersServiceControllerMethods()
+@UserServiceControllerMethods()
 @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
-export class UsersGrpcController implements UsersServiceController {
-  constructor(private readonly service: UsersService) {}
+export class UsersGrpcController implements UserServiceController {
+  constructor(private readonly service: UserService) {}
 
   async createUser(
     @GrpcPayload()

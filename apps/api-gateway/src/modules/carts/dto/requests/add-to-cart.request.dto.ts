@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AddToCartRequest } from '@repo/grpc/proto/carts';
+import { AddToCartRequest } from '@repo/grpc/pb/cart';
 import { IsInt, Min } from 'class-validator';
 
 export class AddToCartRequestDto

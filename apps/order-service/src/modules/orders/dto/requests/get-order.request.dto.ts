@@ -1,7 +1,7 @@
-import { GetOrderRequest } from '@repo/grpc/proto/orders';
-import { IsInt } from 'class-validator';
+import { GetOrderRequest } from '@repo/grpc/pb/order';
+import { IsString } from 'class-validator';
 
 export class GetOrderRequestDto implements GetOrderRequest {
-  @IsInt()
-  orderId!: number;
+  @IsString()
+  orderId!: string;
 }

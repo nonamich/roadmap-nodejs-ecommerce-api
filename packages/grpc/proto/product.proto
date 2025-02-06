@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package products;
+package product;
 
 import "google/protobuf/timestamp.proto";
 
@@ -57,7 +57,7 @@ message GetProductsByFilterRequest {
   GetProductsPaginationRequest pagination = 3;
 }
 
-service ProductsService {
+service ProductService {
   rpc GetProductBySlug(GetProductBySlugRequest) returns (ProductResponse);
   rpc GetProductById(GetProductByIdRequest) returns (ProductResponse);
   rpc GetProductsByIds(GetProductsByIdsRequest) returns (stream ProductResponse);
