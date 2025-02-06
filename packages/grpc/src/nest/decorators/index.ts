@@ -1,1 +1,1 @@
-export * from './payload-grpc.decorators';
+export * from './grpc-payload.decorator';

@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { connectBrokerMicroservice } from '@repo/broker';
 import {
   connectGrpcMicroservice,
   InternalDisabledLogger,
@@ -16,6 +17,10 @@ async function bootstrap(): Promise<void> {
   connectGrpcMicroservice(app, {
     url: config.getOrThrow('GRPC_SERVER_URL_CARTS'),
     packageName: CARTS_PACKAGE_NAME,
+  });
+
+  connectBrokerMicroservice(app, {
+    url: config.getOrThrow('MQTT_URL'),
   });
 
   await app.startAllMicroservices();

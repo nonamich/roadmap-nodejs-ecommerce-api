@@ -94,4 +94,17 @@ export class ProductsService {
       },
     };
   }
+
+  async decrementalAmount(productId: number, quantity: number): Promise<void> {
+    await this.productsRepository.update({
+      data: {
+        amount: {
+          decrement: quantity,
+        },
+      },
+      where: {
+        id: productId,
+      },
+    });
+  }
 }

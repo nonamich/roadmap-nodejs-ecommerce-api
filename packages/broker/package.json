@@ -1,5 +1,5 @@
 {
-  "name": "@repo/rabbitmq",
+  "name": "@repo/broker",
   "version": "0.0.0",
   "private": true,
   "exports": {
@@ -12,18 +12,23 @@
     "prebuild": "rm -rf dist"
   },
   "dependencies": {
-    "amqp-connection-manager": "^4.1.14",
-    "amqplib": "^0.10.5"
+    "mqtt": "^5.10.3"
   },
   "devDependencies": {
     "@nestjs/common": "^11.0.6",
     "@nestjs/microservices": "^11.0.6",
     "@repo/configs": "workspace:*",
     "@types/node": "^22.13.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "rxjs": "^7.8.1",
     "typescript": "^5.7.3"
   },
   "peerDependencies": {
-    "@nestjs/common": "^11.0.6",
-    "@nestjs/microservices": "^11.0.6"
+    "@nestjs/common": "*",
+    "@nestjs/microservices": "*",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "rxjs": "^7.8.1"
   }
 }

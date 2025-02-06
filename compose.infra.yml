@@ -1,3 +1,10 @@
+networks:
+  kafka-dev-net:
+    driver: bridge
+
+volumes:
+  db-data:
+
 services:
   db:
     image: postgres:17-alpine
@@ -7,11 +14,11 @@ services:
       - 5432:5432
     volumes:
       - db-data:/var/lib/postgresql/data
-  rabbitmq:
-    image: rabbitmq:4-management-alpine
+  mqtt:
+    image: eclipse-mosquitto
     ports:
-      - 5672:5672
-      - 15672:15672
+      - 1883:1883
+    volumes:
+      - ./infra/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
-volumes:
-  db-data:
+

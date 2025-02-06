@@ -1,0 +1,1 @@
+export const BROKER_OPTIONS_TOKEN = Symbol('BROKER_OPTIONS_TOKEN');

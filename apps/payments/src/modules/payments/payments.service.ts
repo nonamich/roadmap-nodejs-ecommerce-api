@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { BrokerService } from '@repo/broker';
 import Stripe from 'stripe';
 import { CreateIntentRequestDto, GetIntentRequestDto } from './dto/requests';
 import { IntentResponseDto } from './dto/responses';
@@ -13,6 +14,7 @@ export class PaymentsService {
 
   constructor(
     private readonly stripe: StripeMethod,
+    private readonly brokerService: BrokerService,
     config: ConfigService,
   ) {
     this.webhookWhsec = config.getOrThrow('STRIPE_WEBHOOK_WHSEC');
@@ -41,22 +43,18 @@ export class PaymentsService {
     );
 
     if (event.type === 'payment_intent.succeeded') {
-      await this.onSucceededPaymentIntent(event);
+      await this.onSucceededIntentPayment(event);
     }
   }
 
-  async onSucceededPaymentIntent(
+  async onSucceededIntentPayment(
     event: Stripe.PaymentIntentSucceededEvent,
   ): Promise<void> {
     const {
-      data: { object: paymentIntent },
+      data: { object: intent },
     } = event;
 
-    if (paymentIntent.status !== 'succeeded') {
-      return;
-    }
-
-    // TODO: TODO
+    this.brokerService.emit('payment.succeeded', { intentId: intent.id });
   }
 
   async getIntent({

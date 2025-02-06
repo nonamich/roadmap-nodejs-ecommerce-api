@@ -1,6 +1,6 @@
-import js from '@eslint/js';
-import typescriptEslint from 'typescript-eslint';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import js from "@eslint/js";
+import typescriptEslint from "typescript-eslint";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 /**
  * A shared ESLint configuration for the repository.
@@ -10,5 +10,10 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 export const baseESLintConfig = [
   js.configs.recommended,
   ...typescriptEslint.configs.recommended,
-  eslintPluginPrettierRecommended
+  eslintPluginPrettierRecommended,
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
 ];

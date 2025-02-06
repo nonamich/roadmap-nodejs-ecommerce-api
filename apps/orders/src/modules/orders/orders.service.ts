@@ -1,12 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { BrokerService } from '@repo/broker';
 import { GrpcInvalidArgumentException } from '@repo/grpc/nest';
 import { CARTS_SERVICE_NAME, CartsServiceClient } from '@repo/grpc/proto/carts';
+import { OrderStatus } from '@repo/grpc/proto/orders';
 import {
   PAYMENTS_SERVICE_NAME,
   PaymentsServiceClient,
 } from '@repo/grpc/proto/payments';
 import { firstValueFrom } from 'rxjs';
 import {
+  CompleteOrdersRequestDto,
   CreateOrderRequestDto,
   GetOrderByIntentIdRequestDto,
   GetOrderRequestDto,
@@ -25,6 +28,7 @@ export class OrdersService {
     private readonly paymentsService: PaymentsServiceClient,
 
     private readonly repository: OrdersRepository,
+    private readonly brokerService: BrokerService,
   ) {}
 
   async getOrders({ userId }: GetOrdersRequestDto): Promise<OrderEntity[]> {
@@ -78,21 +82,27 @@ export class OrdersService {
       },
     });
 
-    await firstValueFrom(this.cartsService.removeCart({ userId }));
+    this.brokerService.emit('order.created', {
+      userId,
+      products: createdOrder.items.map(({ productId, quantity }) => ({
+        productId,
+        quantity,
+      })),
+    });
 
     return createdOrder;
   }
 
-  // async completeOrder({ intentId }: CompleteOrdersRequestDto): Promise<void> {
-  //   await this.repository.update({
-  //     data: {
-  //       status: OrderStatus.COMPLETED,
-  //     },
-  //     where: {
-  //       intentId,
-  //     },
-  //   });
-  // }
+  async completeOrder({ intentId }: CompleteOrdersRequestDto): Promise<void> {
+    await this.repository.update({
+      data: {
+        status: OrderStatus.COMPLETED,
+      },
+      where: {
+        intentId,
+      },
+    });
+  }
 
   priceToCent(price: number): number {
     return Math.ceil(price * 100);
