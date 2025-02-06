@@ -7,7 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import {
   GetFeaturedProductsRequestDto,
-  GetProductByIdRequestDto,
+  GetProductBySlugRequestDto,
   GetProductsByFilterRequestDto,
 } from './dto/requests';
 import { ProductResponseDto, ProductsResponseDto } from './dto/responses';
@@ -29,13 +29,11 @@ export class ProductsController {
   }
 
   @ApiOkResponse({ type: ProductResponseDto })
-  @Get('/:id')
+  @Get('/:slug')
   getProductById(
-    @Param() request: GetProductByIdRequestDto,
+    @Param() request: GetProductBySlugRequestDto,
   ): Observable<ProductResponseDto> {
-    return this.productsService.getProductById(
-      request,
-    ) as Observable<ProductResponseDto>;
+    return this.productsService.getProductBySlug(request);
   }
 
   @ApiOkResponse({ type: ProductsResponseDto })

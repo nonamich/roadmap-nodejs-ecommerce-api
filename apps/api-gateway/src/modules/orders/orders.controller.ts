@@ -4,7 +4,6 @@ import {
   HttpException,
   Inject,
   Param,
-  ParseIntPipe,
   Post,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
@@ -13,6 +12,10 @@ import {
   OrdersServiceClient,
 } from '@repo/grpc/proto/orders';
 import {
+  PAYMENTS_SERVICE_NAME,
+  PaymentsServiceClient,
+} from '@repo/grpc/proto/payments';
+import {
   PRODUCTS_SERVICE_NAME,
   ProductsServiceClient,
 } from '@repo/grpc/proto/products';
@@ -20,6 +23,7 @@ import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
 import { Auth, CurrentUser } from '~/modules/auth/decorators';
 import { OrderProductsResponseDto, OrderResponseDto } from './dto/responses';
+import { OrderIntentResponseDto } from './dto/responses/order-intent.response.dto';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -30,6 +34,9 @@ export class OrdersController {
 
     @Inject(PRODUCTS_SERVICE_NAME)
     private readonly productsService: ProductsServiceClient,
+
+    @Inject(PAYMENTS_SERVICE_NAME)
+    private readonly paymentsService: PaymentsServiceClient,
   ) {}
 
   @ApiOkResponse({ type: OrderResponseDto, isArray: true })
@@ -49,7 +56,7 @@ export class OrdersController {
   @Auth()
   @Get('/:orderId')
   async getOrder(
-    @Param('orderId', ParseIntPipe) orderId: number,
+    @Param('orderId') orderId: string,
     @CurrentUser() user: AuthorizedUser,
   ): Promise<OrderProductsResponseDto> {
     const order = await firstValueFrom(
@@ -81,6 +88,24 @@ export class OrdersController {
           product,
         };
       }),
+    };
+  }
+
+  @ApiOkResponse({ type: OrderIntentResponseDto })
+  @Auth()
+  @Get('/:orderId/intent')
+  async getOrderIntent(
+    @Param('orderId') orderId: string,
+    @CurrentUser() user: AuthorizedUser,
+  ): Promise<OrderIntentResponseDto> {
+    const order = await this.getOrder(orderId, user);
+    const intent = await firstValueFrom(
+      this.paymentsService.getIntent({ intentId: (await order).intentId }),
+    );
+
+    return {
+      ...order,
+      intent,
     };
   }
 

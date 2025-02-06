@@ -3,7 +3,11 @@ import { CategoryResponse } from '@repo/grpc/proto/products';
 
 export class CategoryResponseDto implements CategoryResponse {
   @ApiProperty()
-  id!: number;
+  id!: string;
+
+  @ApiProperty()
+  slug!: string;
+
   @ApiProperty()
   name!: string;
 }

@@ -5,14 +5,10 @@ import {
   PAYMENTS_PACKAGE_NAME,
   PAYMENTS_SERVICE_NAME,
 } from '@repo/grpc/proto/payments';
-import { OrdersModule } from '~/modules/orders/orders.module';
-import { PaymentsController } from './payments.controller';
 
 @Module({
   exports: [GrpcClientModule],
-  controllers: [PaymentsController],
   imports: [
-    OrdersModule,
     GrpcClientModule.registerAsync({
       packageName: PAYMENTS_PACKAGE_NAME,
       serviceNameAndToken: PAYMENTS_SERVICE_NAME,

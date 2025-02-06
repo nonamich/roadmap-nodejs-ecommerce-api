@@ -3,7 +3,7 @@ import { OrderItemResponse } from '@repo/grpc/proto/orders';
 
 export class OrderItemResponseDto implements OrderItemResponse {
   @ApiProperty()
-  productId!: number;
+  productId!: string;
 
   @ApiProperty()
   quantity!: number;

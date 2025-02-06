@@ -4,10 +4,10 @@ import { OrderItemResponseDto } from './order-item.response.dto';
 
 export class OrderResponseDto implements OrderResponse {
   @ApiProperty()
-  id!: number;
+  id!: string;
 
   @ApiProperty()
-  userId!: number;
+  userId!: string;
 
   @ApiProperty()
   createdAt!: Date;

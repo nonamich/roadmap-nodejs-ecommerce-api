@@ -5,7 +5,7 @@ import { CategoryResponseDto } from './category.response.dto';
 
 export class ProductResponseDto implements ProductResponse {
   @ApiProperty()
-  id!: number;
+  id!: string;
 
   @ApiProperty()
   amount!: number;
@@ -18,6 +18,9 @@ export class ProductResponseDto implements ProductResponse {
 
   @ApiProperty()
   title!: string;
+
+  @ApiProperty()
+  slug!: string;
 
   @ApiProperty()
   description!: string;
