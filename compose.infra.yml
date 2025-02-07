@@ -9,12 +9,13 @@ services:
     ports:
       - 5432:5432
     volumes:
+      - ./infra/db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - db-data:/var/lib/postgresql/data
   mqtt:
     image: eclipse-mosquitto:2
     ports:
       - 1883:1883
     volumes:
-      - ./infra/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./infra/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
 

@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import { type FC } from 'react';
 import { Link } from 'react-router';
-import type { CartItemResponseEntity } from '~/api';
+import type { CartItemResponseDto } from '~/api';
 import { useCart } from '~/cart/hooks';
 import { Price } from './Price';
 import { QuantityInput } from './QuantityInput';
 
-export const CartItem: FC<CartItemResponseEntity> = ({ product, quantity }) => {
+export const CartItem: FC<CartItemResponseDto> = ({ product, quantity }) => {
   const cart = useCart();
   const onRemove = () => {
     cart.remove(product.id);

@@ -19,7 +19,7 @@ async function bootstrap(): Promise<void> {
   });
 
   await app.startAllMicroservices();
-  await app.listen(config.getOrThrow('PAYMENTS_WEB_PORT'));
+  await app.listen(config.getOrThrow('PORT'));
 }
 
 bootstrap();

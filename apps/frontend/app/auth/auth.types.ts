@@ -1,7 +1,7 @@
 import type {
+  AuthorizedUserResponseDto,
   RequestSigninDto,
   RequestSignupDto,
-  ResponseAuthorizedUserDto,
 } from '~/api';
 
 export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
@@ -9,7 +9,7 @@ export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
 export interface AuthContextValue {
   status: AuthStatus;
   accessToken: string | null;
-  user?: ResponseAuthorizedUserDto;
+  user?: AuthorizedUserResponseDto;
   loading: boolean;
   logout: () => void;
   signin: (body: RequestSigninDto) => Promise<void>;

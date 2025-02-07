@@ -14,7 +14,7 @@ export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   const { data } = await ordersControllerGetOrder({
     throwOnError: true,
     path: {
-      orderId: +params.id,
+      orderId: params.id,
     },
   });
 

@@ -1,17 +1,17 @@
 import { useMutation } from '@tanstack/react-query';
 import {
-  type FC,
-  type PropsWithChildren,
   useCallback,
   useEffect,
   useState,
+  type FC,
+  type PropsWithChildren,
 } from 'react';
 import { useNavigate } from 'react-router';
 import {
   authControllerMe,
   client,
-  type ResponseAuthorizedUserDto,
-  type ResponseLoggedInDto,
+  type AuthorizedUserResponseDto,
+  type LoggedInResponseDto,
 } from '~/api';
 import {
   authControllerSigninMutation,
@@ -24,7 +24,7 @@ import type { AuthContextValue, AuthStatus } from './auth.types';
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const navigation = useNavigate();
   const [status, setStatus] = useState<AuthStatus>('loading');
-  const [user, setUser] = useState<ResponseAuthorizedUserDto>();
+  const [user, setUser] = useState<AuthorizedUserResponseDto>();
   const [loading, setLoading] = useState(false);
   const [accessToken, setAccessToken] = useState(() => {
     if (import.meta.env.SSR) {
@@ -37,7 +37,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const signinMutation = useMutation(authControllerSigninMutation());
   const signupMutation = useMutation(authControllerSignupMutation());
 
-  const setStates = ({ accessToken, user }: Partial<ResponseLoggedInDto>) => {
+  const setStates = ({ accessToken, user }: Partial<LoggedInResponseDto>) => {
     if (accessToken) {
       setAccessToken(accessToken);
     }

@@ -13,26 +13,28 @@ export async function clientLoader({
   const url = new URL(request.url);
   const page = +(url.searchParams.get('page') || 1);
 
-  if (!params.id) {
+  if (!params.slug) {
     throw createError('Not Found', 404);
   }
 
-  const { data } = await productsControllerGetProductsByFilter({
+  const {
+    data: { category, ...data },
+  } = await productsControllerGetProductsByFilter({
     throwOnError: true,
     query: {
       pagination: {
         page,
         limit: 8,
       },
-      categoryId: +params.id,
+      categorySlug: params.slug,
     },
   });
 
-  if (!data.category) {
+  if (!category) {
     throw createError('Not Found', 404);
   }
 
-  return data;
+  return { ...data, category };
 }
 
 export default function Brand() {
