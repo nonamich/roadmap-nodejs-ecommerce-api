@@ -8,16 +8,23 @@
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
+import { Empty } from "./google/protobuf/empty";
+import { BoolValue } from "./google/protobuf/wrappers";
 
 export const protobufPackage = "order";
 
-export const OrderStatus = { WAITING_FOR_PAYMENT: "WAITING_FOR_PAYMENT", COMPLETED: "COMPLETED" } as const;
+export const OrderStatus = {
+  WAITING_FOR_PAYMENT: "WAITING_FOR_PAYMENT",
+  COMPLETED: "COMPLETED",
+  CANCELED: "CANCELED",
+} as const;
 
 export type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus];
 
 export namespace OrderStatus {
   export type WAITING_FOR_PAYMENT = typeof OrderStatus.WAITING_FOR_PAYMENT;
   export type COMPLETED = typeof OrderStatus.COMPLETED;
+  export type CANCELED = typeof OrderStatus.CANCELED;
 }
 
 export interface CreateOrderRequest {
@@ -34,6 +41,15 @@ export interface GetOrdersRequest {
 
 export interface GetOrderByIntentIdRequest {
   intentId: string;
+}
+
+export interface CancelOrderRequest {
+  orderId: string;
+}
+
+export interface IsOwnerRequest {
+  orderId: string;
+  userId: string;
 }
 
 export interface OrdersResponse {
@@ -68,7 +84,11 @@ wrappers[".google.protobuf.Timestamp"] = {
 } as any;
 
 export interface OrderServiceClient {
+  isOwner(request: IsOwnerRequest): Observable<BoolValue>;
+
   createOrder(request: CreateOrderRequest): Observable<OrderResponse>;
+
+  cancelOrder(request: CancelOrderRequest): Observable<Empty>;
 
   getOrder(request: GetOrderRequest): Observable<OrderResponse>;
 
@@ -78,7 +98,11 @@ export interface OrderServiceClient {
 }
 
 export interface OrderServiceController {
+  isOwner(request: IsOwnerRequest): Promise<BoolValue> | Observable<BoolValue> | BoolValue;
+
   createOrder(request: CreateOrderRequest): Promise<OrderResponse> | Observable<OrderResponse> | OrderResponse;
+
+  cancelOrder(request: CancelOrderRequest): void;
 
   getOrder(request: GetOrderRequest): Promise<OrderResponse> | Observable<OrderResponse> | OrderResponse;
 
@@ -91,7 +115,14 @@ export interface OrderServiceController {
 
 export function OrderServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createOrder", "getOrder", "getOrderByIntentId", "getOrders"];
+    const grpcMethods: string[] = [
+      "isOwner",
+      "createOrder",
+      "cancelOrder",
+      "getOrder",
+      "getOrderByIntentId",
+      "getOrders",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("OrderService", method)(constructor.prototype[method], method, descriptor);

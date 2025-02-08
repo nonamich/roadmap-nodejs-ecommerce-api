@@ -1,11 +1,27 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
 import type { FC } from 'react';
-import { ordersControllerGetOrdersOptions } from '~/api/@tanstack/react-query.gen';
+import {
+  ordersControllerCancelOrderMutation,
+  ordersControllerGetOrdersOptions,
+} from '~/api/@tanstack/react-query.gen';
 import { Button } from './Button';
 import { Price } from './Price';
 
 export const Orders: FC = () => {
-  const { data: orders } = useSuspenseQuery(ordersControllerGetOrdersOptions());
+  const { data: orders, refetch } = useSuspenseQuery(
+    ordersControllerGetOrdersOptions(),
+  );
+  const cancelMutation = useMutation(ordersControllerCancelOrderMutation());
+
+  const onCancel = async (orderId: string) => {
+    await cancelMutation.mutateAsync({
+      path: {
+        orderId,
+      },
+    });
+
+    refetch();
+  };
 
   return (
     <>
@@ -58,32 +74,32 @@ export const Orders: FC = () => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            strokeWidth="1.5"
                             stroke="currentColor"
                             className="-ms-1 me-1.5 size-4"
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                               d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                             ></path>
                           </svg>
 
                           <p className="whitespace-nowrap text-sm">Paid</p>
                         </span>
-                      ) : (
+                      ) : order.status === 'WAITING_FOR_PAYMENT' ? (
                         <span className="inline-flex items-center justify-center rounded-full bg-amber-100 px-2.5 py-0.5 text-amber-700 dark:bg-amber-700 dark:text-amber-100">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            strokeWidth="1.5"
                             stroke="currentColor"
                             className="-ms-1 me-1.5 size-4"
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                               d="M8.25 9.75h4.875a2.625 2.625 0 010 5.25H12M8.25 9.75L10.5 7.5M8.25 9.75L10.5 12m9-7.243V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185z"
                             ></path>
                           </svg>
@@ -92,11 +108,38 @@ export const Orders: FC = () => {
                             Waiting For Payment
                           </p>
                         </span>
+                      ) : (
+                        <span className="inline-flex items-center justify-center rounded-full bg-red-100 px-2.5 py-0.5 text-red-700 dark:bg-red-700 dark:text-red-100">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="-ms-1 me-1.5 size-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                            />
+                          </svg>
+
+                          <p className="whitespace-nowrap text-sm">Canceled</p>
+                        </span>
                       )}
                     </td>
                     <td className="flex gap-2 whitespace-nowrap px-4 py-2">
+                      {order.status === 'WAITING_FOR_PAYMENT' && (
+                        <Button
+                          onClick={() => onCancel(order.id)}
+                          types="danger"
+                        >
+                          Cancel
+                        </Button>
+                      )}
                       <Button tag="a" to={`/order/${order.id}`}>
-                        View
+                        Details
                       </Button>
                       {order.status === 'WAITING_FOR_PAYMENT' && (
                         <Button tag="a" to={`/order/payment/${order.id}`}>

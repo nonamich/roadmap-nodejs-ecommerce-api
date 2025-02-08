@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class CompleteOrdersRequestDto {
+export class CompleteOrderRequestDto {
   @IsString()
   intentId!: string;
 }

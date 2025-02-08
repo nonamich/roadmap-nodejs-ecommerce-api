@@ -1,10 +1,12 @@
 import {
   Controller,
+  Delete,
   Get,
   HttpException,
   Inject,
   Param,
   Post,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ORDER_SERVICE_NAME, OrderServiceClient } from '@repo/grpc/pb/order';
@@ -107,11 +109,29 @@ export class OrdersController {
   @ApiOkResponse({ type: OrderResponseDto })
   @Auth()
   @Post()
-  async addOrder(
+  async createOrder(
     @CurrentUser() user: AuthorizedUser,
   ): Promise<OrderResponseDto> {
     return await firstValueFrom(
       this.orderService.createOrder({ userId: user.id }),
     );
+  }
+
+  @ApiOkResponse()
+  @Auth()
+  @Delete('/:orderId')
+  async cancelOrder(
+    @Param('orderId') orderId: string,
+    @CurrentUser() user: AuthorizedUser,
+  ): Promise<void> {
+    const { value: isOwner } = await firstValueFrom(
+      this.orderService.isOwner({ orderId, userId: user.id }),
+    );
+
+    if (!isOwner) {
+      throw new UnauthorizedException();
+    }
+
+    await firstValueFrom(this.orderService.cancelOrder({ orderId }));
   }
 }

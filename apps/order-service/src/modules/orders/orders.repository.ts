@@ -9,7 +9,7 @@ export class OrdersRepository {
   constructor(private readonly orm: ORMService) {}
 
   async findUniqueOrThrow(
-    where: Prisma.OrderWhereUniqueInput,
+    where: Prisma.OrderFindUniqueOrThrowArgs['where'],
   ): Promise<OrderEntity> {
     return await this.orm.order.findUniqueOrThrow({
       select: ORDER_SELECT,
@@ -17,22 +17,12 @@ export class OrdersRepository {
     });
   }
 
-  async findMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.OrderWhereUniqueInput;
-    where?: Prisma.OrderWhereInput;
-    orderBy?: Prisma.OrderOrderByWithRelationInput;
-  }): Promise<OrderEntity[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-
+  async findMany(
+    params: Omit<Prisma.OrderFindManyArgs, 'select'>,
+  ): Promise<OrderEntity[]> {
     return await this.orm.order.findMany({
       select: ORDER_SELECT,
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
+      ...params,
     });
   }
 
@@ -43,10 +33,7 @@ export class OrdersRepository {
     });
   }
 
-  async update(params: {
-    where: Prisma.OrderWhereUniqueInput;
-    data: Prisma.OrderUpdateInput;
-  }): Promise<OrderEntity> {
+  async update(params: Prisma.OrderUpdateArgs): Promise<OrderEntity> {
     const { where, data } = params;
     return await this.orm.order.update({
       select: ORDER_SELECT,

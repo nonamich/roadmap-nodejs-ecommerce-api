@@ -7,10 +7,10 @@ import {
 import { loadStripe, type BaseStripeElementsOptions } from '@stripe/stripe-js';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import type { FC, SyntheticEvent } from 'react';
-import { Navigate } from 'react-router';
 import { type OrderResponseDto } from '~/api';
 import { ordersControllerGetOrderIntentOptions } from '~/api/@tanstack/react-query.gen';
 import { Button } from './Button';
+import OrderSucceeded from './OrderSucceeded';
 
 const options: BaseStripeElementsOptions = {
   appearance: {
@@ -34,7 +34,7 @@ export const Payment: FC<Props> = ({ id }) => {
   );
 
   if (intent.status === 'succeeded') {
-    return <Navigate to="/order/succeeded" />;
+    return <OrderSucceeded />;
   }
 
   return (
@@ -74,9 +74,7 @@ const PaymentForm: FC = () => {
     <form onSubmit={handleSubmit}>
       <PaymentElement />
       <div className="mt-5">
-        <Button type="submit" disabled={!stripe}>
-          Buy
-        </Button>
+        <Button type="submit">Buy</Button>
       </div>
     </form>
   );

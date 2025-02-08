@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import {
   BrokerEventPattern,
   BrokerPayload,
+  PaymentCanceledEventDto,
   PaymentSucceededEventDto,
 } from '@repo/broker';
 import { OrderService } from './orders.service';
@@ -15,5 +16,12 @@ export class OrdersBrokerController {
     @BrokerPayload() { intentId }: PaymentSucceededEventDto,
   ): Promise<void> {
     await this.orderService.completeOrder({ intentId });
+  }
+
+  @BrokerEventPattern('payment.canceled')
+  async onCanceledIntentPayment(
+    @BrokerPayload() { intentId }: PaymentCanceledEventDto,
+  ): Promise<void> {
+    await this.orderService.cancelOrderByIntentId(intentId);
   }
 }

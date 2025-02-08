@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { GrpcNotFoundException } from '@repo/grpc/nest';
 import { GetProductBySlugRequest } from '@repo/grpc/pb/product';
-import { from, mergeAll, Observable } from 'rxjs';
+import { Prisma } from 'prisma-client';
 import { BrandsRepository } from '../brands/brands.repository';
 import { BrandEntity } from '../brands/entities';
 import { CategoriesRepository } from '../categories/categories.repository';
@@ -19,7 +19,7 @@ import { ProductEntity } from './entities/product.entity';
 import { ProductsRepository } from './products.repository';
 
 @Injectable()
-export class ProductService {
+export class ProductsService {
   constructor(
     private readonly productsRepository: ProductsRepository,
     private readonly categoriesRepository: CategoriesRepository,
@@ -32,18 +32,16 @@ export class ProductService {
     return await this.productsRepository.findUniqueOrThrow({ id });
   }
 
-  getProductsByIds({
+  async getProductsByIds({
     ids,
-  }: GetProductsByIdsRequestDto): Observable<ProductEntity> {
-    const promise = this.productsRepository.findMany({
+  }: GetProductsByIdsRequestDto): Promise<ProductEntity[]> {
+    return await this.productsRepository.findMany({
       where: {
         id: {
           in: ids,
         },
       },
     });
-
-    return from(promise).pipe(mergeAll());
   }
 
   async getFeaturedProducts({
@@ -54,6 +52,9 @@ export class ProductService {
         where: {
           featuredProduct: {
             is: {},
+          },
+          amount: {
+            gt: 0,
           },
         },
         take: pagination.limit,
@@ -80,12 +81,15 @@ export class ProductService {
     brandSlug,
     categorySlug,
   }: GetProductsByFilterRequestDto): Promise<ProductsResponseDto> {
-    const where = {
+    const where: Prisma.ProductWhereInput = {
       brand: {
         slug: brandSlug,
       },
       category: {
         slug: categorySlug,
+      },
+      amount: {
+        gt: 0,
       },
     };
     const [products, totalCount] = await Promise.all([
@@ -110,11 +114,24 @@ export class ProductService {
     };
   }
 
-  async decrementalAmount(productId: string, quantity: number): Promise<void> {
+  async decrementAmount(productId: string, quantity: number): Promise<void> {
     await this.productsRepository.update({
       data: {
         amount: {
           decrement: quantity,
+        },
+      },
+      where: {
+        id: productId,
+      },
+    });
+  }
+
+  async incrementAmount(productId: string, quantity: number): Promise<void> {
+    await this.productsRepository.update({
+      data: {
+        amount: {
+          increment: quantity,
         },
       },
       where: {

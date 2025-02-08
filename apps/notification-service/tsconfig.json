@@ -2,9 +2,8 @@
   "extends": "@repo/configs/typescript/tsconfig.node.json",
   "compilerOptions": {
     "outDir": "./dist",
-
     "paths": {
-      "~/*": ["./src/*"],
+      "~/*": ["./src/*"]
     }
   }
 }

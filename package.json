@@ -3,10 +3,11 @@
   "packageManager": "pnpm@9.15.4",
   "scripts": {
     "dev": "turbo run --concurrency=100% --parallel dev",
-    "predev": "pnpm docker:infra",
-    "lint": "turbo run lint",
+    "predev": "pnpm docker:dev",
+    "test": "turbo run --concurrency 1 test",
+    "lint": "turbo run --concurrency 1 lint",
     "build": "turbo run --concurrency 1 build",
-    "docker:infra": "docker compose -f compose.infra.yml up -d",
+    "docker:dev": "docker compose -f compose.dev.yml up -d",
     "db:migrate": "pnpm -r db:migrate"
   },
   "dependencies": {

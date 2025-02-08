@@ -1,22 +1,26 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BrokerService } from '@repo/broker';
-import { GrpcInvalidArgumentException } from '@repo/grpc/nest';
+import {
+  GrpcAbortedException,
+  GrpcInvalidArgumentException,
+} from '@repo/grpc/nest';
 import { CART_SERVICE_NAME, CartServiceClient } from '@repo/grpc/pb/cart';
-import { OrderStatus } from '@repo/grpc/pb/order';
+import { OrderResponse, OrderStatus } from '@repo/grpc/pb/order';
 import {
   PAYMENT_SERVICE_NAME,
   PaymentServiceClient,
 } from '@repo/grpc/pb/payment';
-import { USER_SERVICE_NAME, UserServiceClient } from '@repo/grpc/pb/user';
 import { firstValueFrom } from 'rxjs';
+import { ORMService } from '../orm/orm.service';
 import {
-  CompleteOrdersRequestDto,
+  CancelOrderRequestDto,
+  CompleteOrderRequestDto,
   CreateOrderRequestDto,
   GetOrderByIntentIdRequestDto,
   GetOrderRequestDto,
   GetOrdersRequestDto,
 } from './dto/requests';
-import { OrderResponseDto } from './dto/responses';
+import { IsOwnerRequestDto } from './dto/requests/is-owner.request.dto';
 import { OrderEntity } from './entities';
 import { OrdersRepository } from './orders.repository';
 
@@ -29,17 +33,14 @@ export class OrderService {
     @Inject(PAYMENT_SERVICE_NAME)
     private readonly paymentService: PaymentServiceClient,
 
-    @Inject(USER_SERVICE_NAME)
-    private readonly userService: UserServiceClient,
-
     private readonly repository: OrdersRepository,
     private readonly brokerService: BrokerService,
+
+    private readonly orm: ORMService,
   ) {}
 
-  async getOrders({
-    userId,
-  }: GetOrdersRequestDto): Promise<OrderResponseDto[]> {
-    const orders = this.createResponseDto(
+  async getOrders({ userId }: GetOrdersRequestDto): Promise<OrderResponse[]> {
+    const orders = this.createResponse(
       await this.repository.findMany({
         where: {
           userId,
@@ -53,8 +54,8 @@ export class OrderService {
     return orders;
   }
 
-  async getOrder({ orderId }: GetOrderRequestDto): Promise<OrderResponseDto> {
-    const order = this.createResponseDto(
+  async getOrder({ orderId }: GetOrderRequestDto): Promise<OrderResponse> {
+    const order = this.createResponse(
       await this.repository.findUniqueOrThrow({
         id: orderId,
       }),
@@ -65,17 +66,15 @@ export class OrderService {
 
   async getOrderByIntentId({
     intentId,
-  }: GetOrderByIntentIdRequestDto): Promise<OrderResponseDto> {
-    return this.createResponseDto(
+  }: GetOrderByIntentIdRequestDto): Promise<OrderResponse> {
+    return this.createResponse(
       await this.repository.findUniqueOrThrow({
         intentId,
       }),
     );
   }
 
-  async createOrder({
-    userId,
-  }: CreateOrderRequestDto): Promise<OrderResponseDto> {
+  async createOrder({ userId }: CreateOrderRequestDto): Promise<OrderResponse> {
     const cart = await firstValueFrom(this.cartService.getCart({ userId }));
     const intent = await firstValueFrom(
       this.paymentService.createIntent({
@@ -87,7 +86,7 @@ export class OrderService {
       throw new GrpcInvalidArgumentException('your cart is empty');
     }
 
-    const order = this.createResponseDto(
+    const order = this.createResponse(
       await this.repository.create({
         userId,
         intentId: intent.id,
@@ -103,13 +102,13 @@ export class OrderService {
       }),
     );
 
-    this.emitCreated(order);
+    this.emitEvent('order.created', order);
 
     return order;
   }
 
-  async completeOrder({ intentId }: CompleteOrdersRequestDto): Promise<void> {
-    const order = this.createResponseDto(
+  async completeOrder({ intentId }: CompleteOrderRequestDto): Promise<void> {
+    const order = this.createResponse(
       await this.repository.update({
         data: {
           status: OrderStatus.COMPLETED,
@@ -120,44 +119,69 @@ export class OrderService {
       }),
     );
 
-    this.emitCompleted(order);
+    this.emitEvent('order.completed', order);
+  }
+
+  async cancelOrder({ orderId }: CancelOrderRequestDto): Promise<void> {
+    const { status } = await this.orm.order.findUniqueOrThrow({
+      select: {
+        status: true,
+      },
+      where: {
+        id: orderId,
+      },
+    });
+
+    if (status === OrderStatus.CANCELED) {
+      throw new GrpcAbortedException(`status already is ${status}`);
+    }
+
+    const order = this.createResponse(
+      await this.repository.update({
+        data: {
+          status: OrderStatus.CANCELED,
+        },
+        where: {
+          id: orderId,
+        },
+      }),
+    );
+
+    this.emitEvent('order.canceled', order);
+  }
+
+  async cancelOrderByIntentId(intentId: string): Promise<void> {
+    const order = await this.repository.findUniqueOrThrow({ intentId });
+
+    await this.cancelOrder({
+      orderId: order.id,
+    });
   }
 
   priceToCent(price: number): number {
     return Math.ceil(price * 100);
   }
 
-  async emitCompleted(order: OrderResponseDto): Promise<void> {
-    const user = await firstValueFrom(
-      this.userService.getUserById({ id: order.userId }),
-    );
-
-    this.brokerService.emit('order.completed', {
-      orderId: order.id,
-      createdAt: order.createdAt,
-      totalPrice: order.totalPrice,
-      user,
-    });
-  }
-
-  emitCreated(order: OrderResponseDto): void {
-    this.brokerService.emit('order.created', {
+  async emitEvent(
+    pattern: 'order.completed' | 'order.canceled' | 'order.created',
+    order: OrderResponse,
+  ): Promise<void> {
+    this.brokerService.emit(pattern, {
+      intentId: order.intentId,
       orderId: order.id,
       userId: order.userId,
-      products: order.items.map(({ productId, quantity }) => ({
-        productId,
-        quantity,
-      })),
+      createdAt: order.createdAt,
+      totalPrice: order.totalPrice,
     });
   }
 
-  createResponseDto(order: OrderEntity): OrderResponseDto;
-  createResponseDto(orders: OrderEntity[]): OrderResponseDto[];
-  createResponseDto(
+  createResponse(order: OrderEntity): OrderResponse;
+  createResponse(orders: OrderEntity[]): OrderResponse[];
+  createResponse(
     input: OrderEntity | OrderEntity[],
-  ): OrderResponseDto | OrderResponseDto[] {
+  ): OrderResponse | OrderResponse[] {
     if (Array.isArray(input)) {
-      return input.map((entity) => this.createResponseDto(entity));
+      return input.map((entity) => this.createResponse(entity));
     }
 
     return {
@@ -170,5 +194,35 @@ export class OrderService {
     return order.items.reduce((acc, item) => {
       return acc + item.price * item.quantity;
     }, 0);
+  }
+
+  async findPendingOrders(): Promise<OrderEntity[]> {
+    const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+
+    return await this.repository.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      where: {
+        status: 'WAITING_FOR_PAYMENT',
+        createdAt: {
+          lt: tenMinutesAgo,
+        },
+      },
+    });
+  }
+
+  async isOwner({ orderId, userId }: IsOwnerRequestDto): Promise<boolean> {
+    const order = await this.orm.order.findUnique({
+      select: {
+        id: true,
+      },
+      where: {
+        id: orderId,
+        userId,
+      },
+    });
+
+    return !!order;
   }
 }

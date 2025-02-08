@@ -3,10 +3,13 @@ syntax = "proto3";
 package order;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
 
 enum OrderStatus {
   WAITING_FOR_PAYMENT = 0;
   COMPLETED = 1;
+  CANCELED = 2;
 }
 
 message CreateOrderRequest {
@@ -25,8 +28,19 @@ message GetOrderByIntentIdRequest {
   string intentId = 1;
 }
 
+message CancelOrderRequest {
+  string orderId = 1;
+}
+
+message IsOwnerRequest {
+  string orderId = 1;
+  string userId = 2;
+}
+
 service OrderService {
+  rpc IsOwner(IsOwnerRequest) returns (google.protobuf.BoolValue);
   rpc CreateOrder(CreateOrderRequest) returns (OrderResponse);
+  rpc CancelOrder(CancelOrderRequest) returns (google.protobuf.Empty);
   rpc GetOrder(GetOrderRequest) returns (OrderResponse);
   rpc GetOrderByIntentId(GetOrderByIntentIdRequest) returns (OrderResponse);
   rpc GetOrders(GetOrdersRequest) returns (OrdersResponse);

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { BrandsModule } from '~/modules/brands/brands.module';
 import { CategoriesModule } from '~/modules/categories/categories.module';
+import { OrdersModule } from '~/modules/orders/orders.module';
 import { ORMModule } from '~/modules/orm/orm.module';
 import { ProductsModule } from '~/modules/products/products.module';
 
@@ -14,6 +15,7 @@ import { ProductsModule } from '~/modules/products/products.module';
       isGlobal: true,
     }),
     BrandsModule,
+    OrdersModule,
     CategoriesModule,
     ProductsModule,
   ],

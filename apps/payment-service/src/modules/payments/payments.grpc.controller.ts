@@ -8,18 +8,18 @@ import {
 import { CreateIntentRequestDto, GetIntentRequestDto } from './dto/requests';
 import { IntentResponseDto } from './dto/responses';
 import { StripeGrpcExceptionFilter } from './filters/stripe-grpc-exception.filter';
-import { PaymentService } from './payments.service';
+import { PaymentsService } from './payments.service';
 
 @GrpcService()
 @PaymentServiceControllerMethods()
 @UseFilters(GrpcToGrpcExceptionFilter, StripeGrpcExceptionFilter)
 export class PaymentsGrpcController implements PaymentServiceController {
-  constructor(private readonly service: PaymentService) {}
+  constructor(private readonly service: PaymentsService) {}
 
   async createIntent(
     @GrpcPayload() dto: CreateIntentRequestDto,
   ): Promise<IntentResponseDto> {
-    const intent = await this.service.createIntent(dto);
+    const intent = await this.service.createIntent(dto.amountInCent);
 
     return intent;
   }
@@ -27,6 +27,6 @@ export class PaymentsGrpcController implements PaymentServiceController {
   async getIntent(
     @GrpcPayload() dto: GetIntentRequestDto,
   ): Promise<IntentResponseDto> {
-    return await this.service.getIntent(dto);
+    return await this.service.getIntent(dto.intentId);
   }
 }

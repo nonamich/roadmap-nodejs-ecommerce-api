@@ -5,7 +5,7 @@ import {
   ProductServiceController,
   ProductServiceControllerMethods,
 } from '@repo/grpc/pb/product';
-import { Observable } from 'rxjs';
+import { from, mergeAll, Observable } from 'rxjs';
 import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import {
   GetBrandBySlugRequestDto,
@@ -22,13 +22,13 @@ import {
   ProductResponseDto,
   ProductsResponseDto,
 } from './dto/responses';
-import { ProductService } from './products.services';
+import { ProductsService } from './products.services';
 
 @GrpcService()
 @ProductServiceControllerMethods()
 @UseFilters(GrpcToGrpcExceptionFilter, PrismaClientExceptionFilter)
 export class ProductsGrpcController implements ProductServiceController {
-  constructor(private readonly service: ProductService) {}
+  constructor(private readonly service: ProductsService) {}
 
   async getProductById(
     @GrpcPayload() dto: GetProductByIdRequestDto,
@@ -39,7 +39,9 @@ export class ProductsGrpcController implements ProductServiceController {
   getProductsByIds(
     @GrpcPayload() dto: GetProductsByIdsRequestDto,
   ): Observable<ProductResponseDto> {
-    return this.service.getProductsByIds(dto);
+    const promise = this.service.getProductsByIds(dto);
+
+    return from(promise).pipe(mergeAll());
   }
 
   async getFeaturedProducts(

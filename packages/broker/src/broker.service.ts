@@ -7,6 +7,8 @@ import { BrokerMicroserviceModuleOptions } from './types/broker.types';
 
 @Injectable()
 export class BrokerService extends ClientMqtt {
+  // private logger = new Logger(this.constructor.name);
+
   constructor(
     @Inject(BROKER_OPTIONS_TOKEN) { url }: BrokerMicroserviceModuleOptions,
   ) {
@@ -19,6 +21,11 @@ export class BrokerService extends ClientMqtt {
     pattern: K,
     data: BrokerEventsMap[K],
   ): Observable<any> {
-    return super.emit(pattern, data);
+    const observer = super.emit(pattern, data);
+
+    this.logger.log(`${pattern} was emitted`);
+    this.logger.log(data);
+
+    return observer;
   }
 }

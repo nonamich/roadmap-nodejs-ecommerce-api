@@ -2,12 +2,15 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import path from 'node:path';
+import { UsersModule } from '../users/users.module';
 import { NotificationsService } from './notifications.service';
 
 @Module({
   exports: [NotificationsService],
   providers: [NotificationsService],
   imports: [
+    UsersModule,
     MailerModule.forRootAsync({
       inject: [ConfigService],
       useFactory(config: ConfigService) {
@@ -21,7 +24,7 @@ import { NotificationsService } from './notifications.service';
             },
           },
           template: {
-            dir: __dirname + '/templates',
+            dir: path.join(process.cwd(), 'templates'),
             adapter: new HandlebarsAdapter(),
           },
           options: {

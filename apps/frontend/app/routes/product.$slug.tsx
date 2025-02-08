@@ -27,6 +27,7 @@ const Product = () => {
   const cart = useCart();
   const product = useLoaderData<typeof clientLoader>();
   const [quantity, setQuantity] = useState(1);
+  const isOutOfStock = !product.amount;
   const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -81,40 +82,61 @@ const Product = () => {
                   </p>
                 </div>
               </div>
-              <form
-                className="mt-6 flex items-center gap-2"
-                onSubmit={onSubmit}
-              >
-                <QuantityInput
-                  max={product.amount}
-                  onChange={setQuantity}
-                  quantity={quantity}
-                />
-                <button
-                  className="focus:ring-primary-300 dark:focus:ring-primary-800 mt-4 flex items-center justify-center rounded bg-teal-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-800 focus:outline-none focus:ring-4 sm:mt-0 dark:bg-teal-600 dark:hover:bg-teal-700"
-                  role="button"
-                  disabled={cart.loading}
-                >
+              {isOutOfStock ? (
+                <span className="mt-3 inline-flex items-center justify-center rounded-full bg-amber-100 px-2.5 py-0.5 text-amber-700 dark:bg-amber-700 dark:text-amber-100">
                   <svg
-                    className="-ms-2 me-2 h-5 w-5"
-                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
                     fill="none"
                     viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="-ms-1 me-1.5 size-4"
                   >
                     <path
-                      stroke="currentColor"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
+                      d="M8.25 9.75h4.875a2.625 2.625 0 010 5.25H12M8.25 9.75L10.5 7.5M8.25 9.75L10.5 12m9-7.243V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185z"
                     />
                   </svg>
-                  Add to cart
-                </button>
-              </form>
+
+                  <p className="whitespace-nowrap text-sm">out of stock</p>
+                </span>
+              ) : (
+                <form
+                  className="mt-6 flex items-center gap-2"
+                  onSubmit={onSubmit}
+                >
+                  <QuantityInput
+                    max={product.amount}
+                    onChange={setQuantity}
+                    quantity={quantity}
+                  />
+                  <button
+                    className="focus:ring-primary-300 dark:focus:ring-primary-800 mt-4 flex items-center justify-center rounded bg-teal-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-800 focus:outline-none focus:ring-4 sm:mt-0 dark:bg-teal-600 dark:hover:bg-teal-700"
+                    role="button"
+                    disabled={cart.loading}
+                  >
+                    <svg
+                      className="-ms-2 me-2 h-5 w-5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
+                      />
+                    </svg>
+                    Add to cart
+                  </button>
+                </form>
+              )}
               <hr className="my-6 border-gray-200 md:my-8 dark:border-gray-800" />
               <p className="mb-6 text-gray-500 dark:text-gray-400">
                 {product.description}

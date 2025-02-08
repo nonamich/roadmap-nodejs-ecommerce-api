@@ -1,9 +1,5 @@
 import { Controller } from '@nestjs/common';
-import {
-  BrokerEventPattern,
-  BrokerPayload,
-  OrderCreatedEventDto,
-} from '@repo/broker';
+import { BrokerEventPattern, BrokerPayload, OrderEventDto } from '@repo/broker';
 import { CartService } from './carts.service';
 
 @Controller()
@@ -12,7 +8,7 @@ export class CartsBrokerController {
 
   @BrokerEventPattern('order.created')
   async onOrderCreated(
-    @BrokerPayload() { userId }: OrderCreatedEventDto,
+    @BrokerPayload() { userId }: OrderEventDto,
   ): Promise<void> {
     await this.service.removeCart({ userId });
   }

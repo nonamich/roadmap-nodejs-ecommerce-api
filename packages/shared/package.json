@@ -20,5 +20,8 @@
   },
   "peerDependencies": {
     "@nestjs/common": "*"
+  },
+  "dependencies": {
+    "yaml": "^2.7.0"
   }
 }

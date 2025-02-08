@@ -3,16 +3,13 @@
   "ui": "stream",
   "tasks": {
     "build": {
-      "cache": false,
       "dependsOn": [
         "^build"
       ]
     },
-    "lint": {
-      "cache": false
-    },
+    "lint": {},
+    "test": {},
     "dev": {
-      "cache": false,
       "persistent": true,
       "dependsOn": [
         "^dev"

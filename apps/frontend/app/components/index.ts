@@ -8,6 +8,7 @@ export * from './Header';
 export * from './LoginForm';
 export * from './OrderDetails';
 export * from './Orders';
+export * from './OrderSucceeded';
 export * from './Pagination';
 export * from './Payment';
 export * from './Price';

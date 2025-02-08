@@ -1,7 +1,1 @@
-import baseConfig from '../jest.config.mjs';
-
-export default {
-  ...baseConfig,
-  rootDir: '.',
-  testRegex: '.e2e-spec.ts$',
-};
+export { default } from '@repo/configs/jest/jest.config.mjs';

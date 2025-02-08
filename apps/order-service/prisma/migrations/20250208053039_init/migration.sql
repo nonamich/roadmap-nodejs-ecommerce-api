@@ -1,9 +1,9 @@
 -- CreateEnum
-CREATE TYPE "OrderStatus" AS ENUM ('WAITING_FOR_PAYMENT', 'COMPLETED');
+CREATE TYPE "OrderStatus" AS ENUM ('WAITING_FOR_PAYMENT', 'COMPLETED', 'CANCELED');
 
 -- CreateTable
 CREATE TABLE "Order" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "intentId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -14,7 +14,7 @@ CREATE TABLE "Order" (
 
 -- CreateTable
 CREATE TABLE "OrderItem" (
-    "orderId" UUID NOT NULL,
+    "orderId" TEXT NOT NULL,
     "productId" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "price" DOUBLE PRECISION NOT NULL

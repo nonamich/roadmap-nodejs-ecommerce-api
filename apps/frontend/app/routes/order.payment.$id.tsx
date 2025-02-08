@@ -1,12 +1,12 @@
 import {
   data as createError,
-  Navigate,
   useLoaderData,
   type ClientLoaderFunctionArgs,
 } from 'react-router';
 import { ordersControllerGetOrder } from '~/api';
 
 import { Payment } from '~/components';
+import OrderSucceeded from '~/components/OrderSucceeded';
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   if (!params.id) {
@@ -29,7 +29,7 @@ export default function OrderPayment() {
   return (
     <>
       {order.status === 'WAITING_FOR_PAYMENT' && <Payment {...order} />}
-      {order.status === 'COMPLETED' && <Navigate to="/order/succeeded" />}
+      {order.status === 'COMPLETED' && <OrderSucceeded />}
     </>
   );
 }

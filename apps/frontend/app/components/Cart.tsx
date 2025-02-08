@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 import type { FC } from 'react';
 import { useNavigate } from 'react-router';
-import { ordersControllerAddOrderMutation } from '~/api/@tanstack/react-query.gen';
+import { ordersControllerCreateOrderMutation } from '~/api/@tanstack/react-query.gen';
 import { useCart } from '~/cart/hooks';
 import { Button, CartItem, Price } from '.';
 
 export const Cart: FC = () => {
   const cart = useCart();
   const navigate = useNavigate();
-  const addToOrderMutation = useMutation(ordersControllerAddOrderMutation());
+  const addToOrderMutation = useMutation(ordersControllerCreateOrderMutation());
   const onSubmit = async () => {
     const { id } = await addToOrderMutation.mutateAsync({});
 
@@ -36,9 +36,7 @@ export const Cart: FC = () => {
             ))}
           </ul>
           <div className="mt-8 flex justify-between border-t border-gray-900 pt-8">
-            <Button onClick={onSubmit} disabled={addToOrderMutation.isPending}>
-              Order
-            </Button>
+            <Button onClick={onSubmit}>Order</Button>
             <div className="space-y-4">
               <dl className="space-y-0.5 text-sm text-gray-100">
                 <div className="flex justify-between !text-base font-medium">

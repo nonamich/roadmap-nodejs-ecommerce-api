@@ -1,9 +1,13 @@
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
+import { USER_SERVICE_NAME } from '@repo/grpc/pb/user';
+import { SharedUtils } from '@repo/shared';
 import { setTimeout as sleep } from 'node:timers/promises';
 import { GenericContainer, StartedTestContainer } from 'testcontainers';
 import { NotificationsModule } from './notifications.module';
 import { NotificationsService } from './notifications.service';
+
+const compose = SharedUtils.readCompose('compose.dev.yml');
 
 const MAIL_ADMIN_EMAIL = 'test@test.com';
 const MAIL_ADMIN_NAME = 'test';
@@ -15,7 +19,7 @@ describe('Notification Service', () => {
   let webUiPort: number;
 
   beforeAll(async () => {
-    container = await new GenericContainer('axllent/mailpit:v1.22')
+    container = await new GenericContainer(compose.services.smtp.image)
       .withExposedPorts(1025, 8025)
       .start();
 
@@ -41,6 +45,7 @@ describe('Notification Service', () => {
           load: [
             (): any => {
               return {
+                GRPC_SERVICE_URL_USER: '',
                 MAIL_ADMIN_EMAIL,
                 MAIL_ADMIN_NAME,
                 MAIL_SERVER_URL,
@@ -48,6 +53,12 @@ describe('Notification Service', () => {
             },
           ],
         }),
+      ],
+      providers: [
+        {
+          provide: USER_SERVICE_NAME,
+          useValue: {},
+        },
       ],
       exports: [NotificationsModule],
     }).compile();
@@ -65,7 +76,7 @@ describe('Notification Service', () => {
       html: text,
     });
 
-    await sleep(1000);
+    await sleep(500);
 
     const response = await fetch(
       `http://localhost:${webUiPort}/api/v1/messages`,

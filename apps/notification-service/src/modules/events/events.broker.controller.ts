@@ -3,7 +3,7 @@ import {
   BrokerEventPattern,
   BrokerPayload,
   MqttInterceptor,
-  OrderCompletedEventDto,
+  OrderEventDto,
   UserEventDto,
 } from '@repo/broker';
 import { NotificationsService } from '../notifications/notifications.service';
@@ -21,8 +21,16 @@ export class EventsBrokerController {
   @BrokerEventPattern('order.completed')
   async onPaymentSucceeded(
     @BrokerPayload()
-    dto: OrderCompletedEventDto,
+    dto: OrderEventDto,
   ): Promise<void> {
     await this.notificationsService.sendOrderInvoice(dto);
+  }
+
+  @BrokerEventPattern('order.canceled')
+  async onOrderCanceled(
+    @BrokerPayload()
+    dto: OrderEventDto,
+  ): Promise<void> {
+    await this.notificationsService.sendOrderCanceled(dto);
   }
 }

@@ -1,11 +1,21 @@
 import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
-import { Injectable } from '@nestjs/common';
-import { OrderCompletedEventDto, UserEventDto } from '@repo/broker';
+import { Inject, Injectable } from '@nestjs/common';
+import { OrderEventDto, UserEventDto } from '@repo/broker';
+import { USER_SERVICE_NAME, UserServiceClient } from '@repo/grpc/pb/user';
 import { SentMessageInfo } from 'nodemailer';
+import { firstValueFrom } from 'rxjs';
+import { Logger } from 'testcontainers/build/common';
 
 @Injectable()
 export class NotificationsService {
-  constructor(private readonly mailerService: MailerService) {}
+  private logger = new Logger(this.constructor.name);
+
+  constructor(
+    private readonly mailerService: MailerService,
+
+    @Inject(USER_SERVICE_NAME)
+    private readonly usersService: UserServiceClient,
+  ) {}
 
   async sendUserWelcome(user: UserEventDto): Promise<void> {
     await this.send({
@@ -22,8 +32,12 @@ export class NotificationsService {
     createdAt,
     orderId,
     totalPrice,
-    user,
-  }: OrderCompletedEventDto): Promise<void> {
+    userId,
+  }: OrderEventDto): Promise<void> {
+    const user = await firstValueFrom(
+      this.usersService.getUserById({ id: userId }),
+    );
+
     await this.send({
       to: user.email,
       subject: `Invoice, #${orderId}!`,
@@ -39,7 +53,36 @@ export class NotificationsService {
     });
   }
 
+  async sendOrderCanceled({
+    createdAt,
+    orderId,
+    totalPrice,
+    userId,
+  }: OrderEventDto): Promise<void> {
+    const user = await firstValueFrom(
+      this.usersService.getUserById({ id: userId }),
+    );
+
+    await this.send({
+      to: user.email,
+      subject: `Order canceled, #${orderId}!`,
+      template: 'order.canceled.hbs',
+      context: {
+        order: {
+          id: orderId,
+          createdAt,
+          totalPrice,
+        },
+        user,
+      },
+    });
+  }
+
   async send(options: ISendMailOptions): Promise<SentMessageInfo> {
-    return await this.mailerService.sendMail(options);
+    const messageInfo = await this.mailerService.sendMail(options);
+
+    this.logger.info(`Email to ${options.to} was send`);
+
+    return messageInfo;
   }
 }

@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { connectBrokerMicroservice } from '@repo/broker';
 import { connectGrpcMicroservice } from '@repo/grpc/nest';
 import { PAYMENT_PACKAGE_NAME } from '@repo/grpc/pb/payment';
 import { InternalDisabledLogger } from '@repo/shared/nest';
@@ -16,6 +17,10 @@ async function bootstrap(): Promise<void> {
   connectGrpcMicroservice(app, {
     url: config.getOrThrow('GRPC_SERVICE_URL_PAYMENT'),
     packageName: PAYMENT_PACKAGE_NAME,
+  });
+
+  connectBrokerMicroservice(app, {
+    url: config.getOrThrow('MQTT_URL'),
   });
 
   await app.startAllMicroservices();
