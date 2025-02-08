@@ -4,9 +4,7 @@
   "tasks": {
     "dev": {
       "persistent": true,
-      "dependsOn": [
-        "^dev"
-      ]
+      "cache": false
     }
   }
 }
