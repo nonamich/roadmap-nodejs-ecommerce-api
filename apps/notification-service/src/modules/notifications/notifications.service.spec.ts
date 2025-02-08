@@ -2,12 +2,15 @@ import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { USER_SERVICE_NAME } from '@repo/grpc/pb/user';
 import { SharedUtils } from '@repo/shared';
+import path from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
 import { GenericContainer, StartedTestContainer } from 'testcontainers';
 import { NotificationsModule } from './notifications.module';
 import { NotificationsService } from './notifications.service';
 
-const compose = SharedUtils.readCompose('compose.dev.yml');
+const compose = SharedUtils.readCompose(
+  path.join(process.cwd(), 'compose.dev.yml'),
+);
 
 const MAIL_ADMIN_EMAIL = 'test@test.com';
 const MAIL_ADMIN_NAME = 'test';

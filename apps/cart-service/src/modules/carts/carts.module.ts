@@ -5,6 +5,7 @@ import {
   PRODUCT_PACKAGE_NAME,
   PRODUCT_SERVICE_NAME,
 } from '@repo/grpc/pb/product';
+import { PriceService } from '@repo/shared/nest';
 import { CartItemsRepository } from './cart-items.repository';
 import { CartsBrokerController } from './carts.broker.controller';
 import { CartsGrpcController } from './carts.grpc.controller';
@@ -12,7 +13,7 @@ import { CartService } from './carts.service';
 
 @Module({
   controllers: [CartsGrpcController, CartsBrokerController],
-  providers: [CartService, CartItemsRepository],
+  providers: [CartService, CartItemsRepository, PriceService],
   imports: [
     GrpcClientModule.registerAsync({
       packageName: PRODUCT_PACKAGE_NAME,

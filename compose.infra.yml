@@ -4,17 +4,10 @@ volumes:
 services:
   db:
     image: postgres:17-alpine
-    environment:
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - 5432:5432
     volumes:
-      - ./infra/db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - db-data:/var/lib/postgresql/data
   mqtt:
     image: eclipse-mosquitto:2
-    ports:
-      - 1883:1883
     volumes:
       - ./infra/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf
 

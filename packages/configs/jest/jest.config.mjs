@@ -1,5 +1,6 @@
 export default {
   moduleFileExtensions: ['js', 'json', 'ts'],
+  passWithNoTests: true,
   rootDir: 'src',
   testRegex: '.*\\.spec\\.ts$',
   transform: {

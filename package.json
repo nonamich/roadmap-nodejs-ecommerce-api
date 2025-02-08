@@ -7,7 +7,7 @@
     "test": "turbo run --concurrency 1 test",
     "lint": "turbo run --concurrency 1 lint",
     "build": "turbo run --concurrency 1 build",
-    "docker:dev": "docker compose -f compose.dev.yml up -d",
+    "docker:dev": "docker compose -f compose.infra.yml -f compose.dev.yml up -d",
     "db:migrate": "pnpm -r db:migrate"
   },
   "dependencies": {

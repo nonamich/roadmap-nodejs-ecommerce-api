@@ -10,6 +10,7 @@ import {
   PAYMENT_SERVICE_NAME,
   PaymentServiceClient,
 } from '@repo/grpc/pb/payment';
+import { PriceService } from '@repo/shared/nest';
 import { firstValueFrom } from 'rxjs';
 import { ORMService } from '../orm/orm.service';
 import {
@@ -37,6 +38,7 @@ export class OrderService {
     private readonly brokerService: BrokerService,
 
     private readonly orm: ORMService,
+    private readonly priceService: PriceService,
   ) {}
 
   async getOrders({ userId }: GetOrdersRequestDto): Promise<OrderResponse[]> {
@@ -78,7 +80,7 @@ export class OrderService {
     const cart = await firstValueFrom(this.cartService.getCart({ userId }));
     const intent = await firstValueFrom(
       this.paymentService.createIntent({
-        amountInCent: this.priceToCent(cart.totalPrice),
+        amountInCent: this.priceService.priceToCent(cart.totalPrice),
       }),
     );
 
@@ -158,10 +160,6 @@ export class OrderService {
     });
   }
 
-  priceToCent(price: number): number {
-    return Math.ceil(price * 100);
-  }
-
   async emitEvent(
     pattern: 'order.completed' | 'order.canceled' | 'order.created',
     order: OrderResponse,
@@ -186,14 +184,8 @@ export class OrderService {
 
     return {
       ...input,
-      totalPrice: this.getTotalPrice(input),
+      totalPrice: this.priceService.calculateTotalPrice(input.items),
     };
-  }
-
-  getTotalPrice(order: OrderEntity): number {
-    return order.items.reduce((acc, item) => {
-      return acc + item.price * item.quantity;
-    }, 0);
   }
 
   async findPendingOrders(): Promise<OrderEntity[]> {

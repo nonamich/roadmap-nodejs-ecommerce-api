@@ -5,6 +5,7 @@ import {
   PRODUCT_SERVICE_NAME,
   ProductServiceClient,
 } from '@repo/grpc/pb/product';
+import { PriceService } from '@repo/shared/nest';
 import { firstValueFrom } from 'rxjs';
 import { CartItemsRepository } from './cart-items.repository';
 import {
@@ -22,6 +23,7 @@ export class CartService {
     @Inject(PRODUCT_SERVICE_NAME)
     private readonly productService: ProductServiceClient,
     private readonly cartItemsRepository: CartItemsRepository,
+    private readonly priceService: PriceService,
   ) {}
 
   async removeCart({ userId }: RemoveCartRequestDto): Promise<void> {
@@ -31,7 +33,7 @@ export class CartService {
   getCartByItems(items: CartItemEntity[]): CartResponseDto {
     return {
       items: items,
-      totalPrice: this.calculateTotalPrice(items),
+      totalPrice: this.priceService.calculateTotalPrice(items),
       totalQuantity: this.calculateTotalQuantity(items),
     };
   }
@@ -92,10 +94,6 @@ export class CartService {
     });
 
     return await this.getCart({ userId });
-  }
-
-  calculateTotalPrice(items: CartItemResponse[]): number {
-    return items.reduce((acc, item) => acc + item.price * item.quantity, 0);
   }
 
   calculateTotalQuantity(items: CartItemResponse[]): number {
