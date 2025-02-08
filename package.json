@@ -4,9 +4,9 @@
   "scripts": {
     "dev": "turbo run --concurrency=100% --parallel dev",
     "predev": "pnpm docker:dev",
-    "test": "turbo run --concurrency 1 test",
-    "lint": "turbo run --concurrency 1 lint",
-    "build": "turbo run --concurrency 1 build",
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint",
+    "build": "pnpm -r run build",
     "docker:dev": "docker compose -f compose.infra.yml -f compose.dev.yml up -d",
     "db:migrate": "pnpm -r db:migrate"
   },
