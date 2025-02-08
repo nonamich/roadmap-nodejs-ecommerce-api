@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
-import { BrokerModule } from '@repo/broker';
-import { PriceService } from '@repo/shared/nest';
+import { BrokerModule } from '@/broker';
+import { PriceService } from '@/shared/nest';
 import { CartsModule } from '~/modules/carts/carts.module';
 import { PaymentsModule } from '~/modules/payments/payments.module';
 import { UsersModule } from '~/modules/users/users.module';

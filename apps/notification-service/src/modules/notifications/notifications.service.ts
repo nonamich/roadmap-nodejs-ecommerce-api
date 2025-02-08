@@ -1,7 +1,7 @@
 import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
 import { Inject, Injectable } from '@nestjs/common';
-import { OrderEventDto, UserEventDto } from '@repo/broker';
-import { USER_SERVICE_NAME, UserServiceClient } from '@repo/grpc/pb/user';
+import { OrderEventDto, UserEventDto } from '@/broker';
+import { USER_SERVICE_NAME, UserServiceClient } from '@/grpc/pb/user';
 import { SentMessageInfo } from 'nodemailer';
 import { firstValueFrom } from 'rxjs';
 import { Logger } from 'testcontainers/build/common';

@@ -1,1 +1,1 @@
-export { default } from '@repo/configs/jest/jest.config.e2e.mjs';
+export { default } from '@/configs/jest/jest.config.e2e.mjs';

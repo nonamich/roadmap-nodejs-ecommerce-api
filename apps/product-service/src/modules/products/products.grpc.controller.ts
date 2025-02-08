@@ -1,10 +1,10 @@
 import { UseFilters } from '@nestjs/common';
 import { GrpcService } from '@nestjs/microservices';
-import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
+import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@/grpc/nest';
 import {
   ProductServiceController,
   ProductServiceControllerMethods,
-} from '@repo/grpc/pb/product';
+} from '@/grpc/pb/product';
 import { from, mergeAll, Observable } from 'rxjs';
 import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import {

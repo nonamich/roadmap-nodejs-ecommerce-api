@@ -1,4 +1,4 @@
-import { nodeESLintConfig } from '@repo/configs/eslint/node.js';
+import { nodeESLintConfig } from '@/configs/eslint/node.js';
 
 /** @type {import("eslint").Linter.Config} */
 export default [

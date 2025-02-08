@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CartItemResponse } from '@repo/grpc/pb/cart';
+import { CartItemResponse } from '@/grpc/pb/cart';
 import { ProductResponseDto } from '~/modules/products/dto/responses';
 
 export class CartItemResponseDto implements CartItemResponse {

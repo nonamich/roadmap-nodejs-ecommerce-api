@@ -1,4 +1,4 @@
-import { PaginationResponse } from '@repo/grpc/pb/product';
+import { PaginationResponse } from '@/grpc/pb/product';
 
 export class PaginationResponseDto implements PaginationResponse {
   page!: number;

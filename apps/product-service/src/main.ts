@@ -1,9 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { connectBrokerMicroservice } from '@repo/broker';
-import { connectGrpcMicroservice } from '@repo/grpc/nest';
-import { PRODUCT_PACKAGE_NAME } from '@repo/grpc/pb/product';
-import { InternalDisabledLogger } from '@repo/shared/nest';
+import { connectBrokerMicroservice } from '@/broker';
+import { connectGrpcMicroservice } from '@/grpc/nest';
+import { PRODUCT_PACKAGE_NAME } from '@/grpc/pb/product';
+import { InternalDisabledLogger } from '@/shared/nest';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {

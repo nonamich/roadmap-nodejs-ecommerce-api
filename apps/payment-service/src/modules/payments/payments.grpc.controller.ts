@@ -1,10 +1,10 @@
 import { UseFilters } from '@nestjs/common';
 import { GrpcService } from '@nestjs/microservices';
-import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@repo/grpc/nest';
+import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@/grpc/nest';
 import {
   PaymentServiceController,
   PaymentServiceControllerMethods,
-} from '@repo/grpc/pb/payment';
+} from '@/grpc/pb/payment';
 import { CreateIntentRequestDto, GetIntentRequestDto } from './dto/requests';
 import { IntentResponseDto } from './dto/responses';
 import { StripeGrpcExceptionFilter } from './filters/stripe-grpc-exception.filter';

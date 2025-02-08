@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GrpcClientModule } from '@repo/grpc/nest';
+import { GrpcClientModule } from '@/grpc/nest';
 import {
   PRODUCT_PACKAGE_NAME,
   PRODUCT_SERVICE_NAME,
-} from '@repo/grpc/pb/product';
+} from '@/grpc/pb/product';
 import { ProductsController } from './products.controller';
 
 @Module({

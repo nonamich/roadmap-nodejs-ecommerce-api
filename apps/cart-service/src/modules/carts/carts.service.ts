@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { GrpcInvalidArgumentException } from '@repo/grpc/nest';
-import { CartItemResponse } from '@repo/grpc/pb/cart';
+import { GrpcInvalidArgumentException } from '@/grpc/nest';
+import { CartItemResponse } from '@/grpc/pb/cart';
 import {
   PRODUCT_SERVICE_NAME,
   ProductServiceClient,
-} from '@repo/grpc/pb/product';
-import { PriceService } from '@repo/shared/nest';
+} from '@/grpc/pb/product';
+import { PriceService } from '@/shared/nest';
 import { firstValueFrom } from 'rxjs';
 import { CartItemsRepository } from './cart-items.repository';
 import {

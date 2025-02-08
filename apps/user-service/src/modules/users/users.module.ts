@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { BrokerModule } from '@repo/broker';
+import { BrokerModule } from '@/broker';
 import { PasswordService } from './password.service';
 import { UsersGrpcController } from './users.grpc.controller';
 import { UsersRepository } from './users.repository';

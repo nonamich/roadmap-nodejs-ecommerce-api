@@ -1,4 +1,4 @@
-import { UserResponse } from '@repo/grpc/pb/user';
+import { UserResponse } from '@/grpc/pb/user';
 
 export class UserResponseDto implements UserResponse {
   id!: string;

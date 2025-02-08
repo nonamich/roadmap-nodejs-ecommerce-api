@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GrpcClientModule } from '@repo/grpc/nest';
+import { GrpcClientModule } from '@/grpc/nest';
 import {
   PRODUCT_PACKAGE_NAME,
   PRODUCT_SERVICE_NAME,
-} from '@repo/grpc/pb/product';
-import { PriceService } from '@repo/shared/nest';
+} from '@/grpc/pb/product';
+import { PriceService } from '@/shared/nest';
 import { CartItemsRepository } from './cart-items.repository';
 import { CartsBrokerController } from './carts.broker.controller';
 import { CartsGrpcController } from './carts.grpc.controller';

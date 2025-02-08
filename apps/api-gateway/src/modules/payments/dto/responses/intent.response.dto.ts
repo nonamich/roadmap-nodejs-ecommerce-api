@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IntentResponse, PaymentStatus } from '@repo/grpc/pb/payment';
+import { IntentResponse, PaymentStatus } from '@/grpc/pb/payment';
 
 export class IntentResponseDto implements IntentResponse {
   @ApiProperty()

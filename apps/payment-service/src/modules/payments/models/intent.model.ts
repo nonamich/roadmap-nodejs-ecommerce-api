@@ -1,4 +1,4 @@
-import { GrpcInternalException } from '@repo/grpc/nest';
+import { GrpcInternalException } from '@/grpc/nest';
 import Stripe from 'stripe';
 import { IntentResponseDto } from '../dto/responses';
 

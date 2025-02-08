@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { BrokerModule } from '@repo/broker';
+import { BrokerModule } from '@/broker';
 import { StripeMethod } from './methods/stripe.method';
 import { EventsBrokerController } from './payments.broker.controller';
 import {} from './payments.constants';

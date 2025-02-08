@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { BrokerModule } from '@repo/broker';
+import { BrokerModule } from '@/broker';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { EventsBrokerController } from './events.broker.controller';
 

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ProductResponse } from '@repo/grpc/pb/product';
+import { ProductResponse } from '@/grpc/pb/product';
 import { BrandResponseDto } from './brand.response.dto';
 import { CategoryResponseDto } from './category.response.dto';
 

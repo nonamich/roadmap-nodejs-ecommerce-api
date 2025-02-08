@@ -1,4 +1,4 @@
-import { GetProductsPaginationRequest } from '@repo/grpc/pb/product';
+import { GetProductsPaginationRequest } from '@/grpc/pb/product';
 import { Type } from 'class-transformer';
 import { IsInt, Min } from 'class-validator';
 

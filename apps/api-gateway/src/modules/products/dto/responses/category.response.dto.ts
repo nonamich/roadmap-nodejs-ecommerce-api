@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CategoryResponse } from '@repo/grpc/pb/product';
+import { CategoryResponse } from '@/grpc/pb/product';
 
 export class CategoryResponseDto implements CategoryResponse {
   @ApiProperty()

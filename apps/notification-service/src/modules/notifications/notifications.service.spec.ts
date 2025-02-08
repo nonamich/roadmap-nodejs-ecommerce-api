@@ -1,7 +1,7 @@
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { USER_SERVICE_NAME } from '@repo/grpc/pb/user';
-import { SharedUtils } from '@repo/shared';
+import { USER_SERVICE_NAME } from '@/grpc/pb/user';
+import { SharedUtils } from '@/shared';
 import path from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
 import { GenericContainer, StartedTestContainer } from 'testcontainers';

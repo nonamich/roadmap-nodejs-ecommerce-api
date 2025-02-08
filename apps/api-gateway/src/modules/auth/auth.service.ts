@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { USER_SERVICE_NAME, UserServiceClient } from '@repo/grpc/pb/user';
+import { USER_SERVICE_NAME, UserServiceClient } from '@/grpc/pb/user';
 import { firstValueFrom } from 'rxjs';
 import { AuthorizedUser } from './auth.interface';
 import { RequestSigninDto, RequestSignupDto } from './dto/requests';

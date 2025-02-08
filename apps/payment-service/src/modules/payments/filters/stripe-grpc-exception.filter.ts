@@ -1,6 +1,6 @@
 import { ArgumentsHost, Catch } from '@nestjs/common';
 import { BaseRpcExceptionFilter } from '@nestjs/microservices';
-import { GrpcInvalidArgumentException } from '@repo/grpc/nest';
+import { GrpcInvalidArgumentException } from '@/grpc/nest';
 import { Observable } from 'rxjs';
 import Stripe from 'stripe';
 

@@ -5,7 +5,7 @@ import {
   MqttInterceptor,
   OrderEventDto,
   UserEventDto,
-} from '@repo/broker';
+} from '@/broker';
 import { NotificationsService } from '../notifications/notifications.service';
 
 @Controller()

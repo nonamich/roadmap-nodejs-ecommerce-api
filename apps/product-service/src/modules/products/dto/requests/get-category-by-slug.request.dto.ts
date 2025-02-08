@@ -1,4 +1,4 @@
-import { GetCategoryBySlugRequest } from '@repo/grpc/pb/product';
+import { GetCategoryBySlugRequest } from '@/grpc/pb/product';
 import { IsString } from 'class-validator';
 
 export class GetCategoryBySlugRequestDto implements GetCategoryBySlugRequest {

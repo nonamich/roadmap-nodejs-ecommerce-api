@@ -9,15 +9,15 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ORDER_SERVICE_NAME, OrderServiceClient } from '@repo/grpc/pb/order';
+import { ORDER_SERVICE_NAME, OrderServiceClient } from '@/grpc/pb/order';
 import {
   PAYMENT_SERVICE_NAME,
   PaymentServiceClient,
-} from '@repo/grpc/pb/payment';
+} from '@/grpc/pb/payment';
 import {
   PRODUCT_SERVICE_NAME,
   ProductServiceClient,
-} from '@repo/grpc/pb/product';
+} from '@/grpc/pb/product';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '~/modules/auth/auth.interface';
 import { Auth, CurrentUser } from '~/modules/auth/decorators';

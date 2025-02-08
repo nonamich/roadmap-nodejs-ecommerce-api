@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { BrokerEventPattern, BrokerPayload, OrderEventDto } from '@repo/broker';
+import { BrokerEventPattern, BrokerPayload, OrderEventDto } from '@/broker';
 import { CartService } from './carts.service';
 
 @Controller()
