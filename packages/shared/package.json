@@ -9,11 +9,13 @@
     "prebuild": "rm -rf dist"
   },
   "exports": {
+    "./nest": "./dist/nest/index.js",
     ".": "./dist/index.js"
   },
   "devDependencies": {
     "@nestjs/common": "^11.0.8",
     "@repo/configs": "workspace:*",
+    "@types/node": "^22.13.1",
     "typescript": "^5.7.3"
   },
   "peerDependencies": {

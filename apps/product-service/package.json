@@ -12,27 +12,24 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest.config.mjs",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate reset --force"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.12.5",
-    "@grpc/proto-loader": "^0.7.13",
-    "@grpc/reflection": "^1.0.4",
     "@nestjs/common": "^11.0.8",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.8",
     "@nestjs/microservices": "^11.0.8",
     "@prisma/client": "^6.3.0",
     "@repo/grpc": "workspace:*",
+    "@repo/shared": "workspace:*",
     "argon2": "^0.41.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
     "protobufjs": "^7.2.5",
     "reflect-metadata": "^0.2.2",
-    "@repo/shared": "workspace:*",
     "rxjs": "^7.8.1"
   },
   "devDependencies": {

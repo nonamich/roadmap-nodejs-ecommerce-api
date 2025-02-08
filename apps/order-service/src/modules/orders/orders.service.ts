@@ -7,6 +7,7 @@ import {
   PAYMENT_SERVICE_NAME,
   PaymentServiceClient,
 } from '@repo/grpc/pb/payment';
+import { USER_SERVICE_NAME, UserServiceClient } from '@repo/grpc/pb/user';
 import { firstValueFrom } from 'rxjs';
 import {
   CompleteOrdersRequestDto,
@@ -27,6 +28,9 @@ export class OrderService {
 
     @Inject(PAYMENT_SERVICE_NAME)
     private readonly paymentService: PaymentServiceClient,
+
+    @Inject(USER_SERVICE_NAME)
+    private readonly userService: UserServiceClient,
 
     private readonly repository: OrdersRepository,
     private readonly brokerService: BrokerService,
@@ -123,12 +127,16 @@ export class OrderService {
     return Math.ceil(price * 100);
   }
 
-  emitCompleted(order: OrderResponseDto): void {
+  async emitCompleted(order: OrderResponseDto): Promise<void> {
+    const user = await firstValueFrom(
+      this.userService.getUserById({ id: order.userId }),
+    );
+
     this.brokerService.emit('order.completed', {
       orderId: order.id,
-      userId: order.userId,
       createdAt: order.createdAt,
       totalPrice: order.totalPrice,
+      user,
     });
   }
 

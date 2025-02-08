@@ -16,13 +16,13 @@ async function main(): Promise<void> {
       .uniqueArray(faker.commerce.department, 20)
       .map((name) => ({
         name,
-        slug: faker.helpers.slugify(name).toLowerCase(),
+        slug: slugify(name),
       })),
   });
   const brands = await prisma.brand.createManyAndReturn({
     data: faker.helpers.uniqueArray(faker.company.name, 30).map((name) => ({
       name,
-      slug: faker.helpers.slugify(name).toLowerCase(),
+      slug: slugify(name),
     })),
   });
 
@@ -32,9 +32,7 @@ async function main(): Promise<void> {
       const category = faker.helpers.arrayElement(categories);
       const brand = faker.helpers.arrayElement(brands);
       const randomString = faker.string.alpha({ length: { min: 5, max: 10 } });
-      const slug = faker.helpers
-        .slugify(`${title}-${randomString}`)
-        .toLowerCase();
+      const slug = slugify(`${title}-${randomString}`);
 
       return {
         amount: faker.number.int({
@@ -89,3 +87,7 @@ async function main(): Promise<void> {
     ),
   });
 }
+
+const slugify = (string: string): string => {
+  return faker.helpers.slugify(string).toLowerCase().replace(/-{2,}/, '-');
+};

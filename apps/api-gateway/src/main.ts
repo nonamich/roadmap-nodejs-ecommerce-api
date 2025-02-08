@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { InternalDisabledLogger } from '@repo/shared';
+import { InternalDisabledLogger } from '@repo/shared/nest';
 import { AppModule } from './app.module';
 import { initSwagger } from './swagger';
 

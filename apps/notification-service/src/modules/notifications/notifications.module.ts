@@ -1,22 +1,32 @@
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { BrokerModule } from '@repo/broker';
-import { UsersModule } from '../users/users.module';
-import { NotificationsBrokerController } from './notifications.broker.controller';
-import { notificationsConfig } from './notifications.config';
+import { ConfigService } from '@nestjs/config';
 import { NotificationsService } from './notifications.service';
 
 @Module({
-  controllers: [NotificationsBrokerController],
+  exports: [NotificationsService],
   providers: [NotificationsService],
   imports: [
-    UsersModule,
-    ConfigModule.forFeature(notificationsConfig),
-    BrokerModule.registerAsync({
+    MailerModule.forRootAsync({
       inject: [ConfigService],
       useFactory(config: ConfigService) {
         return {
-          url: config.getOrThrow('MQTT_URL'),
+          verifyTransporters: true,
+          transport: config.getOrThrow('MAIL_SERVER_URL'),
+          defaults: {
+            from: {
+              address: config.getOrThrow('MAIL_ADMIN_EMAIL'),
+              name: config.getOrThrow('MAIL_ADMIN_NAME'),
+            },
+          },
+          template: {
+            dir: __dirname + '/templates',
+            adapter: new HandlebarsAdapter(),
+          },
+          options: {
+            strict: true,
+          },
         };
       },
     }),

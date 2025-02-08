@@ -2,10 +2,12 @@
   "name": "roadmap-nodejs-ecommerce-api",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "dev": "pnpm --parallel run /^dev/",
-    "lint": "pnpm -r /^lint/",
-    "build": "pnpm -r /^build/",
-    "predev": "docker compose -f compose.infra.yml up -d"
+    "dev": "turbo run --concurrency=100% --parallel dev",
+    "predev": "pnpm docker:infra",
+    "lint": "turbo run lint",
+    "build": "turbo run --concurrency 1 build",
+    "docker:infra": "docker compose -f compose.infra.yml up -d",
+    "db:migrate": "pnpm -r db:migrate"
   },
   "dependencies": {
     "turbo": "^2.4.0"

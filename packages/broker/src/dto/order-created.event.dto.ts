@@ -1,8 +1,8 @@
 import { Type } from 'class-transformer';
-import { IsInt, ValidateNested } from 'class-validator';
+import { IsInt, IsString, ValidateNested } from 'class-validator';
 
 export class OrderItemsCreatedEventDto {
-  @IsInt()
+  @IsString()
   productId!: string;
 
   @IsInt()
@@ -10,10 +10,10 @@ export class OrderItemsCreatedEventDto {
 }
 
 export class OrderCreatedEventDto {
-  @IsInt()
+  @IsString()
   orderId!: string;
 
-  @IsInt()
+  @IsString()
   userId!: string;
 
   @Type(() => OrderItemsCreatedEventDto)

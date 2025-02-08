@@ -9,9 +9,9 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest.config.mjs",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate dev --skip-generate"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.8",

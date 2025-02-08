@@ -38,11 +38,11 @@ const Product = () => {
       <Breadcrumbs
         links={[
           {
-            href: `/category/${product.category.id}`,
+            href: `/category/${product.category.slug}`,
             text: product.category.name,
           },
           {
-            href: `/brand/${product.brand.id}`,
+            href: `/brand/${product.brand.slug}`,
             text: product.brand.name,
           },
           {

@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { connectBrokerMicroservice } from '@repo/broker';
 import { connectGrpcMicroservice } from '@repo/grpc/nest';
 import { ORDER_PACKAGE_NAME } from '@repo/grpc/pb/order';
-import { InternalDisabledLogger } from '@repo/shared';
+import { InternalDisabledLogger } from '@repo/shared/nest';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {

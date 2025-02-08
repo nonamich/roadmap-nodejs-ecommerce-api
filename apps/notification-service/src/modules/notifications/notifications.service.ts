@@ -1,37 +1,45 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
-
-import { MailtrapClient, SendResponse } from 'mailtrap';
-import { notificationsConfig } from './notifications.config';
-import { NotificationTemplate } from './notifications.type';
+import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
+import { Injectable } from '@nestjs/common';
+import { OrderCompletedEventDto, UserEventDto } from '@repo/broker';
+import { SentMessageInfo } from 'nodemailer';
 
 @Injectable()
-export class NotificationsService extends MailtrapClient {
-  constructor(
-    @Inject(notificationsConfig.KEY)
-    private readonly config: ConfigType<typeof notificationsConfig>,
-  ) {
-    super({
-      token: config.token,
-      testInboxId: config.inboxId,
-      accountId: config.accountId,
+export class NotificationsService {
+  constructor(private readonly mailerService: MailerService) {}
+
+  async sendUserWelcome(user: UserEventDto): Promise<void> {
+    await this.send({
+      to: user.email,
+      subject: `Welcome, ${user.name}!`,
+      template: 'user.registered.hbs',
+      context: {
+        user,
+      },
     });
   }
 
-  async sendTemplate(
-    email: string,
-    template: NotificationTemplate,
-  ): Promise<SendResponse> {
-    const from = {
-      email: this.config.sender.email,
-      name: this.config.sender.name,
-    };
-
-    return await this.send({
-      from,
-      to: [{ email, name: 'my Mane' }],
-      template_uuid: template.id,
-      template_variables: template.props,
+  async sendOrderInvoice({
+    createdAt,
+    orderId,
+    totalPrice,
+    user,
+  }: OrderCompletedEventDto): Promise<void> {
+    await this.send({
+      to: user.email,
+      subject: `Invoice, #${orderId}!`,
+      template: 'order.completed.hbs',
+      context: {
+        order: {
+          id: orderId,
+          createdAt,
+          totalPrice,
+        },
+        user,
+      },
     });
+  }
+
+  async send(options: ISendMailOptions): Promise<SentMessageInfo> {
+    return await this.mailerService.sendMail(options);
   }
 }

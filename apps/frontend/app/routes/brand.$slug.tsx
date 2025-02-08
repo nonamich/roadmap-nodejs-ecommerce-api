@@ -6,8 +6,6 @@ import {
 import { productsControllerGetProductsByFilter } from '~/api';
 import { Breadcrumbs, ProductCollection } from '~/components';
 
-const LIMIT = 8;
-
 export async function clientLoader({
   request,
   params,
@@ -15,7 +13,7 @@ export async function clientLoader({
   const url = new URL(request.url);
   const page = +(url.searchParams.get('page') || 1);
 
-  if (!params.id) {
+  if (!params.slug) {
     throw createError('Not Found', 404);
   }
 
@@ -26,9 +24,9 @@ export async function clientLoader({
     query: {
       pagination: {
         page,
-        limit: LIMIT,
+        limit: 8,
       },
-      brandId: +params.id,
+      brandSlug: params.slug,
     },
   });
 

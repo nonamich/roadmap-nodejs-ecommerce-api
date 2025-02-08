@@ -9,9 +9,9 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest.config.mjs",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate dev --skip-generate"
   },
   "dependencies": {
     "@grpc/proto-loader": "^0.7.13",
@@ -31,7 +31,6 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@grpc/reflection": "^1.0.4",
     "@nestjs/cli": "^11.0.2",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.8",
