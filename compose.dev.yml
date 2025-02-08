@@ -7,8 +7,6 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
-    volumes:
-      - ./infra/db/init.sql:/docker-entrypoint-initdb.d/init.sql
   mqtt:
     ports:
       - 1883:1883
