@@ -1,60 +1,105 @@
-include:
-  - compose.infra.yml
+name: roadmap-nodejs-ecommerce-api-keploy
 
 services:
-  api-gateway:
+  api-gateway-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - PACKAGE_NAME=@apps/api-gateway
+        - CURRENT_PACKAGE=@apps/api-gateway
     environment:
-      GRPC_SERVICE_URL_USER="user-service:50051"
-      GRPC_SERVICE_URL_PRODUCT="product-service:50051"
-      GRPC_SERVICE_URL_CART="cart-service:50051"
-      GRPC_SERVICE_URL_ORDER="order-service:50051"
-      GRPC_SERVICE_URL_PAYMENT="payment-service:50051"
-      JWT_SECRET="23cd6855c0ff0a1718f875458f8904b2b7a1b72b8066a75acaf6d6820397c2a3"
-      SWAGGER_PATH="/"
-      SWAGGER_JSON_DOCUMENT_URL="/document.json"
-      PORT=3000
+      GRPC_SERVICE_URL_USER: "user-service:50051"
+      GRPC_SERVICE_URL_PRODUCT: "product-service:50051"
+      GRPC_SERVICE_URL_CART: "cart-service:50051"
+      GRPC_SERVICE_URL_ORDER: "order-service:50051"
+      GRPC_SERVICE_URL_PAYMENT: "payment-service:50051"
+      JWT_SECRET: "23cd6855c0ff0a1718f875458f8904b2b7a1b72b8066a75acaf6d6820397c2a3"
+      SWAGGER_PATH: "/"
+      SWAGGER_JSON_DOCUMENT_URL: "/document.json"
+      PORT: 3000
     ports:
       - 3000:3000
+    depends_on:
+      - user-service
+      - product-service
+      - cart-service
+      - order-service
+      - payment-service
 
   cart-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - PACKAGE_NAME=@apps/cart-service
+        - CURRENT_PACKAGE=@apps/cart-service
+    environment:
+      DATABASE_URL: "postgres://postgres:postgres@db-service:5432/cart-service"
+      GRPC_SERVICE_URL_PRODUCT: "product-service:50051"
+      GRPC_SERVICE_URL_CART: "0.0.0.0:50051"
+      MQTT_URL: "mqtt://mqtt-service:1883"
+
   notification-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - PACKAGE_NAME=@apps/notification-service
+        - CURRENT_PACKAGE=@apps/notification-service
+    environment:
+      MAIL_ADMIN_EMAIL: "admin@admin.com"
+      MAIL_ADMIN_NAME: "admin"
+      MAIL_SERVER_URL: "smtp://admin@admin.com:pass@smtp-service:1025"
+      GRPC_SERVICE_URL_USER: "user-service:50051"
+      MQTT_URL: "mqtt://mqtt-service:1883"
+
   order-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - PACKAGE_NAME=@apps/order-service
+        - CURRENT_PACKAGE=@apps/order-service
+    environment:
+      DATABASE_URL: "postgres://postgres:postgres@db-service:5432/order-service"
+      GRPC_SERVICE_URL_CART: "cart-service:50051"
+      GRPC_SERVICE_URL_ORDER: "0.0.0.0:50051"
+      GRPC_SERVICE_URL_PAYMENT: "payment-service:50051"
+      GRPC_SERVICE_URL_USER: "user-service:50051"
+      MQTT_URL: "mqtt://mqtt-service:1883"
+
   payment-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - PACKAGE_NAME=@apps/payment-service
+        - CURRENT_PACKAGE=@apps/payment-service
+    environment:
+      GRPC_SERVICE_URL_ORDER: "order-service:50051"
+      GRPC_SERVICE_URL_PAYMENT: "0.0.0.0:50051"
+      MQTT_URL: "mqtt://mqtt-service:1883"
+      STRIPE_SECRET_KEY: "sk_test_51Qn3MPFLXC5RCuubBH0aQKFRa8O7VSFeQXxQYLNGQHRswGDBUk1zvoT83nDZwW59XgNWcoCWkRHB6aQjAGKysVkr00Hi7XULwG"
+      STRIPE_WEBHOOK_WHSEC: "whsec_402cc7bb95781f5110e2804a8aefc814c397c0a00a2ea5adb32321ef63f3c497"
+      PORT: 4242
+
   product-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - PACKAGE_NAME=@apps/product-service
+        - CURRENT_PACKAGE=@apps/product-service
+    environment:
+      DATABASE_URL: "postgres://postgres:postgres@db-service:5432/product-service"
+      GRPC_SERVICE_URL_PRODUCT: "0.0.0.0:50051"
+      GRPC_SERVICE_URL_ORDER: "order-service:50051"
+      MQTT_URL: "mqtt://mqtt-service:1883"
+
   user-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - PACKAGE_NAME=@apps/user-service
+        - CURRENT_PACKAGE=@apps/user-service
+    environment:
+      DATABASE_URL: "postgres://postgres:postgres@db-service:5432/user-service"
+      GRPC_SERVICE_URL_USER: "0.0.0.0:50051"
+      MQTT_URL: "mqtt://mqtt-service:1883"
+
 

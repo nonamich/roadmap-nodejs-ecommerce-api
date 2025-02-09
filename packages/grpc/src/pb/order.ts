@@ -72,7 +72,7 @@ export interface OrderResponse {
   totalPrice: number;
 }
 
-export const ORDER_PACKAGE_NAME = "order";
+export const ORDER_CURRENT_PACKAGE = "order";
 
 wrappers[".google.protobuf.Timestamp"] = {
   fromObject(value: Date) {

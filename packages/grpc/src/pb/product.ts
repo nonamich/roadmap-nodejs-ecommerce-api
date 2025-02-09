@@ -83,7 +83,7 @@ export interface ProductsResponse {
   pagination: PaginationResponse;
 }
 
-export const PRODUCT_PACKAGE_NAME = "product";
+export const PRODUCT_CURRENT_PACKAGE = "product";
 
 wrappers[".google.protobuf.Timestamp"] = {
   fromObject(value: Date) {

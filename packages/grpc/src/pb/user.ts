@@ -31,7 +31,7 @@ export interface UserResponse {
   email: string;
 }
 
-export const USER_PACKAGE_NAME = "user";
+export const USER_CURRENT_PACKAGE = "user";
 
 export interface UserServiceClient {
   createUser(request: CreateUserRequest): Observable<UserResponse>;

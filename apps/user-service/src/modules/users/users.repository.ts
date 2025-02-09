@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from 'prisma-client';
+import { Prisma } from '@prisma/client/user/index.js';
 import { ORMService } from '~/modules/orm/orm.service';
 import { UserEntity } from './entities';
 import { USER_SELECT } from './users.constants';

@@ -1,19 +1,34 @@
-FROM node:20-slim AS base
+FROM node:22-slim AS base
+ARG CURRENT_PACKAGE
+ENV PNPM_NO_UPDATE_NOTIFIER=true
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN npm install --global corepack@latest
-RUN corepack enable
+RUN apt-get update -y && apt-get install -y openssl
+RUN corepack enable && \
+    corepack prepare pnpm@9.15.4 --activate
+RUN pnpm config set notify-update false -g
+
+FROM base AS packages
+WORKDIR /usr/src/packages
+COPY . .
+RUN find . \( -name "package.json" -o -name "pnpm-lock.yaml" -o -name "pnpm-workspace.yaml" \) \
+    | tar -czf packages.tar.gz -T -
+RUN tar -xzf packages.tar.gz -C /app
+
+FROM base AS install
+WORKDIR /app
+COPY --from=packages /app .
+RUN ls && sleep 5
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+  pnpm install --frozen-lockfile --filter $CURRENT_PACKAGE...
 
 FROM base AS build
-ARG PACKAGE_NAME
-COPY . /usr/src/build
-WORKDIR /usr/src/build
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-  pnpm install --frozen-lockfile --filter $PACKAGE_NAME...
-RUN pnpm run --filter=$PACKAGE_NAME... -r build
-RUN pnpm deploy --filter=$PACKAGE_NAME --prod /usr/src/app
+WORKDIR /app
+COPY --from=install /app .
+RUN pnpm run --filter $CURRENT_PACKAGE... -r build
+RUN pnpm prune --prod
 
 FROM base
-COPY --from=build /usr/src/app /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /app
+COPY --from=build /app .
 CMD [ "pnpm", "start" ]

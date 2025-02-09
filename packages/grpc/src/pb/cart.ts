@@ -42,7 +42,7 @@ export interface CartResponse {
   totalPrice: number;
 }
 
-export const CART_PACKAGE_NAME = "cart";
+export const CART_CURRENT_PACKAGE = "cart";
 
 export interface CartServiceClient {
   addToCart(request: AddToCartRequest): Observable<CartResponse>;

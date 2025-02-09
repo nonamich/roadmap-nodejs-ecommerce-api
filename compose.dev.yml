@@ -1,0 +1,14 @@
+services:
+  db-service:
+    ports:
+      - 5432:5432
+  mqtt-service:
+    ports:
+      - 1883:1883
+  smtp-service:
+    ports:
+      - 8025:8025
+      - 1025:1025
+
+
+

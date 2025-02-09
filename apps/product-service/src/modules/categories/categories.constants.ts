@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma-client';
+import { Prisma } from '@prisma/client/product/index.js';
 
 export const CATEGORY_SELECT = {
   id: true,

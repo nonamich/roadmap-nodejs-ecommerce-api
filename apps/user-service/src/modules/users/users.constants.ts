@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma-client';
+import { Prisma } from '@prisma/client/user/index.js';
 
 export const USER_SELECT: Prisma.UserSelect = {
   id: true,

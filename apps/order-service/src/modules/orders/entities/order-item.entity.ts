@@ -1,4 +1,4 @@
-import { OrderItem } from 'prisma-client';
+import { OrderItem } from '@prisma/client/order/index.js';
 
 export class OrderItemEntity implements OrderItem {
   orderId!: string;

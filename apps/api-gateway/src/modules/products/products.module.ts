@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GrpcClientModule } from '@packages/grpc/nest';
 import {
-  PRODUCT_PACKAGE_NAME,
+  PRODUCT_CURRENT_PACKAGE,
   PRODUCT_SERVICE_NAME,
 } from '@packages/grpc/pb/product';
 import { ProductsController } from './products.controller';
@@ -12,7 +12,7 @@ import { ProductsController } from './products.controller';
   controllers: [ProductsController],
   imports: [
     GrpcClientModule.registerAsync({
-      packageName: PRODUCT_PACKAGE_NAME,
+      packageName: PRODUCT_CURRENT_PACKAGE,
       serviceNameAndToken: PRODUCT_SERVICE_NAME,
       inject: [ConfigService],
       useFactory(config: ConfigService) {

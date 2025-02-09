@@ -22,7 +22,9 @@ describe('Notification Service', () => {
   let webUiPort: number;
 
   beforeAll(async () => {
-    container = await new GenericContainer(compose.services.smtp.image)
+    container = await new GenericContainer(
+      compose.services['smtp-service'].image,
+    )
       .withExposedPorts(1025, 8025)
       .start();
 

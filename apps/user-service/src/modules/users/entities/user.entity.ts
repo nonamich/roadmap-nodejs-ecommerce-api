@@ -1,4 +1,4 @@
-import { User } from 'prisma-client';
+import { User } from '@prisma/client/user/index.js';
 
 export class UserEntity implements User {
   name!: string;

@@ -48,7 +48,7 @@ export interface IntentResponse {
   status: PaymentStatus;
 }
 
-export const PAYMENT_PACKAGE_NAME = "payment";
+export const PAYMENT_CURRENT_PACKAGE = "payment";
 
 export interface PaymentServiceClient {
   createIntent(request: CreateIntentRequest): Observable<IntentResponse>;

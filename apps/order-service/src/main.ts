@@ -2,7 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { connectBrokerMicroservice } from '@packages/broker';
 import { connectGrpcMicroservice } from '@packages/grpc/nest';
-import { ORDER_PACKAGE_NAME } from '@packages/grpc/pb/order';
+import { ORDER_CURRENT_PACKAGE } from '@packages/grpc/pb/order';
 import { InternalDisabledLogger } from '@packages/shared/nest';
 import { AppModule } from './app.module';
 
@@ -18,7 +18,7 @@ async function bootstrap(): Promise<void> {
 
   connectGrpcMicroservice(app, {
     url: config.getOrThrow('GRPC_SERVICE_URL_ORDER'),
-    packageName: ORDER_PACKAGE_NAME,
+    packageName: ORDER_CURRENT_PACKAGE,
   });
 
   await app.startAllMicroservices();

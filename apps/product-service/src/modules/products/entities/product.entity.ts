@@ -1,4 +1,4 @@
-import { Product } from 'prisma-client';
+import { Product } from '@prisma/client/product/index.js';
 import { BrandEntity } from '~/modules/brands/entities';
 import { CategoryEntity } from '~/modules/categories/entities';
 

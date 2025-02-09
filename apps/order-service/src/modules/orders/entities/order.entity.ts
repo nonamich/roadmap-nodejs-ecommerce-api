@@ -1,4 +1,4 @@
-import { $Enums, Order } from 'prisma-client';
+import { $Enums, Order } from '@prisma/client/order/index.js';
 import { OrderItemEntity } from './order-item.entity';
 
 export class OrderEntity implements Order {

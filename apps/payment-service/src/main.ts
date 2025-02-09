@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { connectBrokerMicroservice } from '@packages/broker';
 import { connectGrpcMicroservice } from '@packages/grpc/nest';
-import { PAYMENT_PACKAGE_NAME } from '@packages/grpc/pb/payment';
+import { PAYMENT_CURRENT_PACKAGE } from '@packages/grpc/pb/payment';
 import { InternalDisabledLogger } from '@packages/shared/nest';
 import { AppModule } from './app.module';
 
@@ -16,7 +16,7 @@ async function bootstrap(): Promise<void> {
 
   connectGrpcMicroservice(app, {
     url: config.getOrThrow('GRPC_SERVICE_URL_PAYMENT'),
-    packageName: PAYMENT_PACKAGE_NAME,
+    packageName: PAYMENT_CURRENT_PACKAGE,
   });
 
   connectBrokerMicroservice(app, {
