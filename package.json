@@ -10,6 +10,11 @@
     "docker:dev": "docker compose -f compose.infra.yml -f compose.dev.yml up -d",
     "db:migrate": "pnpm -r db:migrate"
   },
+  "pnpm": {
+    "ignoredOptionalDependencies": [
+      "@apps/*"
+    ]
+  },
   "dependencies": {
     "turbo": "^2.4.0"
   }

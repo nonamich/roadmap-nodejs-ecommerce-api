@@ -65,22 +65,6 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
-    optionalDependencies:
-      '@apps/notification-service':
-        specifier: workspace:*
-        version: link:../notification-service
-      '@apps/order-service':
-        specifier: workspace:*
-        version: link:../order-service
-      '@apps/payment-service':
-        specifier: workspace:*
-        version: link:../payment-service
-      '@apps/product-service':
-        specifier: workspace:*
-        version: link:../product-service
-      '@apps/user-service':
-        specifier: workspace:*
-        version: link:../user-service
     devDependencies:
       '@nestjs/cli':
         specifier: ^11.0.2
@@ -175,13 +159,6 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
-    optionalDependencies:
-      '@apps/product-service':
-        specifier: workspace:*
-        version: link:../product-service
-      '@apps/user-service':
-        specifier: workspace:*
-        version: link:../user-service
     devDependencies:
       '@nestjs/cli':
         specifier: ^11.0.2
@@ -276,10 +253,6 @@ importers:
       react-router:
         specifier: ^7.1.5
         version: 7.1.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-    optionalDependencies:
-      '@apps/api-gateway':
-        specifier: workspace:*
-        version: link:../api-gateway
     devDependencies:
       '@hey-api/openapi-ts':
         specifier: ^0.59.2
@@ -380,10 +353,6 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
-    optionalDependencies:
-      '@apps/user-service':
-        specifier: workspace:*
-        version: link:../user-service
     devDependencies:
       '@nestjs/cli':
         specifier: ^11.0.2
@@ -475,16 +444,6 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
-    optionalDependencies:
-      '@apps/cart-service':
-        specifier: workspace:*
-        version: link:../cart-service
-      '@apps/product-service':
-        specifier: workspace:*
-        version: link:../product-service
-      '@apps/user-service':
-        specifier: workspace:*
-        version: link:../user-service
     devDependencies:
       '@nestjs/cli':
         specifier: ^11.0.2
@@ -579,10 +538,6 @@ importers:
       stripe:
         specifier: ^17.6.0
         version: 17.6.0
-    optionalDependencies:
-      '@apps/order-service':
-        specifier: workspace:*
-        version: link:../order-service
     devDependencies:
       '@nestjs/cli':
         specifier: ^11.0.2
@@ -680,10 +635,6 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
-    optionalDependencies:
-      '@apps/order-service':
-        specifier: workspace:*
-        version: link:../order-service
     devDependencies:
       '@faker-js/faker':
         specifier: ^9.4.0
@@ -6798,6 +6749,9 @@ packages:
   zip-stream@6.0.1:
     resolution: {integrity: sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==}
     engines: {node: '>= 14'}
+
+ignoredOptionalDependencies:
+  - '@apps/*'
 
 snapshots:
 
