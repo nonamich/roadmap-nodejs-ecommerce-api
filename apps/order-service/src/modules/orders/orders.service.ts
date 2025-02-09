@@ -170,6 +170,13 @@ export class OrderService {
       userId: order.userId,
       createdAt: order.createdAt,
       totalPrice: order.totalPrice,
+      items: order.items.map((item) => {
+        return {
+          price: item.price,
+          productId: item.productId,
+          quantity: item.quantity,
+        };
+      }),
     });
   }
 

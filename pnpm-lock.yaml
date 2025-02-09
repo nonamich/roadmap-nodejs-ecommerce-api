@@ -14,24 +14,6 @@ importers:
 
   apps/api-gateway:
     dependencies:
-      '@/grpc':
-        specifier: workspace:*
-        version: link:../../packages/grpc
-      '@/order-service':
-        specifier: workspace:*
-        version: link:../order-service
-      '@/payment-service':
-        specifier: workspace:*
-        version: link:../payment-service
-      '@/product-service':
-        specifier: workspace:*
-        version: link:../product-service
-      '@/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
-      '@/user-service':
-        specifier: workspace:*
-        version: link:../user-service
       '@nestjs/common':
         specifier: ^11.0.8
         version: 11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -56,6 +38,12 @@ importers:
       '@nestjs/swagger':
         specifier: ^11.0.3
         version: 11.0.3(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)
+      '@packages/grpc':
+        specifier: workspace:*
+        version: link:../../packages/grpc
+      '@packages/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -77,10 +65,23 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
-    devDependencies:
-      '@/configs':
+    optionalDependencies:
+      '@apps/notification-service':
         specifier: workspace:*
-        version: link:../../packages/configs
+        version: link:../notification-service
+      '@apps/order-service':
+        specifier: workspace:*
+        version: link:../order-service
+      '@apps/payment-service':
+        specifier: workspace:*
+        version: link:../payment-service
+      '@apps/product-service':
+        specifier: workspace:*
+        version: link:../product-service
+      '@apps/user-service':
+        specifier: workspace:*
+        version: link:../user-service
+    devDependencies:
       '@nestjs/cli':
         specifier: ^11.0.2
         version: 11.0.2(@swc/cli@0.6.0(@swc/core@1.10.15)(chokidar@4.0.3))(@swc/core@1.10.15)(@types/node@22.13.1)
@@ -90,6 +91,9 @@ importers:
       '@nestjs/testing':
         specifier: ^11.0.8
         version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(@nestjs/microservices@11.0.8)(@nestjs/platform-express@11.0.8)
+      '@packages/configs':
+        specifier: workspace:*
+        version: link:../../packages/configs
       '@swc/cli':
         specifier: ^0.6.0
         version: 0.6.0(@swc/core@1.10.15)(chokidar@4.0.3)
@@ -135,21 +139,6 @@ importers:
 
   apps/cart-service:
     dependencies:
-      '@/broker':
-        specifier: workspace:*
-        version: link:../../packages/broker
-      '@/grpc':
-        specifier: workspace:*
-        version: link:../../packages/grpc
-      '@/product-service':
-        specifier: workspace:*
-        version: link:../product-service
-      '@/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
-      '@/user-service':
-        specifier: workspace:*
-        version: link:../user-service
       '@nestjs/common':
         specifier: ^11.0.8
         version: 11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -162,6 +151,15 @@ importers:
       '@nestjs/microservices':
         specifier: ^11.0.8
         version: 11.0.8(@grpc/grpc-js@1.12.6)(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(mqtt@5.10.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@packages/broker':
+        specifier: workspace:*
+        version: link:../../packages/broker
+      '@packages/grpc':
+        specifier: workspace:*
+        version: link:../../packages/grpc
+      '@packages/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@prisma/client':
         specifier: ^6.3.0
         version: 6.3.1(prisma@6.3.1(typescript@5.7.3))(typescript@5.7.3)
@@ -177,10 +175,14 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
-    devDependencies:
-      '@/configs':
+    optionalDependencies:
+      '@apps/product-service':
         specifier: workspace:*
-        version: link:../../packages/configs
+        version: link:../product-service
+      '@apps/user-service':
+        specifier: workspace:*
+        version: link:../user-service
+    devDependencies:
       '@nestjs/cli':
         specifier: ^11.0.2
         version: 11.0.2(@swc/cli@0.6.0(@swc/core@1.10.15)(chokidar@4.0.3))(@swc/core@1.10.15)(@types/node@22.13.1)
@@ -190,6 +192,9 @@ importers:
       '@nestjs/testing':
         specifier: ^11.0.8
         version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(@nestjs/microservices@11.0.8)(@nestjs/platform-express@11.0.8)
+      '@packages/configs':
+        specifier: workspace:*
+        version: link:../../packages/configs
       '@swc/cli':
         specifier: ^0.6.0
         version: 0.6.0(@swc/core@1.10.15)(chokidar@4.0.3)
@@ -271,16 +276,17 @@ importers:
       react-router:
         specifier: ^7.1.5
         version: 7.1.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-    devDependencies:
-      '@/api-gateway':
+    optionalDependencies:
+      '@apps/api-gateway':
         specifier: workspace:*
         version: link:../api-gateway
-      '@/configs':
-        specifier: workspace:*
-        version: link:../../packages/configs
+    devDependencies:
       '@hey-api/openapi-ts':
         specifier: ^0.59.2
         version: 0.59.2(typescript@5.7.3)
+      '@packages/configs':
+        specifier: workspace:*
+        version: link:../../packages/configs
       '@react-router/dev':
         specifier: ^7.1.5
         version: 7.1.5(@react-router/serve@7.1.5(react-router@7.1.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(@types/node@22.13.1)(react-router@7.1.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(terser@5.38.1)(typescript@5.7.3)(vite@5.4.14(@types/node@22.13.1)(terser@5.38.1))
@@ -310,7 +316,7 @@ importers:
         version: 5.1.0(eslint@9.20.0(jiti@2.4.2))
       eslint-plugin-react-refresh:
         specifier: ^0.4.18
-        version: 0.4.18(eslint@9.20.0(jiti@2.4.2))
+        version: 0.4.19(eslint@9.20.0(jiti@2.4.2))
       globals:
         specifier: ^15.14.0
         version: 15.14.0
@@ -332,15 +338,6 @@ importers:
 
   apps/notification-service:
     dependencies:
-      '@/broker':
-        specifier: workspace:*
-        version: link:../../packages/broker
-      '@/grpc':
-        specifier: workspace:^
-        version: link:../../packages/grpc
-      '@/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
       '@nestjs-modules/mailer':
         specifier: ^2.0.2
         version: 2.0.2(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(nodemailer@6.10.0)
@@ -356,6 +353,15 @@ importers:
       '@nestjs/microservices':
         specifier: ^11.0.8
         version: 11.0.8(@grpc/grpc-js@1.12.6)(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(mqtt@5.10.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@packages/broker':
+        specifier: workspace:*
+        version: link:../../packages/broker
+      '@packages/grpc':
+        specifier: workspace:^
+        version: link:../../packages/grpc
+      '@packages/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -374,10 +380,11 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
-    devDependencies:
-      '@/configs':
+    optionalDependencies:
+      '@apps/user-service':
         specifier: workspace:*
-        version: link:../../packages/configs
+        version: link:../user-service
+    devDependencies:
       '@nestjs/cli':
         specifier: ^11.0.2
         version: 11.0.2(@swc/cli@0.6.0(@swc/core@1.10.15)(chokidar@4.0.3))(@swc/core@1.10.15)(@types/node@22.13.1)
@@ -387,6 +394,9 @@ importers:
       '@nestjs/testing':
         specifier: ^11.0.8
         version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(@nestjs/microservices@11.0.8)(@nestjs/platform-express@11.0.8)
+      '@packages/configs':
+        specifier: workspace:*
+        version: link:../../packages/configs
       '@swc/cli':
         specifier: ^0.6.0
         version: 0.6.0(@swc/core@1.10.15)(chokidar@4.0.3)
@@ -426,27 +436,6 @@ importers:
 
   apps/order-service:
     dependencies:
-      '@/broker':
-        specifier: workspace:*
-        version: link:../../packages/broker
-      '@/cart-service':
-        specifier: workspace:*
-        version: link:../cart-service
-      '@/grpc':
-        specifier: workspace:*
-        version: link:../../packages/grpc
-      '@/notification-service':
-        specifier: workspace:*
-        version: link:../notification-service
-      '@/product-service':
-        specifier: workspace:*
-        version: link:../product-service
-      '@/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
-      '@/user-service':
-        specifier: workspace:*
-        version: link:../user-service
       '@nestjs/common':
         specifier: ^11.0.8
         version: 11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -462,6 +451,15 @@ importers:
       '@nestjs/schedule':
         specifier: ^5.0.1
         version: 5.0.1(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)
+      '@packages/broker':
+        specifier: workspace:*
+        version: link:../../packages/broker
+      '@packages/grpc':
+        specifier: workspace:*
+        version: link:../../packages/grpc
+      '@packages/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@prisma/client':
         specifier: ^6.3.0
         version: 6.3.1(prisma@6.3.1(typescript@5.7.3))(typescript@5.7.3)
@@ -477,10 +475,17 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
-    devDependencies:
-      '@/configs':
+    optionalDependencies:
+      '@apps/cart-service':
         specifier: workspace:*
-        version: link:../../packages/configs
+        version: link:../cart-service
+      '@apps/product-service':
+        specifier: workspace:*
+        version: link:../product-service
+      '@apps/user-service':
+        specifier: workspace:*
+        version: link:../user-service
+    devDependencies:
       '@nestjs/cli':
         specifier: ^11.0.2
         version: 11.0.2(@swc/cli@0.6.0(@swc/core@1.10.15)(chokidar@4.0.3))(@swc/core@1.10.15)(@types/node@22.13.1)
@@ -490,6 +495,9 @@ importers:
       '@nestjs/testing':
         specifier: ^11.0.8
         version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(@nestjs/microservices@11.0.8)(@nestjs/platform-express@11.0.8)
+      '@packages/configs':
+        specifier: workspace:*
+        version: link:../../packages/configs
       '@swc/cli':
         specifier: ^0.6.0
         version: 0.6.0(@swc/core@1.10.15)(chokidar@4.0.3)
@@ -532,21 +540,6 @@ importers:
 
   apps/payment-service:
     dependencies:
-      '@/broker':
-        specifier: workspace:*
-        version: link:../../packages/broker
-      '@/grpc':
-        specifier: workspace:*
-        version: link:../../packages/grpc
-      '@/notification-service':
-        specifier: workspace:*
-        version: link:../notification-service
-      '@/order-service':
-        specifier: workspace:*
-        version: link:../order-service
-      '@/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
       '@nestjs/common':
         specifier: ^11.0.8
         version: 11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -562,6 +555,15 @@ importers:
       '@nestjs/platform-express':
         specifier: ^11.0.8
         version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)
+      '@packages/broker':
+        specifier: workspace:*
+        version: link:../../packages/broker
+      '@packages/grpc':
+        specifier: workspace:*
+        version: link:../../packages/grpc
+      '@packages/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -577,10 +579,11 @@ importers:
       stripe:
         specifier: ^17.6.0
         version: 17.6.0
-    devDependencies:
-      '@/configs':
+    optionalDependencies:
+      '@apps/order-service':
         specifier: workspace:*
-        version: link:../../packages/configs
+        version: link:../order-service
+    devDependencies:
       '@nestjs/cli':
         specifier: ^11.0.2
         version: 11.0.2(@swc/cli@0.6.0(@swc/core@1.10.15)(chokidar@4.0.3))(@swc/core@1.10.15)(@types/node@22.13.1)
@@ -590,6 +593,9 @@ importers:
       '@nestjs/testing':
         specifier: ^11.0.8
         version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(@nestjs/microservices@11.0.8)(@nestjs/platform-express@11.0.8)
+      '@packages/configs':
+        specifier: workspace:*
+        version: link:../../packages/configs
       '@swc/cli':
         specifier: ^0.6.0
         version: 0.6.0(@swc/core@1.10.15)(chokidar@4.0.3)
@@ -629,18 +635,6 @@ importers:
 
   apps/product-service:
     dependencies:
-      '@/broker':
-        specifier: workspace:*
-        version: link:../../packages/broker
-      '@/configs':
-        specifier: workspace:*
-        version: link:../../packages/configs
-      '@/grpc':
-        specifier: workspace:*
-        version: link:../../packages/grpc
-      '@/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
       '@nestjs/common':
         specifier: ^11.0.8
         version: 11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -653,6 +647,18 @@ importers:
       '@nestjs/microservices':
         specifier: ^11.0.8
         version: 11.0.8(@grpc/grpc-js@1.12.6)(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(mqtt@5.10.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@packages/broker':
+        specifier: workspace:*
+        version: link:../../packages/broker
+      '@packages/configs':
+        specifier: workspace:*
+        version: link:../../packages/configs
+      '@packages/grpc':
+        specifier: workspace:*
+        version: link:../../packages/grpc
+      '@packages/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@prisma/client':
         specifier: ^6.3.0
         version: 6.3.1(prisma@6.3.1(typescript@5.7.3))(typescript@5.7.3)
@@ -674,6 +680,10 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
+    optionalDependencies:
+      '@apps/order-service':
+        specifier: workspace:*
+        version: link:../order-service
     devDependencies:
       '@faker-js/faker':
         specifier: ^9.4.0
@@ -732,15 +742,6 @@ importers:
 
   apps/user-service:
     dependencies:
-      '@/grpc':
-        specifier: workspace:*
-        version: link:../../packages/grpc
-      '@/notification-service':
-        specifier: workspace:*
-        version: link:../notification-service
-      '@/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
       '@nestjs/common':
         specifier: ^11.0.8
         version: 11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -753,6 +754,12 @@ importers:
       '@nestjs/microservices':
         specifier: ^11.0.8
         version: 11.0.8(@grpc/grpc-js@1.12.6)(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(mqtt@5.10.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@packages/grpc':
+        specifier: workspace:*
+        version: link:../../packages/grpc
+      '@packages/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@prisma/client':
         specifier: ^6.3.0
         version: 6.3.1(prisma@6.3.1(typescript@5.7.3))(typescript@5.7.3)
@@ -775,12 +782,6 @@ importers:
         specifier: ^7.8.1
         version: 7.8.1
     devDependencies:
-      '@/broker':
-        specifier: workspace:*
-        version: link:../../packages/broker
-      '@/configs':
-        specifier: workspace:*
-        version: link:../../packages/configs
       '@nestjs/cli':
         specifier: ^11.0.2
         version: 11.0.2(@swc/cli@0.6.0(@swc/core@1.10.15)(chokidar@4.0.3))(@swc/core@1.10.15)(@types/node@22.13.1)
@@ -790,6 +791,12 @@ importers:
       '@nestjs/testing':
         specifier: ^11.0.8
         version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(@nestjs/microservices@11.0.8)(@nestjs/platform-express@11.0.8)
+      '@packages/broker':
+        specifier: workspace:*
+        version: link:../../packages/broker
+      '@packages/configs':
+        specifier: workspace:*
+        version: link:../../packages/configs
       '@swc/cli':
         specifier: ^0.6.0
         version: 0.6.0(@swc/core@1.10.15)(chokidar@4.0.3)
@@ -830,15 +837,15 @@ importers:
         specifier: ^5.10.3
         version: 5.10.3
     devDependencies:
-      '@/configs':
-        specifier: workspace:*
-        version: link:../configs
       '@nestjs/common':
         specifier: ^11.0.8
         version: 11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/microservices':
         specifier: ^11.0.8
         version: 11.0.8(@grpc/grpc-js@1.12.6)(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(mqtt@5.10.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@packages/configs':
+        specifier: workspace:*
+        version: link:../configs
       '@types/node':
         specifier: ^22.13.1
         version: 22.13.1
@@ -900,9 +907,6 @@ importers:
         specifier: ^7.4.0
         version: 7.4.0
     devDependencies:
-      '@/configs':
-        specifier: workspace:*
-        version: link:../configs
       '@nestjs/common':
         specifier: ^11.0.8
         version: 11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -915,6 +919,9 @@ importers:
       '@nonamich/ts-proto':
         specifier: ^1.0.0
         version: 1.0.0
+      '@packages/configs':
+        specifier: workspace:*
+        version: link:../configs
       '@types/node':
         specifier: ^22.13.1
         version: 22.13.1
@@ -931,12 +938,12 @@ importers:
         specifier: ^2.7.0
         version: 2.7.0
     devDependencies:
-      '@/configs':
-        specifier: workspace:*
-        version: link:../configs
       '@nestjs/common':
         specifier: ^11.0.8
         version: 11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@packages/configs':
+        specifier: workspace:*
+        version: link:../configs
       '@types/node':
         specifier: ^22.13.1
         version: 22.13.1
@@ -3070,8 +3077,8 @@ packages:
   b4a@1.6.7:
     resolution: {integrity: sha512-OnAYlL5b7LEkALw87fUVafQw5rVR9RjwGd4KUwNQ6DrrNmaVaUCgLipfVlzrPQ4tWOR9P0IXGNOx50jYCCdSJg==}
 
-  babel-dead-code-elimination@1.0.8:
-    resolution: {integrity: sha512-og6HQERk0Cmm+nTT4Od2wbPtgABXFMPaHACjbKLulZIFMkYyXZLkUGuAxdgpMJBrxyt/XFpSz++lNzjbcMnPkQ==}
+  babel-dead-code-elimination@1.0.9:
+    resolution: {integrity: sha512-JLIhax/xullfInZjtu13UJjaLHDeTzt3vOeomaSUdO/nAMEL/pWC/laKrSvWylXMnVWyL5bpmG9njqBZlUQOdg==}
 
   babel-jest@29.7.0:
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
@@ -3272,8 +3279,8 @@ packages:
     resolution: {integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==}
     engines: {node: '>=10'}
 
-  caniuse-lite@1.0.30001698:
-    resolution: {integrity: sha512-xJ3km2oiG/MbNU8G6zIq6XRZ6HtAOVXsbOrP/blGazi52kc5Yy7b6sDA5O+FbROzRrV7BSTllLHuNvmawYUJjw==}
+  caniuse-lite@1.0.30001699:
+    resolution: {integrity: sha512-b+uH5BakXZ9Do9iK+CkDmctUSEqZl+SP056vc5usa0PL+ev5OHw003rZXcnjNDv3L8P5j6rwT6C0BPKSikW08w==}
 
   case-anything@2.1.13:
     resolution: {integrity: sha512-zlOQ80VrQ2Ue+ymH5OuM/DlDq64mEm+B9UTdHULv5osUMD6HalNTblf2b1u/m6QecjsnOkBpqVZ+XPwIVsy7Ng==}
@@ -3878,8 +3885,8 @@ packages:
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
 
-  eslint-plugin-react-refresh@0.4.18:
-    resolution: {integrity: sha512-IRGEoFn3OKalm3hjfolEWGqoF/jPqeEYFp+C8B0WMzwGwBMvlRDQd06kghDhF0C61uJ6WfSDhEZE/sAQjduKgw==}
+  eslint-plugin-react-refresh@0.4.19:
+    resolution: {integrity: sha512-eyy8pcr/YxSYjBoqIFSrlbn9i/xvxUFa8CjzAYo9cFjgGXqq1hyjihcpZvxRLalpaWmueWR81xn7vuKmAFijDQ==}
     peerDependencies:
       eslint: '>=8.40'
 
@@ -8131,7 +8138,7 @@ snapshots:
       '@npmcli/package-json': 4.0.1
       '@react-router/node': 7.1.5(react-router@7.1.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3)
       arg: 5.0.2
-      babel-dead-code-elimination: 1.0.8
+      babel-dead-code-elimination: 1.0.9
       chokidar: 4.0.3
       dedent: 1.5.3
       es-module-lexer: 1.6.0
@@ -9001,7 +9008,7 @@ snapshots:
   autoprefixer@10.4.20(postcss@8.5.1):
     dependencies:
       browserslist: 4.24.4
-      caniuse-lite: 1.0.30001698
+      caniuse-lite: 1.0.30001699
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.1.1
@@ -9010,7 +9017,7 @@ snapshots:
 
   b4a@1.6.7: {}
 
-  babel-dead-code-elimination@1.0.8:
+  babel-dead-code-elimination@1.0.9:
     dependencies:
       '@babel/core': 7.26.8
       '@babel/parser': 7.26.8
@@ -9198,7 +9205,7 @@ snapshots:
 
   browserslist@4.24.4:
     dependencies:
-      caniuse-lite: 1.0.30001698
+      caniuse-lite: 1.0.30001699
       electron-to-chromium: 1.5.96
       node-releases: 2.0.19
       update-browserslist-db: 1.1.2(browserslist@4.24.4)
@@ -9289,7 +9296,7 @@ snapshots:
 
   camelcase@6.3.0: {}
 
-  caniuse-lite@1.0.30001698: {}
+  caniuse-lite@1.0.30001699: {}
 
   case-anything@2.1.13: {}
 
@@ -9923,7 +9930,7 @@ snapshots:
     dependencies:
       eslint: 9.20.0(jiti@2.4.2)
 
-  eslint-plugin-react-refresh@0.4.18(eslint@9.20.0(jiti@2.4.2)):
+  eslint-plugin-react-refresh@0.4.19(eslint@9.20.0(jiti@2.4.2)):
     dependencies:
       eslint: 9.20.0(jiti@2.4.2)
 
@@ -12664,7 +12671,7 @@ snapshots:
 
   send@1.1.0:
     dependencies:
-      debug: 4.4.0
+      debug: 4.3.6
       destroy: 1.2.0
       encodeurl: 2.0.0
       escape-html: 1.0.3

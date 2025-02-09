@@ -1,36 +1,31 @@
-import { Controller, Inject } from '@nestjs/common';
-import { BrokerEventPattern, BrokerPayload, OrderEventDto } from '@packages/broker';
-import { ORDER_SERVICE_NAME, OrderServiceClient } from '@packages/grpc/pb/order';
-import { firstValueFrom } from 'rxjs';
+import { Controller, UseFilters } from '@nestjs/common';
+import {
+  BrokerEventPattern,
+  BrokerPayload,
+  BrokerPayloadFilter,
+  OrderEventDto,
+} from '@packages/broker';
 import { ProductsService } from './products.services';
 
 @Controller()
+@UseFilters(BrokerPayloadFilter)
 export class ProductsBrokerController {
-  constructor(
-    private readonly service: ProductsService,
-
-    @Inject(ORDER_SERVICE_NAME)
-    private readonly ordersModule: OrderServiceClient,
-  ) {}
+  constructor(private readonly service: ProductsService) {}
 
   @BrokerEventPattern('order.created')
   async onOrderCreated(
-    @BrokerPayload() { orderId }: OrderEventDto,
+    @BrokerPayload() { items }: OrderEventDto,
   ): Promise<void> {
-    const order = await firstValueFrom(this.ordersModule.getOrder({ orderId }));
-
-    for (const { productId, quantity } of order.items) {
+    for (const { productId, quantity } of items) {
       await this.service.decrementAmount(productId, quantity);
     }
   }
 
   @BrokerEventPattern('order.canceled')
   async onOrderCanceled(
-    @BrokerPayload() { orderId }: OrderEventDto,
+    @BrokerPayload() { items }: OrderEventDto,
   ): Promise<void> {
-    const order = await firstValueFrom(this.ordersModule.getOrder({ orderId }));
-
-    for (const { productId, quantity } of order.items) {
+    for (const { productId, quantity } of items) {
       await this.service.incrementAmount(productId, quantity);
     }
   }

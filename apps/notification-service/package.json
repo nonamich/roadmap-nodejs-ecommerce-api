@@ -11,6 +11,9 @@
     "test:watch": "jest --watch",
     "test:e2e": "jest --config ./test/jest.config.mjs"
   },
+  "optionalDependencies": {
+    "@apps/user-service": "workspace:*"
+  },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^11.0.8",
@@ -28,10 +31,10 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
+    "@packages/configs": "workspace:*",
     "@nestjs/cli": "^11.0.2",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.8",
-    "@packages/configs": "workspace:*",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.11",
     "@swc/jest": "^0.2.37",

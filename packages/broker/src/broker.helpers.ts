@@ -8,8 +8,6 @@ export const connectBrokerMicroservice = (
 ): INestMicroservice => {
   return app.connectMicroservice<MqttOptions>({
     transport: Transport.MQTT,
-    options: {
-      url,
-    },
+    options: { url },
   });
 };

@@ -13,6 +13,11 @@
     "postinstall": "prisma generate",
     "db:migrate": "prisma migrate dev --skip-generate"
   },
+  "optionalDependencies": {
+    "@apps/cart-service": "workspace:*",
+    "@apps/product-service": "workspace:*",
+    "@apps/user-service": "workspace:*"
+  },
   "dependencies": {
     "@nestjs/common": "^11.0.8",
     "@nestjs/config": "^4.0.0",
@@ -21,12 +26,8 @@
     "@nestjs/schedule": "^5.0.1",
     "@prisma/client": "^6.3.0",
     "@packages/broker": "workspace:*",
-    "@apps/cart-service": "workspace:*",
     "@packages/grpc": "workspace:*",
-    "@apps/notification-service": "workspace:*",
-    "@apps/product-service": "workspace:*",
     "@packages/shared": "workspace:*",
-    "@apps/user-service": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "reflect-metadata": "^0.2.2",

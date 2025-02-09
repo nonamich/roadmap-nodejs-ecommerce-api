@@ -13,12 +13,14 @@
     "postinstall": "prisma generate",
     "db:migrate": "prisma migrate dev --skip-generate"
   },
+  "optionalDependencies": {
+    "@apps/product-service": "workspace:*",
+    "@apps/user-service": "workspace:*"
+  },
   "dependencies": {
     "@packages/broker": "workspace:*",
     "@packages/grpc": "workspace:*",
-    "@apps/product-service": "workspace:*",
     "@packages/shared": "workspace:*",
-    "@apps/user-service": "workspace:*",
     "@nestjs/common": "^11.0.8",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.8",

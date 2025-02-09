@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@packages/grpc": "workspace:*",
-    "@apps/notification-service": "workspace:*",
     "@packages/shared": "workspace:*",
     "@nestjs/common": "^11.0.8",
     "@nestjs/config": "^4.0.0",

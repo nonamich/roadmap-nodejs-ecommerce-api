@@ -11,13 +11,16 @@
     "test:watch": "jest --watch",
     "test:e2e": "jest --config ./test/jest.config.mjs"
   },
-  "dependencies": {
-    "@packages/grpc": "workspace:*",
+  "optionalDependencies": {
     "@apps/order-service": "workspace:*",
     "@apps/payment-service": "workspace:*",
     "@apps/product-service": "workspace:*",
-    "@packages/shared": "workspace:*",
     "@apps/user-service": "workspace:*",
+    "@apps/notification-service": "workspace:*"
+  },
+  "dependencies": {
+    "@packages/grpc": "workspace:*",
+    "@packages/shared": "workspace:*",
     "@nestjs/common": "^11.0.8",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.8",

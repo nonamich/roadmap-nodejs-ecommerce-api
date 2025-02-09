@@ -9,7 +9,7 @@ import { NotificationsModule } from './notifications.module';
 import { NotificationsService } from './notifications.service';
 
 const compose = SharedUtils.readCompose(
-  path.join(process.cwd(), 'compose.dev.yml'),
+  path.join(process.cwd(), 'compose.infra.yml'),
 );
 
 const MAIL_ADMIN_EMAIL = 'test@test.com';

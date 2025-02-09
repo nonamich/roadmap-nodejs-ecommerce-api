@@ -13,17 +13,18 @@
     "test:watch": "jest --watch",
     "test:e2e": "jest --config ./test/jest.config.mjs"
   },
+  "optionalDependencies": {
+    "@apps/order-service": "workspace:*"
+  },
   "dependencies": {
+    "@packages/broker": "workspace:*",
+    "@packages/grpc": "workspace:*",
+    "@packages/shared": "workspace:*",
     "@nestjs/common": "^11.0.8",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.8",
     "@nestjs/microservices": "^11.0.8",
     "@nestjs/platform-express": "^11.0.8",
-    "@packages/broker": "workspace:*",
-    "@packages/grpc": "workspace:*",
-    "@apps/notification-service": "workspace:*",
-    "@apps/order-service": "workspace:*",
-    "@packages/shared": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "reflect-metadata": "^0.2.2",

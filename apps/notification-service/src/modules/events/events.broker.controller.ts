@@ -1,15 +1,15 @@
-import { Controller, UseInterceptors } from '@nestjs/common';
+import { Controller, UseFilters } from '@nestjs/common';
 import {
   BrokerEventPattern,
   BrokerPayload,
-  MqttInterceptor,
+  BrokerPayloadFilter,
   OrderEventDto,
   UserEventDto,
 } from '@packages/broker';
 import { NotificationsService } from '../notifications/notifications.service';
 
 @Controller()
-@UseInterceptors(MqttInterceptor)
+@UseFilters(BrokerPayloadFilter)
 export class EventsBrokerController {
   constructor(private readonly notificationsService: NotificationsService) {}
 
