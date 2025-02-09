@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client/product/index.js';
+import { Prisma } from '@packages/shared/db/product';
 
 export const CATEGORY_SELECT = {
   id: true,

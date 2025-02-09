@@ -1,4 +1,4 @@
-import { CartItem } from '@prisma/client/cart/index.js';
+import { CartItem } from '@packages/shared/db/cart';
 
 export class CartItemEntity implements CartItem {
   productId!: string;

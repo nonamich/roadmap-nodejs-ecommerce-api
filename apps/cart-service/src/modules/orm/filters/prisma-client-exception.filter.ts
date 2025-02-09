@@ -1,7 +1,7 @@
 import { ArgumentsHost, Catch } from '@nestjs/common';
 import { BaseRpcExceptionFilter } from '@nestjs/microservices';
 import { prismaToGrpcError } from '@packages/grpc/nest';
-import { Prisma } from '@prisma/client/cart/index.js';
+import { Prisma } from '@packages/shared/db/cart';
 import { Observable } from 'rxjs';
 
 @Catch(Prisma.PrismaClientKnownRequestError)

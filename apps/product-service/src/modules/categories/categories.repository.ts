@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client/product/index.js';
+import { Prisma } from '@packages/shared/db/product';
 import { ORMService } from '~/modules/orm/orm.service';
 import { CATEGORY_SELECT } from './categories.constants';
 import { CategoryEntity } from './entities/category.entity';

@@ -13,22 +13,25 @@ WORKDIR /usr/src/packages
 COPY . .
 RUN find . \( -name "package.json" -o -name "pnpm-lock.yaml" -o -name "pnpm-workspace.yaml" \) \
     | tar -czf packages.tar.gz -T -
-RUN tar -xzf packages.tar.gz -C /app
+RUN mkdir /usr/src/packages-dist
+RUN tar -xzf packages.tar.gz -C /usr/src/packages-dist
 
 FROM base AS install
-WORKDIR /app
-COPY --from=packages /app .
-RUN ls && sleep 5
+WORKDIR /usr/src/install
+COPY --from=packages /usr/src/packages-dist .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
   pnpm install --frozen-lockfile --filter $CURRENT_PACKAGE...
 
 FROM base AS build
-WORKDIR /app
-COPY --from=install /app .
-RUN pnpm run --filter $CURRENT_PACKAGE... -r build
+WORKDIR /usr/src/build
+COPY . .
+COPY --from=install /usr/src/install .
+RUN pnpm --filter $CURRENT_PACKAGE run db:generate
+RUN pnpm --filter $CURRENT_PACKAGE... run build
 RUN pnpm prune --prod
 
 FROM base
-WORKDIR /app
-COPY --from=build /app .
-CMD [ "pnpm", "start" ]
+ENV CURRENT_PACKAGE_ENV ${CURRENT_PACKAGE}
+WORKDIR /usr/src/app
+COPY --from=build /usr/src/build .
+CMD pnpm --filter $CURRENT_PACKAGE_ENV start

@@ -10,7 +10,8 @@
   },
   "exports": {
     "./nest": "./dist/nest/index.js",
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./db/*": "./db/*/index.js"
   },
   "devDependencies": {
     "@nestjs/common": "^11.0.8",

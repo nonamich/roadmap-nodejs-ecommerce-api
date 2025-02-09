@@ -14,8 +14,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:e2e": "jest --config ./test/jest.config.mjs",
-    "postinstall": "prisma generate",
-    "db:migrate": "prisma migrate reset --force"
+    "db:migrate": "prisma migrate dev --skip-generate",
+    "db:generate": "prisma generate"
   },
   "dependencies": {
     "@packages/broker": "workspace:*",

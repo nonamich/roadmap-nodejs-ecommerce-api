@@ -1,4 +1,4 @@
-import { Category } from '@prisma/client/product/index.js';
+import { Category } from '@packages/shared/db/product';
 
 export class CategoryEntity implements Category {
   id!: string;

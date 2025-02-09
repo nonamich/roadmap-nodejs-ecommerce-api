@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - CURRENT_PACKAGE=@apps/api-gateway
+        CURRENT_PACKAGE: "@apps/api-gateway"
     environment:
       GRPC_SERVICE_URL_USER: "user-service:50051"
       GRPC_SERVICE_URL_PRODUCT: "product-service:50051"
@@ -31,7 +31,7 @@ services:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - CURRENT_PACKAGE=@apps/cart-service
+        CURRENT_PACKAGE: "@apps/cart-service"
     environment:
       DATABASE_URL: "postgres://postgres:postgres@db-service:5432/cart-service"
       GRPC_SERVICE_URL_PRODUCT: "product-service:50051"
@@ -43,7 +43,7 @@ services:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - CURRENT_PACKAGE=@apps/notification-service
+        CURRENT_PACKAGE: "@apps/notification-service"
     environment:
       MAIL_ADMIN_EMAIL: "admin@admin.com"
       MAIL_ADMIN_NAME: "admin"
@@ -56,7 +56,7 @@ services:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - CURRENT_PACKAGE=@apps/order-service
+        CURRENT_PACKAGE: "@apps/order-service"
     environment:
       DATABASE_URL: "postgres://postgres:postgres@db-service:5432/order-service"
       GRPC_SERVICE_URL_CART: "cart-service:50051"
@@ -70,7 +70,7 @@ services:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - CURRENT_PACKAGE=@apps/payment-service
+        CURRENT_PACKAGE: "@apps/payment-service"
     environment:
       GRPC_SERVICE_URL_ORDER: "order-service:50051"
       GRPC_SERVICE_URL_PAYMENT: "0.0.0.0:50051"
@@ -84,7 +84,7 @@ services:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - CURRENT_PACKAGE=@apps/product-service
+        CURRENT_PACKAGE: "@apps/product-service"
     environment:
       DATABASE_URL: "postgres://postgres:postgres@db-service:5432/product-service"
       GRPC_SERVICE_URL_PRODUCT: "0.0.0.0:50051"
@@ -96,7 +96,7 @@ services:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        - CURRENT_PACKAGE=@apps/user-service
+        CURRENT_PACKAGE: "@apps/user-service"
     environment:
       DATABASE_URL: "postgres://postgres:postgres@db-service:5432/user-service"
       GRPC_SERVICE_URL_USER: "0.0.0.0:50051"
