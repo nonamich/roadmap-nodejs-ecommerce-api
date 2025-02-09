@@ -3,3 +3,58 @@ include:
 
 services:
   api-gateway:
+    build:
+      context: .
+      dockerfile: nodejs.Dockerfile
+      args:
+        - PACKAGE_NAME=@apps/api-gateway
+    environment:
+      GRPC_SERVICE_URL_USER="user-service:50051"
+      GRPC_SERVICE_URL_PRODUCT="product-service:50051"
+      GRPC_SERVICE_URL_CART="cart-service:50051"
+      GRPC_SERVICE_URL_ORDER="order-service:50051"
+      GRPC_SERVICE_URL_PAYMENT="payment-service:50051"
+      JWT_SECRET="23cd6855c0ff0a1718f875458f8904b2b7a1b72b8066a75acaf6d6820397c2a3"
+      SWAGGER_PATH="/"
+      SWAGGER_JSON_DOCUMENT_URL="/document.json"
+      PORT=3000
+    ports:
+      - 3000:3000
+
+  cart-service:
+    build:
+      context: .
+      dockerfile: nodejs.Dockerfile
+      args:
+        - PACKAGE_NAME=@apps/cart-service
+  notification-service:
+    build:
+      context: .
+      dockerfile: nodejs.Dockerfile
+      args:
+        - PACKAGE_NAME=@apps/notification-service
+  order-service:
+    build:
+      context: .
+      dockerfile: nodejs.Dockerfile
+      args:
+        - PACKAGE_NAME=@apps/order-service
+  payment-service:
+    build:
+      context: .
+      dockerfile: nodejs.Dockerfile
+      args:
+        - PACKAGE_NAME=@apps/payment-service
+  product-service:
+    build:
+      context: .
+      dockerfile: nodejs.Dockerfile
+      args:
+        - PACKAGE_NAME=@apps/product-service
+  user-service:
+    build:
+      context: .
+      dockerfile: nodejs.Dockerfile
+      args:
+        - PACKAGE_NAME=@apps/user-service
+

@@ -2,17 +2,15 @@
   "name": "@apps/notification-service",
   "version": "0.0.0",
   "private": true,
+  "main": "dist/main.js",
   "scripts": {
+    "start": "node .",
     "build": "nest build",
-    "start": "nest start",
     "dev": "nest start --debug :9223 --watch",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:e2e": "jest --config ./test/jest.config.mjs"
-  },
-  "optionalDependencies": {
-    "@apps/user-service": "workspace:*"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.0.2",

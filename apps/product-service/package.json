@@ -2,12 +2,13 @@
   "name": "@apps/product-service",
   "version": "0.0.0",
   "private": true,
+  "main": "dist/main.js",
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {
+    "start": "node .",
     "build": "nest build",
-    "start": "nest start",
     "dev": "nest start --debug :9227 --watch",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "jest",
