@@ -1,5 +1,5 @@
 {
-  "name": "@/cart-service",
+  "name": "@apps/cart-service",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -14,27 +14,26 @@
     "db:migrate": "prisma migrate dev --skip-generate"
   },
   "dependencies": {
-    "@grpc/proto-loader": "^0.7.13",
+    "@packages/broker": "workspace:*",
+    "@packages/grpc": "workspace:*",
+    "@apps/product-service": "workspace:*",
+    "@packages/shared": "workspace:*",
+    "@apps/user-service": "workspace:*",
     "@nestjs/common": "^11.0.8",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.8",
     "@nestjs/microservices": "^11.0.8",
     "@prisma/client": "^6.3.0",
-    "@/broker": "workspace:*",
-    "@/grpc": "workspace:*",
-    "@/product-service": "workspace:*",
-    "@/shared": "workspace:*",
-    "@/user-service": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
+    "@packages/configs": "workspace:*",
     "@nestjs/cli": "^11.0.2",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.8",
-    "@/configs": "workspace:*",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.11",
     "@swc/jest": "^0.2.37",

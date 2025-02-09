@@ -1,4 +1,4 @@
-import { IsOwnerRequest } from '@/grpc/pb/order';
+import { IsOwnerRequest } from '@packages/grpc/pb/order';
 import { IsString } from 'class-validator';
 
 export class IsOwnerRequestDto implements IsOwnerRequest {

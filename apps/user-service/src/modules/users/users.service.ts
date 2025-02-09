@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { BrokerService } from '@/broker';
-import { GrpcUnauthenticatedException } from '@/grpc/nest';
+import { BrokerService } from '@packages/broker';
+import { GrpcUnauthenticatedException } from '@packages/grpc/nest';
 import {
   CreateUserRequestDto,
   GetUserByCredentialsRequestDto,

@@ -1,5 +1,5 @@
 {
-  "name": "@/shared",
+  "name": "@packages/shared",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@nestjs/common": "^11.0.8",
-    "@/configs": "workspace:*",
+    "@packages/configs": "workspace:*",
     "@types/node": "^22.13.1",
     "typescript": "^5.7.3"
   },

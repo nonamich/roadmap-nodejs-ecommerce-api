@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GrpcClientModule } from '@/grpc/nest';
-import { USER_PACKAGE_NAME, USER_SERVICE_NAME } from '@/grpc/pb/user';
+import { GrpcClientModule } from '@packages/grpc/nest';
+import { USER_PACKAGE_NAME, USER_SERVICE_NAME } from '@packages/grpc/pb/user';
 
 @Module({
   imports: [

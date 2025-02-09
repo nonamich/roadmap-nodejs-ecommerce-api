@@ -1,5 +1,5 @@
 {
-  "name": "@/configs",
+  "name": "@packages/configs",
   "version": "0.0.0",
   "type": "module",
   "private": true,

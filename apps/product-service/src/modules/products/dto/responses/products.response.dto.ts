@@ -1,4 +1,4 @@
-import { ProductsResponse } from '@/grpc/pb/product';
+import { ProductsResponse } from '@packages/grpc/pb/product';
 import { PaginationResponseDto } from './pagination.response.dto';
 import { ProductResponseDto } from './product.response.dto';
 

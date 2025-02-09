@@ -1,14 +1,14 @@
 import { UseFilters } from '@nestjs/common';
 import { GrpcService } from '@nestjs/microservices';
-import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@/grpc/nest';
-import { BoolValue } from '@/grpc/pb/google/protobuf/wrappers';
+import { GrpcPayload, GrpcToGrpcExceptionFilter } from '@packages/grpc/nest';
+import { BoolValue } from '@packages/grpc/pb/google/protobuf/wrappers';
 import {
   GetOrderByIntentIdRequest,
   OrderResponse,
   OrderServiceController,
   OrderServiceControllerMethods,
   OrdersResponse,
-} from '@/grpc/pb/order';
+} from '@packages/grpc/pb/order';
 import { PrismaClientExceptionFilter } from '~/modules/orm/filters';
 import {
   CancelOrderRequestDto,

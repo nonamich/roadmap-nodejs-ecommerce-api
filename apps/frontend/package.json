@@ -1,5 +1,5 @@
 {
-  "name": "@/frontend",
+  "name": "@apps/frontend",
   "private": true,
   "type": "module",
   "scripts": {
@@ -28,8 +28,8 @@
   "devDependencies": {
     "@hey-api/openapi-ts": "^0.59.2",
     "@react-router/dev": "^7.1.5",
-    "@/api-gateway": "workspace:*",
-    "@/configs": "workspace:*",
+    "@apps/api-gateway": "workspace:*",
+    "@packages/configs": "workspace:*",
     "@tailwindcss/forms": "^0.5.10",
     "@types/node": "^22.13.1",
     "@types/react": "^19.0.1",

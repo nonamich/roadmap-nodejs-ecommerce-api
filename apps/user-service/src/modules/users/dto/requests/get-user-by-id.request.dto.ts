@@ -1,4 +1,4 @@
-import { GetUserByIdRequest } from '@/grpc/pb/user';
+import { GetUserByIdRequest } from '@packages/grpc/pb/user';
 import { IsString } from 'class-validator';
 
 export class GetUserByIdRequestDto implements GetUserByIdRequest {

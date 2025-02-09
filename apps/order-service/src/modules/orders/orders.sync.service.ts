@@ -1,10 +1,10 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { BrokerService } from '@/broker';
+import { BrokerService } from '@packages/broker';
 import {
   PAYMENT_SERVICE_NAME,
   PaymentServiceClient,
-} from '@/grpc/pb/payment';
+} from '@packages/grpc/pb/payment';
 import { catchError, firstValueFrom, of } from 'rxjs';
 import { OrderService } from './orders.service';
 

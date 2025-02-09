@@ -4,7 +4,7 @@ import {
   BrokerPayload,
   PaymentCanceledEventDto,
   PaymentSucceededEventDto,
-} from '@/broker';
+} from '@packages/broker';
 import { OrderService } from './orders.service';
 
 @Controller()

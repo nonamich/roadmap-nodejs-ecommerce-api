@@ -3,11 +3,11 @@ import {
   CART_SERVICE_NAME,
   CartResponse,
   CartServiceClient,
-} from '@/grpc/pb/cart';
+} from '@packages/grpc/pb/cart';
 import {
   PRODUCT_SERVICE_NAME,
   ProductServiceClient,
-} from '@/grpc/pb/product';
+} from '@packages/grpc/pb/product';
 import { firstValueFrom, toArray } from 'rxjs';
 import { AuthorizedUser } from '../auth/auth.interface';
 import { AddToCartRequestDto } from './dto/requests';

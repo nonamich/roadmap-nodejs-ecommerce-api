@@ -1,6 +1,6 @@
 import { ArgumentsHost, Catch } from '@nestjs/common';
 import { BaseRpcExceptionFilter } from '@nestjs/microservices';
-import { prismaToGrpcError } from '@/grpc/nest';
+import { prismaToGrpcError } from '@packages/grpc/nest';
 import { Prisma } from 'prisma-client';
 import { Observable } from 'rxjs';
 

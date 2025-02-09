@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GrpcClientModule } from '@/grpc/nest';
+import { GrpcClientModule } from '@packages/grpc/nest';
 import {
   PAYMENT_PACKAGE_NAME,
   PAYMENT_SERVICE_NAME,
-} from '@/grpc/pb/payment';
+} from '@packages/grpc/pb/payment';
 
 @Module({
   imports: [

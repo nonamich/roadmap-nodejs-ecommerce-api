@@ -3,7 +3,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
   PRODUCT_SERVICE_NAME,
   ProductServiceClient,
-} from '@/grpc/pb/product';
+} from '@packages/grpc/pb/product';
 import { firstValueFrom, Observable } from 'rxjs';
 import {
   GetFeaturedProductsRequestDto,

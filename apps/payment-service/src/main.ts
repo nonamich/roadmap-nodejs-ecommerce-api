@@ -1,10 +1,10 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { connectBrokerMicroservice } from '@/broker';
-import { connectGrpcMicroservice } from '@/grpc/nest';
-import { PAYMENT_PACKAGE_NAME } from '@/grpc/pb/payment';
-import { InternalDisabledLogger } from '@/shared/nest';
+import { connectBrokerMicroservice } from '@packages/broker';
+import { connectGrpcMicroservice } from '@packages/grpc/nest';
+import { PAYMENT_PACKAGE_NAME } from '@packages/grpc/pb/payment';
+import { InternalDisabledLogger } from '@packages/shared/nest';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {

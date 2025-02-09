@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GrpcClientModule } from '@/grpc/nest';
-import { ORDER_PACKAGE_NAME, ORDER_SERVICE_NAME } from '@/grpc/pb/order';
+import { GrpcClientModule } from '@packages/grpc/nest';
+import { ORDER_PACKAGE_NAME, ORDER_SERVICE_NAME } from '@packages/grpc/pb/order';
 
 @Module({
   controllers: [],

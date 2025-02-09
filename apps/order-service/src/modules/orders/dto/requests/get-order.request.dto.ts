@@ -1,4 +1,4 @@
-import { GetOrderRequest } from '@/grpc/pb/order';
+import { GetOrderRequest } from '@packages/grpc/pb/order';
 import { IsString } from 'class-validator';
 
 export class GetOrderRequestDto implements GetOrderRequest {

@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { connectBrokerMicroservice } from '@/broker';
-import { InternalDisabledLogger } from '@/shared/nest';
+import { connectBrokerMicroservice } from '@packages/broker';
+import { InternalDisabledLogger } from '@packages/shared/nest';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {

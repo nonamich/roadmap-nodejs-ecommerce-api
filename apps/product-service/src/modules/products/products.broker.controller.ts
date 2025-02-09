@@ -1,6 +1,6 @@
 import { Controller, Inject } from '@nestjs/common';
-import { BrokerEventPattern, BrokerPayload, OrderEventDto } from '@/broker';
-import { ORDER_SERVICE_NAME, OrderServiceClient } from '@/grpc/pb/order';
+import { BrokerEventPattern, BrokerPayload, OrderEventDto } from '@packages/broker';
+import { ORDER_SERVICE_NAME, OrderServiceClient } from '@packages/grpc/pb/order';
 import { firstValueFrom } from 'rxjs';
 import { ProductsService } from './products.services';
 

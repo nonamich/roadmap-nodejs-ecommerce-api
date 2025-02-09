@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { BrokerService } from '@/broker';
+import { BrokerService } from '@packages/broker';
 import Stripe from 'stripe';
 import { IntentResponseDto } from './dto/responses';
 import { StripeMethod } from './methods/stripe.method';

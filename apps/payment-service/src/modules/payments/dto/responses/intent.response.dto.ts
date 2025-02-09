@@ -1,4 +1,4 @@
-import { IntentResponse, PaymentStatus } from '@/grpc/pb/payment';
+import { IntentResponse, PaymentStatus } from '@packages/grpc/pb/payment';
 
 export class IntentResponseDto implements IntentResponse {
   id!: string;

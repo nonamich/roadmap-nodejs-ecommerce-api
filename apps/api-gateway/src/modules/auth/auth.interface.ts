@@ -1,3 +1,3 @@
-import { UserResponse } from '@/grpc/pb/user';
+import { UserResponse } from '@packages/grpc/pb/user';
 
 export type AuthorizedUser = UserResponse;

@@ -1,5 +1,5 @@
 {
-  "name": "@/api-gateway",
+  "name": "@apps/api-gateway",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -12,12 +12,12 @@
     "test:e2e": "jest --config ./test/jest.config.mjs"
   },
   "dependencies": {
-    "@/grpc": "workspace:*",
-    "@/order-service": "workspace:*",
-    "@/payment-service": "workspace:*",
-    "@/product-service": "workspace:*",
-    "@/shared": "workspace:*",
-    "@/user-service": "workspace:*",
+    "@packages/grpc": "workspace:*",
+    "@apps/order-service": "workspace:*",
+    "@apps/payment-service": "workspace:*",
+    "@apps/product-service": "workspace:*",
+    "@packages/shared": "workspace:*",
+    "@apps/user-service": "workspace:*",
     "@nestjs/common": "^11.0.8",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.8",
@@ -35,7 +35,7 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@/configs": "workspace:*",
+    "@packages/configs": "workspace:*",
     "@nestjs/cli": "^11.0.2",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.8",

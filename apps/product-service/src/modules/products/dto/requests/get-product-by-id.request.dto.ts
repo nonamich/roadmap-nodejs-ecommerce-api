@@ -1,4 +1,4 @@
-import { GetProductByIdRequest } from '@/grpc/pb/product';
+import { GetProductByIdRequest } from '@packages/grpc/pb/product';
 import { IsString } from 'class-validator';
 
 export class GetProductByIdRequestDto implements GetProductByIdRequest {

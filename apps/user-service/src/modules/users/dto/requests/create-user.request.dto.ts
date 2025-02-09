@@ -1,4 +1,4 @@
-import { CreateUserRequest } from '@/grpc/pb/user';
+import { CreateUserRequest } from '@packages/grpc/pb/user';
 import { IsEmail, IsString, IsStrongPassword, Length } from 'class-validator';
 
 export class CreateUserRequestDto implements CreateUserRequest {

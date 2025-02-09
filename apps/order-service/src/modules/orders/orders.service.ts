@@ -1,16 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BrokerService } from '@/broker';
+import { BrokerService } from '@packages/broker';
 import {
   GrpcAbortedException,
   GrpcInvalidArgumentException,
-} from '@/grpc/nest';
-import { CART_SERVICE_NAME, CartServiceClient } from '@/grpc/pb/cart';
-import { OrderResponse, OrderStatus } from '@/grpc/pb/order';
+} from '@packages/grpc/nest';
+import { CART_SERVICE_NAME, CartServiceClient } from '@packages/grpc/pb/cart';
+import { OrderResponse, OrderStatus } from '@packages/grpc/pb/order';
 import {
   PAYMENT_SERVICE_NAME,
   PaymentServiceClient,
-} from '@/grpc/pb/payment';
-import { PriceService } from '@/shared/nest';
+} from '@packages/grpc/pb/payment';
+import { PriceService } from '@packages/shared/nest';
 import { firstValueFrom } from 'rxjs';
 import { ORMService } from '../orm/orm.service';
 import {

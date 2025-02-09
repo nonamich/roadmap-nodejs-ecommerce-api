@@ -1,4 +1,4 @@
-import { ProductResponse } from '@/grpc/pb/product';
+import { ProductResponse } from '@packages/grpc/pb/product';
 import { BrandResponseDto } from './brand.response.dto';
 import { CategoryResponseDto } from './category.response.dto';
 

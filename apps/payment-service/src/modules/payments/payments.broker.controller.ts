@@ -4,7 +4,7 @@ import {
   BrokerPayload,
   MqttInterceptor,
   OrderEventDto,
-} from '@/broker';
+} from '@packages/broker';
 import { PaymentsService } from './payments.service';
 
 @Controller()

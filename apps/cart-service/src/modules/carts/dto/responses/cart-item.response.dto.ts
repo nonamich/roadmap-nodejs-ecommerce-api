@@ -1,4 +1,4 @@
-import { CartItemResponse } from '@/grpc/pb/cart';
+import { CartItemResponse } from '@packages/grpc/pb/cart';
 
 export class CartItemResponseDto implements CartItemResponse {
   quantity!: number;

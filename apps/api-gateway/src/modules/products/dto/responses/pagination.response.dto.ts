@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PaginationResponse } from '@/grpc/pb/product';
+import { PaginationResponse } from '@packages/grpc/pb/product';
 
 export class PaginationResponseDto implements PaginationResponse {
   @ApiProperty()
