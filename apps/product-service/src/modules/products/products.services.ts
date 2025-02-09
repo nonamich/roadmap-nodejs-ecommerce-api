@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { GrpcNotFoundException } from '@packages/grpc/nest';
 import { GetProductBySlugRequest } from '@packages/grpc/pb/product';
-import { Prisma } from '@packages/shared/db/product';
+import { Prisma } from '@prisma-client/index.js';
 import { BrandsRepository } from '../brands/brands.repository';
 import { BrandEntity } from '../brands/entities';
 import { CategoriesRepository } from '../categories/categories.repository';

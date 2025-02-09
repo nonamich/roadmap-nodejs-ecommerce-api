@@ -1,4 +1,4 @@
-import { Prisma } from '@packages/shared/db/product';
+import { Prisma } from '@prisma-client/index.js';
 
 export const BRAND_SELECT = {
   id: true,

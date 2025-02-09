@@ -1,6 +1,9 @@
 .turbo
 .env
 .git
+.gitignore
+.dockerignore
+compose.*
 **/node_modules
 **/dist
 

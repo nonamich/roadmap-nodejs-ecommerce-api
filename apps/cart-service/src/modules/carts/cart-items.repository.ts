@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@packages/shared/db/cart';
+import { Prisma } from '@prisma-client/index.js';
 import { ORMService } from '~/modules/orm/orm.service';
 import { CART_ITEM_SELECT } from './carts.constants';
 import { CartItemEntity } from './entities';

@@ -1,4 +1,4 @@
-import { Prisma } from '@packages/shared/db/product';
+import { Prisma } from '@prisma-client/index.js';
 import { BRAND_SELECT } from '../brands/brands.constants';
 import { CATEGORY_SELECT } from '../categories/categories.constants';
 

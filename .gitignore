@@ -2,6 +2,7 @@
 .env
 node_modules
 dist
+**/prisma/client
 
 # IDE - VSCode
 .vscode/*

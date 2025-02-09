@@ -1,4 +1,4 @@
-import { $Enums, Order } from '@packages/shared/db/order';
+import { $Enums, Order } from '@prisma-client/index.js';
 import { OrderItemEntity } from './order-item.entity';
 
 export class OrderEntity implements Order {

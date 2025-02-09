@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/@packages/shared/db/cart"
+  output   = "client"
 }
 
 datasource db {

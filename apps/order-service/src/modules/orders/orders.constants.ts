@@ -1,4 +1,4 @@
-import { Prisma } from '@packages/shared/db/order';
+import { Prisma } from '@prisma-client/index.js';
 
 export const ORDER_SELECT = {
   id: true,

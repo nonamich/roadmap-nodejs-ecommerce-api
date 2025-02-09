@@ -15,13 +15,14 @@
     "db:generate": "prisma generate"
   },
   "dependencies": {
-    "@packages/broker": "workspace:*",
-    "@packages/grpc": "workspace:*",
-    "@packages/shared": "workspace:*",
     "@nestjs/common": "^11.0.8",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.8",
     "@nestjs/microservices": "^11.0.8",
+    "@nestjs/platform-express": "^11.0.8",
+    "@packages/broker": "workspace:*",
+    "@packages/grpc": "workspace:*",
+    "@packages/shared": "workspace:*",
     "@prisma/client": "^6.3.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -29,10 +30,10 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@packages/configs": "workspace:*",
     "@nestjs/cli": "^11.0.2",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.8",
+    "@packages/configs": "workspace:*",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.11",
     "@swc/jest": "^0.2.37",

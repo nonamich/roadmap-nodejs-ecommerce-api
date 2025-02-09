@@ -1,4 +1,4 @@
-import { OrderItem } from '@packages/shared/db/order';
+import { OrderItem } from '@prisma-client/index.js';
 
 export class OrderItemEntity implements OrderItem {
   orderId!: string;

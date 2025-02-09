@@ -1,4 +1,4 @@
-name: roadmap-nodejs-ecommerce-api-keploy
+name: ecommerce-api-keploy
 
 services:
   api-gateway-service:
@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        CURRENT_PACKAGE: "@apps/api-gateway"
+        APP_DIR: api-gateway
     environment:
       GRPC_SERVICE_URL_USER: "user-service:50051"
       GRPC_SERVICE_URL_PRODUCT: "product-service:50051"
@@ -20,6 +20,9 @@ services:
     ports:
       - 3000:3000
     depends_on:
+      - db-service
+      - mqtt-service
+      - smtp-service
       - user-service
       - product-service
       - cart-service
@@ -31,32 +34,40 @@ services:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        CURRENT_PACKAGE: "@apps/cart-service"
+        APP_DIR: cart-service
     environment:
       DATABASE_URL: "postgres://postgres:postgres@db-service:5432/cart-service"
       GRPC_SERVICE_URL_PRODUCT: "product-service:50051"
       GRPC_SERVICE_URL_CART: "0.0.0.0:50051"
       MQTT_URL: "mqtt://mqtt-service:1883"
+    depends_on:
+      - db-service
+      - mqtt-service
+      - smtp-service
 
   notification-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        CURRENT_PACKAGE: "@apps/notification-service"
+        APP_DIR: notification-service
     environment:
       MAIL_ADMIN_EMAIL: "admin@admin.com"
       MAIL_ADMIN_NAME: "admin"
       MAIL_SERVER_URL: "smtp://admin@admin.com:pass@smtp-service:1025"
       GRPC_SERVICE_URL_USER: "user-service:50051"
       MQTT_URL: "mqtt://mqtt-service:1883"
+    depends_on:
+      - db-service
+      - mqtt-service
+      - smtp-service
 
   order-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        CURRENT_PACKAGE: "@apps/order-service"
+        APP_DIR: order-service
     environment:
       DATABASE_URL: "postgres://postgres:postgres@db-service:5432/order-service"
       GRPC_SERVICE_URL_CART: "cart-service:50051"
@@ -64,42 +75,58 @@ services:
       GRPC_SERVICE_URL_PAYMENT: "payment-service:50051"
       GRPC_SERVICE_URL_USER: "user-service:50051"
       MQTT_URL: "mqtt://mqtt-service:1883"
+    depends_on:
+      - db-service
+      - mqtt-service
+      - smtp-service
 
   payment-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        CURRENT_PACKAGE: "@apps/payment-service"
+        APP_DIR: payment-service
     environment:
       GRPC_SERVICE_URL_ORDER: "order-service:50051"
       GRPC_SERVICE_URL_PAYMENT: "0.0.0.0:50051"
       MQTT_URL: "mqtt://mqtt-service:1883"
-      STRIPE_SECRET_KEY: "sk_test_51Qn3MPFLXC5RCuubBH0aQKFRa8O7VSFeQXxQYLNGQHRswGDBUk1zvoT83nDZwW59XgNWcoCWkRHB6aQjAGKysVkr00Hi7XULwG"
-      STRIPE_WEBHOOK_WHSEC: "whsec_402cc7bb95781f5110e2804a8aefc814c397c0a00a2ea5adb32321ef63f3c497"
+      STRIPE_SECRET_KEY: ""
+      STRIPE_WEBHOOK_WHSEC: ""
       PORT: 4242
+    depends_on:
+      - db-service
+      - mqtt-service
+      - smtp-service
 
   product-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        CURRENT_PACKAGE: "@apps/product-service"
+        APP_DIR: product-service
     environment:
       DATABASE_URL: "postgres://postgres:postgres@db-service:5432/product-service"
       GRPC_SERVICE_URL_PRODUCT: "0.0.0.0:50051"
       GRPC_SERVICE_URL_ORDER: "order-service:50051"
       MQTT_URL: "mqtt://mqtt-service:1883"
+    depends_on:
+      - db-service
+      - mqtt-service
+      - smtp-service
 
   user-service:
     build:
       context: .
       dockerfile: nodejs.Dockerfile
       args:
-        CURRENT_PACKAGE: "@apps/user-service"
+        APP_DIR: user-service
     environment:
       DATABASE_URL: "postgres://postgres:postgres@db-service:5432/user-service"
       GRPC_SERVICE_URL_USER: "0.0.0.0:50051"
       MQTT_URL: "mqtt://mqtt-service:1883"
+    depends_on:
+      - db-service
+      - mqtt-service
+      - smtp-service
 
 

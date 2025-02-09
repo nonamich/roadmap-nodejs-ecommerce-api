@@ -1,4 +1,4 @@
-import { Prisma } from '@packages/shared/db/user';
+import { Prisma } from '@prisma-client/index.js';
 
 export const USER_SELECT: Prisma.UserSelect = {
   id: true,

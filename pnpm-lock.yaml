@@ -135,6 +135,9 @@ importers:
       '@nestjs/microservices':
         specifier: ^11.0.8
         version: 11.0.8(@grpc/grpc-js@1.12.6)(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(mqtt@5.10.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/platform-express':
+        specifier: ^11.0.8
+        version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)
       '@packages/broker':
         specifier: workspace:*
         version: link:../../packages/broker
@@ -326,6 +329,9 @@ importers:
       '@nestjs/microservices':
         specifier: ^11.0.8
         version: 11.0.8(@grpc/grpc-js@1.12.6)(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(mqtt@5.10.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/platform-express':
+        specifier: ^11.0.8
+        version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)
       '@packages/broker':
         specifier: workspace:*
         version: link:../../packages/broker
@@ -417,6 +423,9 @@ importers:
       '@nestjs/microservices':
         specifier: ^11.0.8
         version: 11.0.8(@grpc/grpc-js@1.12.6)(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(mqtt@5.10.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/platform-express':
+        specifier: ^11.0.8
+        version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)
       '@nestjs/schedule':
         specifier: ^5.0.1
         version: 5.0.1(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)
@@ -602,6 +611,9 @@ importers:
       '@nestjs/microservices':
         specifier: ^11.0.8
         version: 11.0.8(@grpc/grpc-js@1.12.6)(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(mqtt@5.10.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/platform-express':
+        specifier: ^11.0.8
+        version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)
       '@packages/broker':
         specifier: workspace:*
         version: link:../../packages/broker
@@ -705,6 +717,12 @@ importers:
       '@nestjs/microservices':
         specifier: ^11.0.8
         version: 11.0.8(@grpc/grpc-js@1.12.6)(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(mqtt@5.10.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/platform-express':
+        specifier: ^11.0.8
+        version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)
+      '@packages/broker':
+        specifier: workspace:*
+        version: link:../../packages/broker
       '@packages/grpc':
         specifier: workspace:*
         version: link:../../packages/grpc
@@ -742,9 +760,6 @@ importers:
       '@nestjs/testing':
         specifier: ^11.0.8
         version: 11.0.8(@nestjs/common@11.0.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.8)(@nestjs/microservices@11.0.8)(@nestjs/platform-express@11.0.8)
-      '@packages/broker':
-        specifier: workspace:*
-        version: link:../../packages/broker
       '@packages/configs':
         specifier: workspace:*
         version: link:../../packages/configs

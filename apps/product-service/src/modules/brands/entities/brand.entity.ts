@@ -1,4 +1,4 @@
-import { Brand } from '@packages/shared/db/product';
+import { Brand } from '@prisma-client/index.js';
 
 export class BrandEntity implements Brand {
   id!: string;

@@ -1,10 +1,9 @@
 import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { OrderEventDto, UserEventDto } from '@packages/broker';
 import { USER_SERVICE_NAME, UserServiceClient } from '@packages/grpc/pb/user';
 import { SentMessageInfo } from 'nodemailer';
 import { firstValueFrom } from 'rxjs';
-import { Logger } from 'testcontainers/build/common';
 
 @Injectable()
 export class NotificationsService {
@@ -81,7 +80,7 @@ export class NotificationsService {
   async send(options: ISendMailOptions): Promise<SentMessageInfo> {
     const messageInfo = await this.mailerService.sendMail(options);
 
-    this.logger.info(`Email to ${options.to} was send`);
+    this.logger.log(`Email to ${options.to} was send`);
 
     return messageInfo;
   }

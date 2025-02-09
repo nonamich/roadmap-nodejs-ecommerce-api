@@ -1,4 +1,4 @@
-import { Prisma } from '@packages/shared/db/cart';
+import { Prisma } from '@prisma-client/index.js';
 
 export const CART_ITEM_SELECT = {
   quantity: true,

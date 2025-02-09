@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@packages/shared/db/order';
+import { Prisma } from '@prisma-client/index.js';
 import { ORMService } from '~/modules/orm/orm.service';
 import { OrderEntity } from './entities';
 import { ORDER_SELECT } from './orders.constants';
