@@ -10,9 +10,7 @@
     "dev": "pnpm run dev:nest & pnpm run dev:stripe-listen",
     "dev:stripe-listen": "./bin/stripe-listen.bash",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:e2e": "jest --config ./test/jest.config.mjs"
+    "test": "jest"
   },
   "dependencies": {
     "@packages/broker": "workspace:*",

@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { InternalDisabledLogger } from '@packages/shared/nest';
 import { AppModule } from './app.module';
+import { prepareApp } from './prepare-app';
 import { initSwagger } from './swagger';
 
 bootstrap();
@@ -12,11 +13,9 @@ async function bootstrap(): Promise<void> {
     logger: new InternalDisabledLogger(),
   });
   const config = app.get(ConfigService);
-  const port = config.get('PORT') || 3000;
+  const port = config.getOrThrow('PORT') || 3000;
 
-  app.enableCors();
-  app.set('query parser', 'extended');
-
+  prepareApp(app);
   initSwagger(app);
 
   await app.listen(port);

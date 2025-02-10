@@ -68,4 +68,11 @@ export class ProductsController {
       brand: brandResponse,
     };
   }
+
+  @Get('/test')
+  awdaw(): any {
+    return {
+      test: 200,
+    };
+  }
 }

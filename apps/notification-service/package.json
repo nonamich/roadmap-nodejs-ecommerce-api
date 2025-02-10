@@ -8,9 +8,7 @@
     "build": "nest build",
     "dev": "nest start --debug :9223 --watch",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:e2e": "jest --config ./test/jest.config.mjs"
+    "test": "jest"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.0.2",
