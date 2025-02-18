@@ -9,7 +9,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ORDER_SERVICE_NAME, OrderServiceClient } from '@packages/grpc/pb/order';
+import {
+  ORDER_SERVICE_NAME,
+  OrderServiceClient,
+} from '@packages/grpc/pb/order';
 import {
   PAYMENT_SERVICE_NAME,
   PaymentServiceClient,

@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GrpcClientModule } from '@packages/grpc/nest';
-import { CART_CURRENT_PACKAGE, CART_SERVICE_NAME } from '@packages/grpc/pb/cart';
+import {
+  CART_CURRENT_PACKAGE,
+  CART_SERVICE_NAME,
+} from '@packages/grpc/pb/cart';
 import { ProductsModule } from '../products/products.module';
 import { CartsController } from './carts.controller';
 import { CartService } from './carts.service';
